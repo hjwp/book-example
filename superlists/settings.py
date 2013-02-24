@@ -1,4 +1,4 @@
-# Django settings for awesomelists project.
+# Django settings for superlists project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -97,10 +97,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'awesomelists.urls'
+ROOT_URLCONF = 'superlists.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'awesomelists.wsgi.application'
+WSGI_APPLICATION = 'superlists.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
