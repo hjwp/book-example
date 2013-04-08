@@ -1,7 +1,7 @@
 from django.core.urlresolvers import resolve
 from django.http import HttpRequest
 from django.template.loader import render_to_string
-from django.test import Client, TestCase
+from django.test import TestCase
 
 from lists.models import Item, List
 from lists.views import home_page
@@ -28,9 +28,12 @@ class NewListTest(TestCase):
             '/lists/new',
             data={'item_text': 'A new list item'}
         )
+        self.assertEqual(List.objects.all().count(), 1)
+        new_list = List.objects.all()[0]
         self.assertEqual(Item.objects.all().count(), 1)
         new_item = Item.objects.all()[0]
         self.assertEqual(new_item.text, 'A new list item')
+        self.assertEqual(new_item.list, new_list)
 
 
     def test_redirects_after_POST(self):
@@ -38,23 +41,69 @@ class NewListTest(TestCase):
             '/lists/new',
             data={'item_text': 'A new list item'}
         )
-        self.assertRedirects(response, '/lists/the-only-list-in-the-world/')
+        new_list = List.objects.all()[0]
+        self.assertRedirects(response, '/lists/%d/' % (new_list.id,))
+
+
+
+class NewItemTest(TestCase):
+
+    def test_can_save_a_POST_request_to_an_existing_list(self):
+        other_list = List.objects.create()
+        correct_list = List.objects.create()
+
+        self.client.post(
+            '/lists/%d/new_item' % (correct_list.id,),
+            data={'item_text': 'A new item for an existing list'}
+        )
+
+        self.assertEqual(Item.objects.all().count(), 1)
+        new_item = Item.objects.all()[0]
+        self.assertEqual(new_item.text, 'A new item for an existing list')
+        self.assertEqual(new_item.list, correct_list)
+
+
+    def test_redirects_to_list_view(self):
+        other_list = List.objects.create()
+        correct_list = List.objects.create()
+
+        response = self.client.post(
+            '/lists/%d/new_item' % (correct_list.id,),
+            data={'item_text': 'A new item for an existing list'}
+        )
+
+        self.assertRedirects(response, '/lists/%d/' % (correct_list.id,))
 
 
 
 class ListViewTest(TestCase):
 
-    def test_list_view_displays_all_items(self):
-        list = List.objects.create()
-        Item.objects.create(text='itemey 1', list=list)
-        Item.objects.create(text='itemey 2', list=list)
+    def test_list_view_passes_list_to_list_template(self):
+        other_list = List.objects.create()
+        correct_list = List.objects.create()
 
-        client = Client()
-        response = client.get('/lists/the-only-list-in-the-world/')
+        response = self.client.get('/lists/%d/' % (correct_list.id,))
 
         self.assertTemplateUsed(response, 'list.html')
+        self.assertEqual(response.context['list'], correct_list)
+
+
+    def test_list_view_displays_items_for_that_list(self):
+        correct_list = List.objects.create()
+        Item.objects.create(text='itemey 1', list=correct_list)
+        Item.objects.create(text='itemey 2', list=correct_list)
+        other_list = List.objects.create()
+        Item.objects.create(text='other list item 1', list=other_list)
+        Item.objects.create(text='other list item 2', list=other_list)
+
+        response = self.client.get('/lists/%d/' % (correct_list.id,))
+
         self.assertContains(response, 'itemey 1')
         self.assertContains(response, 'itemey 2')
+        self.assertNotContains(response, 'other list item 1')
+        self.assertNotContains(response, 'other list item 2')
+
+
 
 
 
@@ -86,3 +135,4 @@ class ListAndItemModelsTest(TestCase):
         self.assertEqual(first_saved_item.list, list)
         self.assertEqual(second_saved_item.text, 'Item the second')
         self.assertEqual(second_saved_item.list, list)
+
