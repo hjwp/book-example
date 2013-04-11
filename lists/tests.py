@@ -1,7 +1,7 @@
 from django.core.urlresolvers import resolve
 from django.http import HttpRequest
 from django.template.loader import render_to_string
-from django.test import TestCase
+from django.test import Client, TestCase
 
 from lists.models import Item
 from lists.views import home_page
@@ -51,13 +51,28 @@ class HomePageTest(TestCase):
         response = home_page(request)
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/')
+        self.assertEqual(response['location'], '/lists/the-only-list-in-the-world/')
 
 
     def test_home_page_only_saves_items_when_necessary(self):
         request = HttpRequest()
         home_page(request)
         self.assertEqual(Item.objects.all().count(), 0)
+
+
+
+class ListViewTest(TestCase):
+
+    def test_list_view_displays_all_items(self):
+        Item.objects.create(text='itemey 1')
+        Item.objects.create(text='itemey 2')
+
+        client = Client()
+        response = client.get('/lists/the-only-list-in-the-world/')
+
+        self.assertIn('itemey 1', response.content)
+        self.assertIn('itemey 2', response.content)
+        self.assertTemplateUsed(response, 'list.html')
 
 
 
