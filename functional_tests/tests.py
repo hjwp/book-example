@@ -103,3 +103,13 @@ class NewVisitorTest(LiveServerTestCase):
             delta=3
         )
 
+        # She starts a new list and sees the input is nicely
+        # centered there too
+        inputbox.send_keys('testing\n')
+        inputbox = self.browser.find_element_by_tag_name('input')
+        self.assertAlmostEqual(
+            inputbox.location['x'] + inputbox.size['width'] / 2,
+            512,
+            delta=3
+        )
+
