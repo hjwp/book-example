@@ -9,14 +9,16 @@
     <body>
         <div class="container">
             <div class="row">
-                <div class="span6 offset3 hero-unit">
-                    <div class="text-center">
-                        <h1>{% block header_text %}{% endblock %}</h1>
-                        {% block form %}
+                <div class="span8 offset2">
+                    <div class="hero-unit">
+                        <div class="text-center">
+                            <h1>{% block header_text %}{% endblock %}</h1>
+                            {% block form %}
+                            {% endblock %}
+                        </div>
+                        {% block table %}
                         {% endblock %}
                     </div>
-                    {% block table %}
-                    {% endblock %}
                 </div>
             </div>
         </div>
