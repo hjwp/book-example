@@ -6,11 +6,19 @@
         <title>To-Do lists</title>
     </head>
     <body>
-        <h1>{% block header_text %}{% endblock %}</h1>
-        {% block form %}
-        {% endblock %}
-        {% block table %}
-        {% endblock %}
+        <div class="container">
+            <div class="row">
+                <div class="span6 offset3">
+                    <div class="text-center">
+                        <h1>{% block header_text %}{% endblock %}</h1>
+                        {% block form %}
+                        {% endblock %}
+                    </div>
+                    {% block table %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
         <script src="http://code.jquery.com/jquery.js"></script>
         <script src="js/bootstrap.min.js"></script>
     </body>
