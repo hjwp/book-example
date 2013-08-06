@@ -10,7 +10,7 @@ MAX_WAIT = 10
 
 
 
-class NewVisitorTest(StaticLiveServerTestCase):
+class FunctionalTest(StaticLiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -41,6 +41,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
                     raise e
                 time.sleep(0.5)
 
+
+
+class NewVisitorTest(FunctionalTest):
 
     def test_can_start_a_list_for_one_user(self):
         # Edith has heard about a cool new online to-do app. She goes
@@ -128,6 +131,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # Satisfied, they both go back to sleep
 
 
+
+class LayoutAndStylingTest(FunctionalTest):
+
     def test_layout_and_styling(self):
         # Edith goes to the home page
         self.browser.get(self.server_url)
@@ -153,6 +159,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
             delta=5
         )
 
+
+
+class ItemValidationTest(FunctionalTest):
 
     @skip
     def test_cannot_add_empty_list_items(self):
