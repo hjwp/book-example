@@ -4,7 +4,7 @@ from selenium.webdriver.common.keys import Keys
 import sys
 from unittest import skip
 
-class NewVisitorTest(StaticLiveServerCase):
+class FunctionalTest(StaticLiveServerCase):
 
     @classmethod
     def setUpClass(cls):
@@ -20,6 +20,7 @@ class NewVisitorTest(StaticLiveServerCase):
         if cls.server_url == cls.live_server_url:
             super().tearDownClass()
 
+
     def setUp(self):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
@@ -33,6 +34,9 @@ class NewVisitorTest(StaticLiveServerCase):
         rows = table.find_elements_by_tag_name('tr')
         self.assertIn(row_text, [row.text for row in rows])
 
+
+
+class NewVisitorTest(FunctionalTest):
 
     def test_can_start_a_list_and_retrieve_it_later(self):
         # Edith has heard about a cool new online to-do app. She goes
@@ -107,6 +111,9 @@ class NewVisitorTest(StaticLiveServerCase):
         # Satisfied, they both go back to sleep
 
 
+
+class LayoutAndStylingTest(FunctionalTest):
+
     def test_layout_and_styling(self):
         # Edith goes to the home page
         self.browser.get(self.server_url)
@@ -130,6 +137,9 @@ class NewVisitorTest(StaticLiveServerCase):
             delta=5
         )
 
+
+
+class ItemValidationTest(FunctionalTest):
 
     @skip
     def test_cannot_add_empty_list_items(self):
