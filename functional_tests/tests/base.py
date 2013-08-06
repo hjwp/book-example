@@ -4,7 +4,7 @@ from selenium.webdriver.common.keys import Keys
 import sys
 from unittest import skip
 
-class NewVisitorTest(LiveServerTestCase):
+class FunctionalTest(LiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -33,6 +33,9 @@ class NewVisitorTest(LiveServerTestCase):
         rows = table.find_elements_by_tag_name('tr')
         self.assertIn(row_text, [row.text for row in rows])
 
+
+
+class NewVisitorTest(FunctionalTest):
 
     def test_can_start_a_list_and_retrieve_it_later(self):
         # Edith has heard about a cool new online to-do app. She goes
@@ -106,6 +109,9 @@ class NewVisitorTest(LiveServerTestCase):
         # Satisified, she goes back to sleep
 
 
+
+class LayoutAndStylingTest(FunctionalTest):
+
     def test_layout_and_styling(self):
         # Edith goes to the home page
         self.browser.get(self.server_url)
@@ -129,6 +135,9 @@ class NewVisitorTest(LiveServerTestCase):
             delta=3
         )
 
+
+
+class ItemValidationTest(FunctionalTest):
 
     @skip
     def test_cannot_add_empty_list_items(self):
