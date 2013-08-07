@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+
 from .base import FunctionalTest
 
 
@@ -20,10 +21,23 @@ class ItemValidationTest(FunctionalTest):
         )
 
         # She tries again with some text for the item, which now works
-        self.fail("finish this test!")
+        self.browser.find_element(By.ID, "id_new_item").send_keys("Purchase milk")
+        self.browser.find_element(By.ID, "id_new_item").send_keys(Keys.ENTER)
+        self.wait_for_row_in_list_table("1: Purchase milk")
 
         # Perversely, she now decides to submit a second blank list item
+        self.browser.find_element(By.ID, "id_new_item").send_keys(Keys.ENTER)
 
         # She receives a similar warning on the list page
+        self.wait_for(
+            lambda: self.assertEqual(
+                self.browser.find_element(By.CSS_SELECTOR, ".invalid-feedback").text,
+                "You can't have an empty list item",
+            )
+        )
 
         # And she can correct it by filling some text in
+        self.browser.find_element(By.ID, "id_new_item").send_keys("Make tea")
+        self.browser.find_element(By.ID, "id_new_item").send_keys(Keys.ENTER)
+        self.wait_for_row_in_list_table("1: Purchase milk")
+        self.wait_for_row_in_list_table("2: Make tea")
