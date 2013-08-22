@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
 from lists.models import Item, List
 
@@ -13,7 +14,10 @@ def view_list(request, list_id):
 
 def new_list(request):
     list = List.objects.create()
-    Item.objects.create(text=request.POST['item_text'], list=list)
+    try:
+        Item.objects.create(text=request.POST['item_text'], list=list)
+    except ValidationError:
+        pass
     return redirect('/lists/%d/' % (list.id,))
 
 
