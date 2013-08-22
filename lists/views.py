@@ -12,7 +12,8 @@ def new_list(request):
     try:
         Item.objects.create(text=request.POST['item_text'], list=list_)
     except ValidationError:
-        return render(request, 'home.html')
+        error_text = "You can't have an empty list item"
+        return render(request, 'home.html', {"error": error_text})
     return redirect('/lists/%d/' % (list_.id,))
 
 
