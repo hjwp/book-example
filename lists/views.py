@@ -17,7 +17,7 @@ def new_list(request):
     try:
         Item.objects.create(text=request.POST['item_text'], list=list)
     except ValidationError:
-        pass
+        return render(request, 'home.html')
     return redirect('/lists/%d/' % (list.id,))
 
 
