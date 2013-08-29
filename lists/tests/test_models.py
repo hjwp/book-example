@@ -34,6 +34,11 @@ class ListAndItemModelsTest(TestCase):
         self.assertEqual(second_saved_item.list, list)
 
 
+    def test_get_absolute_url(self):
+        list1 = List.objects.create()
+        self.assertEqual(list1.get_absolute_url(), '/lists/%d/' % (list1.id,))
+
+
     def test_cannot_save_empty_list_items(self):
         list1 = List.objects.create()
         item = Item(list=list1, text='')
@@ -41,6 +46,9 @@ class ListAndItemModelsTest(TestCase):
             item.save()
 
 
-    def test_get_absolute_url(self):
+    def test_cannot_save_duplicate_items(self):
         list1 = List.objects.create()
-        self.assertEqual(list1.get_absolute_url(), '/lists/%d/' % (list1.id,))
+        Item.objects.create(list=list1, text='bla')
+        with self.assertRaises(ValidationError):
+            Item.objects.create(list=list1, text='bla')
+
