@@ -4,6 +4,7 @@ from django.template.loader import render_to_string
 from django.test import TestCase
 from django.utils.html import escape
 
+from lists.forms import ItemForm
 from lists.models import Item, List
 from lists.views import home_page
 
@@ -20,6 +21,11 @@ class HomePageTest(TestCase):
         expected_html = render_to_string('home.html')
         self.assertEqual(response.content.decode(), expected_html)
 
+
+    def test_home_page_renders_home_template_with_form(self):
+        response = self.client.get('/')
+        self.assertTemplateUsed(response, 'home.html')
+        self.assertIsInstance(response.context['form'], ItemForm)
 
 
 class NewListTest(TestCase):
