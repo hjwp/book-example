@@ -61,3 +61,13 @@ class ListAndItemModelsTest(TestCase):
         item = Item(list=list2, text='bla')
         item.full_clean()  # should not raise
 
+
+    def test_list_ordering(self):
+        list1 = List.objects.create()
+        item1 = Item.objects.create(list=list1, text='i1')
+        item2 = Item.objects.create(list=list1, text='item 2')
+        item3 = Item.objects.create(list=list1, text='3')
+        self.assertEqual(
+            Item.objects.all(),
+            [item1, item2, item3]
+        )
