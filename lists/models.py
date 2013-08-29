@@ -10,8 +10,11 @@ class List(models.Model):
 
 
 class Item(models.Model):
-    text = models.TextField(unique=True)
+    text = models.TextField()
     list = models.ForeignKey(List)
+
+    class Meta:
+        unique_together = ('list', 'text')
 
 
     def save(self, *args, **kwargs):
