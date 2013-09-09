@@ -6,8 +6,8 @@
     <form method="POST" action="{% url 'new_list' %}" >
         {{ form.text }}
         {% csrf_token %}
-        {% if error %}
-            <p class="error">{{ error }}</p>
+        {% if form.errors %}
+            <div class="error">{{ form.text.errors }}</div>
         {% endif %}
     </form>
 {% endblock %}
