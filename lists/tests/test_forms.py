@@ -39,5 +39,6 @@ class ExistingListItemFormTest(TestCase):
         listey = List.objects.create()
         Item.objects.create(list=listey, text='no twins!')
         form = ExistingListItemForm(data={'list': listey.id, 'text': 'no twins!'})
+        self.fail(dict(form.errors))
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['text'], [DUPLICATE_ITEM_ERROR])
