@@ -32,3 +32,4 @@ class ExistingListItemForm(ItemForm):
         super().validate_unique()
         if self.non_field_errors():
             self._update_errors({'text': [DUPLICATE_ITEM_ERROR]})
+            del self.errors['__all__']
