@@ -28,3 +28,7 @@ class ExistingListItemForm(ItemForm):
     class Meta(ItemForm.Meta):
         fields = ('list', 'text')
 
+    def validate_unique(self):
+        super().validate_unique()
+        if self.non_field_errors():
+            self._update_errors({'text': [DUPLICATE_ITEM_ERROR]})
