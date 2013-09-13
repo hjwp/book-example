@@ -21,5 +21,10 @@ class ItemForm(forms.models.ModelForm):
             ),
         }
 
+
+
 class ExistingListItemForm(ItemForm):
-    pass
+
+    class Meta(ItemForm.Meta):
+        fields = ('list', 'text')
+
