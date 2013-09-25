@@ -3,7 +3,7 @@
 {% block header_text %}Start a new To-Do list{% endblock %}
 
 {% block form %}
-    <form method="POST" action="/lists/new" >
+    <form method="POST" action="{% url 'new_list' %}" >
         <input name="item_text" id="id_new_item" placeholder="Enter a to-do item" />
         {% csrf_token %}
         {% if error %}
