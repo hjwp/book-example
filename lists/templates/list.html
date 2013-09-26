@@ -4,7 +4,7 @@
 
 {% block form %}
     <form method="POST" action="{% url 'view_list' list.id %}" >
-        <input name="item_text" id="id_new_item" placeholder="Enter a to-do item" />
+        <input name="item_text" id="id_text" placeholder="Enter a to-do item" />
         {% csrf_token %}
         {% if error %}
             <p class="error">{{ error }}</p>
