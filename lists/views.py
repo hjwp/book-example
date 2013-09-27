@@ -15,6 +15,12 @@ class NewListView(CreateView):
     template_name = 'home.html'
     form_class = ItemForm
 
+    def form_valid(self, form):
+        list = List.objects.create()
+        Item.objects.create(text=form.cleaned_data['text'], list=list)
+        return redirect(list)
+
+
 
 def view_list(request, list_id):
     list = List.objects.get(id=list_id)
