@@ -1,10 +1,12 @@
 from django.shortcuts import redirect, render
+from django.views.generic import FormView
 
 from lists.forms import ExistingListItemForm, ItemForm
 from lists.models import List
 
-def home_page(request):
-    return render(request, 'home.html', {'form': ItemForm()})
+class HomePageView(FormView):
+    template_name = 'home.html'
+    form_class = ItemForm
 
 
 def new_list(request):
