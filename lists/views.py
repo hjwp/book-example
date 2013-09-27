@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 from django.views.generic import FormView
+from django.views.generic import CreateView
 
 from lists.forms import ExistingListItemForm, ItemForm
 from lists.models import Item, List
@@ -10,14 +11,8 @@ class HomePageView(FormView):
     form_class = ItemForm
 
 
-def new_list(request):
-    form = ItemForm(data=request.POST)
-    if form.is_valid():
-        list = List.objects.create()
-        Item.objects.create(text=request.POST['text'], list=list)
-        return redirect(list)
-    else:
-        return render(request, 'home.html', {"form": form})
+class NewListView(CreateView):
+    form_class = ItemForm
 
 
 def view_list(request, list_id):
