@@ -12,6 +12,7 @@ class HomePageView(FormView):
 
 
 class NewListView(CreateView):
+    template_name = 'home.html'
     form_class = ItemForm
 
 
