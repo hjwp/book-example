@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.utils.html import escape
 
-from lists.forms import ItemForm, EMPTY_LIST_ERROR
+from lists.forms import ItemForm, EMPTY_LIST_ERROR, ExistingListItemForm
 from lists.models import Item, List
 
 class HomePageTest(TestCase):
@@ -56,6 +56,12 @@ class ListViewTest(TestCase):
 
         self.assertTemplateUsed(response, 'list.html')
         self.assertEqual(response.context['list'], correct_list)
+
+
+    def test_list_view_displays_form_for_existing_lists(self):
+        correct_list = List.objects.create()
+        response = self.client.get('/lists/%d/' % (correct_list.id,))
+        self.assertIsInstance(response.context['form'], ExistingListItemForm)
 
 
     def test_list_view_displays_items_for_that_list(self):

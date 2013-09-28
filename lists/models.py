@@ -22,6 +22,10 @@ class Item(models.Model):
         return self.text
 
 
+    def get_absolute_url(self):
+        return self.list.get_absolute_url()
+
+
     def save(self, *args, **kwargs):
         self.full_clean()
         super().save(*args, **kwargs)
