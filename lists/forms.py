@@ -25,6 +25,12 @@ class ItemForm(forms.models.ModelForm):
 
 class ExistingListItemForm(ItemForm):
 
+    def __init__(self, for_list, *args, **kwargs):
+        if 'data' in kwargs:
+            kwargs['data'] = kwargs['data'].copy()
+            kwargs['data'].update(dict(list=for_list.id))
+        super().__init__(*args, **kwargs)
+
     class Meta(ItemForm.Meta):
         fields = ('list', 'text')
 

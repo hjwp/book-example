@@ -1,8 +1,10 @@
 from django.shortcuts import redirect, render
 from django.views.generic import FormView
 from django.views.generic import CreateView
+from django.views.generic.edit import ProcessFormView
 from django.views.generic import DetailView
 from django.views.generic.edit import FormMixin
+from django.views.generic.edit import ModelFormMixin
 from django.views.generic.detail import SingleObjectMixin
 
 from lists.forms import ExistingListItemForm, ItemForm
@@ -22,21 +24,24 @@ class NewListView(CreateView, HomePageView):
         return redirect(list)
 
 
-class ViewAndAddToList(CreateView, SingleObjectMixin):
+class ViewAndAddToList(FormView, SingleObjectMixin):
     template_name = 'list.html'
     model = List
     form_class = ExistingListItemForm
 
-    def get_form(self, form_class):
+    def get_form_kwargs(self):
         self.object = self.get_object()
-        if self.request.method == 'POST':
-            data={
-                'text': self.request.POST['text'],
-                'list': self.object.id
-            }
-        else:
-            data = None
-        return form_class(data=data)
+        kwargs = super().get_form_kwargs()
+        kwargs.update(dict(for_list=self.object))
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return self.get_object().get_absolute_url()
+
 
 
 
