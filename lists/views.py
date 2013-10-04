@@ -24,23 +24,31 @@ class NewListView(CreateView, HomePageView):
         return redirect(list)
 
 
-class ViewAndAddToList(FormView, SingleObjectMixin):
+class ViewAndAddToList(CreateView):
     template_name = 'list.html'
-    model = List
     form_class = ExistingListItemForm
 
+    def get_list(self):
+        return List.objects.get(id=self.kwargs['list_id'])
+
+    def get(self, *args, **kwargs):
+        self.list = self.get_list()
+        return super().get(*args, **kwargs)
+
+    def post(self, *args, **kwargs):
+        self.list = self.get_list()
+        return super().post(*args, **kwargs)
+
     def get_form_kwargs(self):
-        self.object = self.get_object()
         kwargs = super().get_form_kwargs()
-        kwargs.update(dict(for_list=self.object))
+        if 'data' in kwargs:
+            kwargs['data'] = kwargs['data'].copy()
+            kwargs['data']['list'] = self.list.id
         return kwargs
 
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return self.get_object().get_absolute_url()
+    def get_context_data(self, **kwargs):
+        kwargs['list'] = self.list
+        return super().get_context_data(**kwargs)
 
 
 
@@ -49,10 +57,7 @@ def view_list(request, list_id):
     list = List.objects.get(id=list_id)
 
     if request.method == 'POST':
-        form = ExistingListItemForm(data={
-            'text': request.POST['text'],
-            'list': list.id
-        })
+        form = ExistingListItemForm(data=request.POST, list=list)
         if form.is_valid():
             form.save()
             return redirect(list)
