@@ -25,19 +25,8 @@ class ItemForm(forms.models.ModelForm):
 
 class ExistingListItemForm(ItemForm):
 
-    def __init__(self, *args, **kwargs):
-        self.list = kwargs.pop('list', None)
-        super().__init__(*args, **kwargs)
-
     class Meta(ItemForm.Meta):
-        fields = ('text',)
-
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        instance.list = list
-        if commit:
-            instance.save()
-        return instance
+        fields = ('text', 'list')
 
     def validate_unique(self):
         super().validate_unique()

@@ -39,7 +39,9 @@ class ViewAndAddToList(SingleObjectMixin, FormView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['list'] = self.object
+        if 'data' in kwargs:
+            kwargs['data'] = kwargs['data'].copy()
+            kwargs['data']['list'] = self.object.id
         return kwargs
 
     def get_success_url(self):
