@@ -37,6 +37,10 @@ class ViewAndAddToList(SingleObjectMixin, FormView):
         self.object = self.get_object()
         return super().post(*args, **kwargs)
 
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         if 'data' in kwargs:
