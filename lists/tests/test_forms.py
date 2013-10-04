@@ -28,13 +28,13 @@ class ExistingListItemFormTest(TestCase):
 
     def test_form_renders_item_text_input(self):
         listey = List()
-        form = ExistingListItemForm(for_list=listey)
+        form = ExistingListItemForm(list=listey)
         self.assertIn('placeholder="Enter a to-do item"', form.as_p())
 
 
     def test_form_validation_for_blank_items(self):
         listey = List.objects.create()
-        form = ExistingListItemForm(for_list=listey, data={'text': ''})
+        form = ExistingListItemForm(list=listey, data={'text': ''})
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['text'], [EMPTY_LIST_ERROR])
 
@@ -42,7 +42,7 @@ class ExistingListItemFormTest(TestCase):
     def test_form_validation_for_duplicate_items(self):
         listey = List.objects.create()
         Item.objects.create(list=listey, text='no twins!')
-        form = ExistingListItemForm(for_list=listey, data={'text': 'no twins!'})
+        form = ExistingListItemForm(list=listey, data={'text': 'no twins!'})
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['text'], [DUPLICATE_ITEM_ERROR])
         self.assertFalse(form.non_field_errors())
@@ -51,6 +51,6 @@ class ExistingListItemFormTest(TestCase):
     def test_form_handles_querydicts(self):
         listey = List()
         ExistingListItemForm(
-            for_list=listey,
+            list=listey,
             data=QueryDict(urlencode({'text': 'hello'}))
         ) # should not raise

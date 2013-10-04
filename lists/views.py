@@ -30,14 +30,9 @@ class ViewAndAddToList(FormView, SingleObjectMixin):
     form_class = ExistingListItemForm
 
     def get_form_kwargs(self):
-        self.object = self.get_object()
         kwargs = super().get_form_kwargs()
-        kwargs.update(dict(for_list=self.object))
+        kwargs['list'] = self.get_object()
         return kwargs
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
 
     def get_success_url(self):
         return self.get_object().get_absolute_url()
@@ -49,10 +44,7 @@ def view_list(request, list_id):
     list = List.objects.get(id=list_id)
 
     if request.method == 'POST':
-        form = ExistingListItemForm(data={
-            'text': request.POST['text'],
-            'list': list.id
-        })
+        form = ExistingListItemForm(data=request.POST, list=list)
         if form.is_valid():
             form.save()
             return redirect(list)

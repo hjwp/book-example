@@ -25,14 +25,19 @@ class ItemForm(forms.models.ModelForm):
 
 class ExistingListItemForm(ItemForm):
 
-    def __init__(self, for_list, *args, **kwargs):
-        if 'data' in kwargs:
-            kwargs['data'] = kwargs['data'].copy()
-            kwargs['data'].update(dict(list=for_list.id))
+    def __init__(self, *args, **kwargs):
+        self.list = kwargs.pop('list', None)
         super().__init__(*args, **kwargs)
 
     class Meta(ItemForm.Meta):
-        fields = ('list', 'text')
+        fields = ('text',)
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        instance.list = list
+        if commit:
+            instance.save()
+        return instance
 
     def validate_unique(self):
         super().validate_unique()
