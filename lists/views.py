@@ -24,32 +24,31 @@ class NewListView(CreateView, HomePageView):
         return redirect(list)
 
 
-class ViewAndAddToList(SingleObjectMixin, FormView):
+class ViewAndAddToList(CreateView):
     template_name = 'list.html'
-    model = List
     form_class = ExistingListItemForm
 
+    def get_list(self):
+        return List.objects.get(id=self.kwargs['list_id'])
+
     def get(self, *args, **kwargs):
-        self.object = self.get_object()
+        self.list = self.get_list()
         return super().get(*args, **kwargs)
 
     def post(self, *args, **kwargs):
-        self.object = self.get_object()
+        self.list = self.get_list()
         return super().post(*args, **kwargs)
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         if 'data' in kwargs:
             kwargs['data'] = kwargs['data'].copy()
-            kwargs['data']['list'] = self.object.id
+            kwargs['data']['list'] = self.list.id
         return kwargs
 
-    def get_success_url(self):
-        return self.object.get_absolute_url()
+    def get_context_data(self, **kwargs):
+        kwargs['list'] = self.list
+        return super().get_context_data(**kwargs)
 
 
 
