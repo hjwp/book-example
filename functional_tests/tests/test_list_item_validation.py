@@ -3,7 +3,7 @@ from .base import FunctionalTest
 class ItemValidationTest(FunctionalTest):
 
     def get_error_element(self):
-        return self.browser.find_element_by_css_selector('.error')
+        return self.browser.find_element_by_css_selector('.has-error')
 
     def test_cannot_add_empty_list_items(self):
         # Edith goes to the home page and accidentally tries to submit
