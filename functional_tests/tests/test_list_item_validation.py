@@ -45,3 +45,18 @@ class ItemValidationTest(FunctionalTest):
         error = self.browser.find_element_by_css_selector('.has-error')
         self.assertEqual(error.text, "You've already got this in your list")
 
+
+    def test_error_messages_are_cleared_on_input(self):
+        # Edith starts a new list in a way that causes a validation error:
+        self.browser.get(self.server_url)
+        self.get_item_input_box().send_keys('\n')
+        error = self.browser.find_element_by_css_selector('.error')
+        self.assertTrue(error.is_displayed())
+
+        # She starts typing in the input box to clear the error
+        self.get_item_input_box().send_keys('a')
+
+        # She is pleased to see that the error message disappears
+        error = self.browser.find_element_by_css_selector('.error')
+        self.assertFalse(error.is_displayed())
+
