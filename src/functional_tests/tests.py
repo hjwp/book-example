@@ -1,5 +1,6 @@
 import os
 import time
+from unittest import skip
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
@@ -139,6 +140,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
             delta=10,
         )
 
+    @skip
     def test_cannot_add_empty_list_items(self):
         # Edith goes to the home page and accidentally tries to submit
         # an empty list item. She hits Enter on the empty input box
