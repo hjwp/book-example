@@ -2,7 +2,6 @@ from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
-import unittest
 
 
 class NewVisitorTest(LiveServerTestCase):
@@ -69,6 +68,3 @@ class NewVisitorTest(LiveServerTestCase):
 
         # Satisfied, she goes back to sleep
 
-
-if __name__ == '__main__':
-    unittest.main(warnings='ignore')
