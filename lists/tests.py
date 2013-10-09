@@ -30,24 +30,20 @@ class HomePageTest(TestCase):
 class NewListTest(TestCase):
 
     def test_saving_a_POST_request(self):
-        request = HttpRequest()
-        request.method = 'POST'
-        request.POST['item_text'] = 'A new list item'
-
-        response = home_page(request)
-
+        self.client.post(
+            '/lists/new',
+            data={'item_text': 'A new list item'}
+        )
         self.assertEqual(Item.objects.all().count(), 1)
         new_item = Item.objects.all()[0]
         self.assertEqual(new_item.text, 'A new list item')
 
 
     def test_redirects_after_POST(self):
-        request = HttpRequest()
-        request.method = 'POST'
-        request.POST['item_text'] = 'A new list item'
-
-        response = home_page(request)
-
+        response = self.client.post(
+            '/lists/new',
+            data={'item_text': 'A new list item'}
+        )
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['location'], '/lists/the-only-list-in-the-world/')
 
