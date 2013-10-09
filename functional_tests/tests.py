@@ -4,8 +4,10 @@ from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 import time
+from unittest import skip
 
 MAX_WAIT = 10
+
 
 
 class NewVisitorTest(StaticLiveServerTestCase):
@@ -147,6 +149,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         )
 
 
+    @skip
     def test_cannot_add_empty_list_items(self):
         # Edith goes to the home page and accidentally tries to submit
         # an empty list item. She hits Enter on the empty input box
