@@ -77,6 +77,13 @@ class ListViewTest(TestCase):
         self.assertEqual(response.context['list'], correct_list)
 
 
+    def test_displays_item_form(self):
+        list_ = List.objects.create()
+        response = self.client.get('/lists/%d/' % (list_.id,))
+        self.assertIsInstance(response.context['form'], ItemForm)
+        self.assertContains(response, 'name="text"')
+
+
     def test_displays_only_items_for_that_list(self):
         correct_list = List.objects.create()
         Item.objects.create(text='itemey 1', list=correct_list)
