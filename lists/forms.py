@@ -6,11 +6,6 @@ EMPTY_LIST_ERROR = "You can't have an empty list item"
 
 class ItemForm(forms.models.ModelForm):
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['text'].error_messages['required'] = EMPTY_LIST_ERROR
-
-
     class Meta:
         model = Item
         fields = ('text',)
@@ -20,6 +15,11 @@ class ItemForm(forms.models.ModelForm):
                 'class': 'form-control input-lg',
             }),
         }
+
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['text'].error_messages['required'] = EMPTY_LIST_ERROR
 
 
     def save(self, for_list):
