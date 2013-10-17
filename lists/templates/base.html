@@ -12,7 +12,7 @@
         <div id="auth">
             {% if user.email %}
                 <p>Logged in as {{ user.email}}</p>
-                <p><a id="logout" href="{% url 'logout' %}">Sign out</a></p>
+                <p><a id="logout" href="{% url 'logout' %}">Log out</a></p>
             {% else %}
                 <a href="#" id="login">Sign in</a>
             {% endif %}
@@ -57,7 +57,7 @@ if (signoutLink) {
   signoutLink.onclick = function() { navigator.id.logout(); };
 }
 
-var currentUser = '{{ user.email }}' || null;
+var currentUser = '{{ user.email }}';
 var csrf_token = '{{ csrf_token }}';
 console.log(currentUser);
 
