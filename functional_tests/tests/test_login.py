@@ -8,15 +8,16 @@ TEST_PASSWORD = 'soFNjTMqMLEtj8W4'
 
 class LoginTest(FunctionalTest):
 
-    def switch_to_new_window(self, text_in_title, retries=0):
-        if retries > 100:
-            self.fail('could not find window')
-        for handle in self.browser.window_handles:
-            self.browser.switch_to_window(handle)
-            if text_in_title in self.browser.title:
-                return
-        time.sleep(0.1)
-        self.switch_to_new_window(text_in_title, retries + 1)
+    def switch_to_new_window(self, text_in_title):
+        retries = 50
+        while retries > 0:
+            for handle in self.browser.window_handles:
+                self.browser.switch_to_window(handle)
+                if text_in_title in self.browser.title:
+                    return
+            retries -= 1
+            time.sleep(0.2)
+        self.fail('could not find window')
 
 
     def wait_for_element_with_id(self, element_id):
@@ -29,7 +30,7 @@ class LoginTest(FunctionalTest):
         # Edith goes to the awesome superlists site
         # and notices a "Sign in" link for the first time.
         self.browser.get(self.server_url)
-        self.browser.find_element_by_id('login').click()
+        self.browser.find_element_by_id('id_login').click()
 
         # A Persona login box appears
         self.switch_to_new_window('Mozilla Persona')
@@ -52,7 +53,7 @@ class LoginTest(FunctionalTest):
         self.switch_to_new_window('To-Do')
 
         # She can see that she is logged in
-        self.wait_for_element_with_id('logout')
+        self.wait_for_element_with_id('id_logout')
 
 
 
