@@ -18,8 +18,8 @@
     <script>
 
 test("initialize binds sign in button to navigator.id.request", function () {
-    var mockRequestCalled = false;
-    var mockRequestFunction = function() { mockRequestCalled = true; };
+    var requestWasCalled = false;
+    var mockRequestFunction = function() { requestWasCalled = true; };
     var mockNavigator = {
         id: {
             request: mockRequestFunction
@@ -27,10 +27,10 @@ test("initialize binds sign in button to navigator.id.request", function () {
     };
 
     Superlists.Accounts.initialize(mockNavigator)
+    equal(requestWasCalled, false, 'called request before click triggered'); 
 
-    $('id_login').trigger('click');
-
-    equal(mockRequestCalled, true); 
+    $('#id_login').trigger('click');
+    equal(requestWasCalled, true, 'did not call request on click'); 
 });
 
     </script>
