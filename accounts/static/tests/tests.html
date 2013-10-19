@@ -35,62 +35,73 @@ test("initialize binds sign in button to navigator.id.request", function () {
     equal(requestWasCalled, true, 'check request called after click'); 
 });
 
-test("initialize calls navigator.id.watch", function () {
-    var user = 'current user';
-    var token = 'csrf token';
-    var urls = { login: 'login url', logout: 'logout url'};
 
-    var watchFunctionCalled = false;
-    var mockWatchFunction = function (params) {
-        equal(params.loggedInUser, user, 'check user');
-        equal(params.onlogin, Superlists.Accounts.submitAssertion, 'check login fn');
-        equal(params.onlogout, Superlists.Accounts.logOut, 'check logout fn');
-        watchFunctionCalled = true;
-    };
-    var mockNavigator = { id: { watch: mockWatchFunction } };
+var user1 = 'current user';
+var token1 = 'csrf token';
+var urls1 = { login: 'login url', logout: 'logout url'};
+var mockNavigator1 = sinon.spy();
+var assertion1 = 'i assert this';
+mockNavigator1.id = sinon.spy();
+mockNavigator1.id.watch = sinon.spy();
 
-    Superlists.Accounts.initialize(mockNavigator, user, token, urls);
-
-    equal(watchFunctionCalled, true, 'check watch function called');
-
-});
-
-
-var xhr;
-var requests; 
-module("ajax tests", {
+module('sinon navigator tests', {
     setup: function () {
         requests = [];
         xhr = sinon.useFakeXMLHttpRequest();
         xhr.onCreate = function (request) { requests.push(request); };
+        Superlists.Accounts.initialize(mockNavigator1, user1, token1, urls1);
     },
-    teardown: function() {
+    teardown: function () {
+        mockNavigator1.reset()
+        mockNavigator1.id.reset()
+        mockNavigator1.id.watch.reset()
         xhr.restore() 
     }
 });
 
-test("submitAssertion does ajax post", function () {
-    var user = 'user';
-    var token = 'csrf token';
-    var urls = {'login': 'login url'};
-    var assertion = 'an assertion';
-    var mockNavigator = {id: { watch: function () {}}};
+test("initialize calls navigator.id.watch with sinon", function () {
+    equal(mockNavigator1.id.watch.calledOnce, true, 'check watch function called');
+});
 
-    Superlists.Accounts.initialize(mockNavigator, user, token, urls);
-    Superlists.Accounts.submitAssertion(assertion);
+test("navigator.id.watch called with correct user", function () {
+    var call = mockNavigator1.id.watch.firstCall.args[0]
+    equal(call.loggedInUser, user1, 'check user');
+});
+
+test("onlogin will do a POST to the right URL", function () {
+    var call = mockNavigator1.id.watch.firstCall.args[0]
+    call.onlogin(assertion1);
 
     equal(requests.length, 1, 'check request made');
     var request = requests[0];
     equal(request.method, 'POST', 'check request was a POST');
-    equal(request.url, urls.login, 'check url');
+    equal(request.url, urls1.login, 'check url');
     equal(
         request.requestBody,
-        $.param({ assertion: assertion, csrfmiddlewaretoken: token }),
+        $.param({ assertion: assertion1, csrfmiddlewaretoken: token1 }),
         'check POST data'
     );
 });
 
-    </script>
+test("onlogin does window reload on success", function () {
+    var server = sinon.fakeServer.create();
+    server.respondWith('OK');
+    console.log('rp test?');
+    sinon.spy(Superlists.Accounts, 'refreshPage');
 
+    var call = mockNavigator1.id.watch.firstCall.args[0]
+    call.onlogin(assertion1);
+
+    server.respond()
+
+    equal(
+        Superlists.Accounts.refreshPage.called, true,
+        'should call refreshPage'
+    );
+    console.log('yup..');
+});
+
+
+    </script>
 </body>
 </html>

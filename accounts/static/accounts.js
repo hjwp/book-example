@@ -12,22 +12,19 @@ $(document).ready(function() {
 
         navigator.id.watch({
             loggedInUser: user,
-            onlogin: submitAssertion,
-            onlogout: logOut
+            onlogin: function (assertion) {
+                $.post(
+                    urls.login,
+                    { assertion: assertion, csrfmiddlewaretoken: token }
+                ).done( Superlists.Accounts.refreshPage );
+            },
         });
     };
-
-    var submitAssertion = function (assertion) {
-        $.post(urls.login, { assertion: assertion, csrfmiddlewaretoken: csrfToken });
-    };
-
-    var logOut = function () {};
 
     window.Superlists = {
         Accounts: {
             initialize: initialize,
-            submitAssertion: submitAssertion,
-            logOut: logOut
+            refreshPage: function () { console.log('who called me?'); }//window.location.reload(); }
         }
     };
 
