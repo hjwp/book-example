@@ -1,25 +1,33 @@
 $(document).ready(function() {
 
-    var initialize = function (navigator, loggedInUser, urls){
+    var urls;
+    var csrfToken;
+
+    var initialize = function (navigator, user, token, urls_){
+        urls = urls_;
+        csrfToken = token;
         $('#id_login').on('click', function () {
             navigator.id.request();
         });
 
         navigator.id.watch({
-            loggedInUser: loggedInUser,
-            onlogin: onLogin,
-            onlogout: onLogout
+            loggedInUser: user,
+            onlogin: submitAssertion,
+            onlogout: logOut
         });
     };
 
-    var onLogin = function () {};
-    var onLogout = function () {};
+    var submitAssertion = function (assertion) {
+        $.post(urls.login, { assertion: assertion, csrfmiddlewaretoken: csrfToken });
+    };
+
+    var logOut = function () {};
 
     window.Superlists = {
         Accounts: {
             initialize: initialize,
-            onLogin: onLogin,
-            onLogout: onLogout
+            submitAssertion: submitAssertion,
+            logOut: logOut
         }
     };
 

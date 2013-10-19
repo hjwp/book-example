@@ -14,6 +14,7 @@
 
     <script src="../../../superlists/static/jquery.js"></script>
     <script src="../../../superlists/static/tests/qunit.js"></script>
+    <script src="../../../superlists/static/tests/sinon.js"></script>
     <script src="../accounts.js"></script>
     <script>
 
@@ -28,33 +29,65 @@ test("initialize binds sign in button to navigator.id.request", function () {
     };
 
     Superlists.Accounts.initialize(mockNavigator);
-    equal(requestWasCalled, false, 'called request before click triggered'); 
+    equal(requestWasCalled, false, 'check request not called before click'); 
 
     $('#id_login').trigger('click');
-    equal(requestWasCalled, true, 'did not call request on click'); 
+    equal(requestWasCalled, true, 'check request called after click'); 
 });
 
 test("initialize calls navigator.id.watch", function () {
-    var loggedInUser = 'current user';
+    var user = 'current user';
+    var token = 'csrf token';
     var urls = { login: 'login url', logout: 'logout url'};
 
     var watchFunctionCalled = false;
     var mockWatchFunction = function (params) {
-        equal(params.loggedInUser, loggedInUser, 'wrong user');
-        equal(params.onlogin, Superlists.Accounts.onLogin, 'wrong onlogin function');
-        equal(params.onlogout, Superlists.Accounts.onLogout, 'wrong onlogout function');
+        equal(params.loggedInUser, user, 'check user');
+        equal(params.onlogin, Superlists.Accounts.submitAssertion, 'check login fn');
+        equal(params.onlogout, Superlists.Accounts.logOut, 'check logout fn');
         watchFunctionCalled = true;
     };
-    var mockNavigator = {
-        id: {
-            watch: mockWatchFunction
-        }
-    };
+    var mockNavigator = { id: { watch: mockWatchFunction } };
 
-    Superlists.Accounts.initialize(mockNavigator, loggedInUser, urls);
+    Superlists.Accounts.initialize(mockNavigator, user, token, urls);
 
-    equal(watchFunctionCalled, true, 'never called watch function');
+    equal(watchFunctionCalled, true, 'check watch function called');
 
+});
+
+
+var xhr;
+var requests; 
+module("ajax tests", {
+    setup: function () {
+        requests = [];
+        xhr = sinon.useFakeXMLHttpRequest();
+        xhr.onCreate = function (request) { requests.push(request); };
+    },
+    teardown: function() {
+        xhr.restore() 
+    }
+});
+
+test("submitAssertion does ajax post", function () {
+    var user = 'user';
+    var token = 'csrf token';
+    var urls = {'login': 'login url'};
+    var assertion = 'an assertion';
+    var mockNavigator = {id: { watch: function () {}}};
+
+    Superlists.Accounts.initialize(mockNavigator, user, token, urls);
+    Superlists.Accounts.submitAssertion(assertion);
+
+    equal(requests.length, 1, 'check request made');
+    var request = requests[0];
+    equal(request.method, 'POST', 'check request was a POST');
+    equal(request.url, urls.login, 'check url');
+    equal(
+        request.requestBody,
+        $.param({ assertion: assertion, csrfmiddlewaretoken: token }),
+        'check POST data'
+    );
 });
 
     </script>
