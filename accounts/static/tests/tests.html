@@ -12,7 +12,7 @@
         <a id="id_login">Sign in</a>
     </div>
 
-    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="../../../superlists/static/jquery.js"></script>
     <script src="../../../superlists/static/tests/qunit.js"></script>
     <script src="../accounts.js"></script>
     <script>
@@ -22,15 +22,39 @@ test("initialize binds sign in button to navigator.id.request", function () {
     var mockRequestFunction = function() { requestWasCalled = true; };
     var mockNavigator = {
         id: {
-            request: mockRequestFunction
+            request: mockRequestFunction,
+            watch: function () {}
         }
     };
 
-    Superlists.Accounts.initialize(mockNavigator)
+    Superlists.Accounts.initialize(mockNavigator);
     equal(requestWasCalled, false, 'called request before click triggered'); 
 
     $('#id_login').trigger('click');
     equal(requestWasCalled, true, 'did not call request on click'); 
+});
+
+test("initialize calls navigator.id.watch", function () {
+    var loggedInUser = 'current user';
+    var urls = { login: 'login url', logout: 'logout url'};
+
+    var watchFunctionCalled = false;
+    var mockWatchFunction = function (params) {
+        equal(params.loggedInUser, loggedInUser, 'wrong user');
+        equal(params.onlogin, Superlists.Accounts.onLogin, 'wrong onlogin function');
+        equal(params.onlogout, Superlists.Accounts.onLogout, 'wrong onlogout function');
+        watchFunctionCalled = true;
+    };
+    var mockNavigator = {
+        id: {
+            watch: mockWatchFunction
+        }
+    };
+
+    Superlists.Accounts.initialize(mockNavigator, loggedInUser, urls);
+
+    equal(watchFunctionCalled, true, 'never called watch function');
+
 });
 
     </script>
