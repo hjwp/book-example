@@ -49,7 +49,7 @@ module("sinon tests of navigator.id.watch", {
         };
         requests = [];
         xhr = sinon.useFakeXMLHttpRequest();
-        xhr.onCreate = function (request) { requests.push[request]; };
+        xhr.onCreate = function (request) { requests.push(request); };
     },
     teardown: function () {
         mockNavigator.id.watch.reset();
@@ -69,23 +69,51 @@ test("watch sees current user", function () {
     equal(callArgs.loggedInUser, user, 'check user');
 });
 
-test("onlogin posts assertion with csrf token to login url", function () {
+test("onlogin does ajax post to login url", function () {
     Superlists.Accounts.initialize(mockNavigator, user, token, urls);
-    var onlogin = mockNavigator.id.watch.firstCall.args[0].onlogin;
-    var assertion = '';
-
-    onlogin(assertion);
-
+    var onloginCallback = mockNavigator.id.watch.firstCall.args[0].onlogin;
+    onloginCallback();
     equal(requests.length, 1, 'check ajax request');
     equal(requests[0].method, 'POST');
     equal(requests[0].url, urls.login, 'check url');
+});
+
+test("onlogin sends assertion with middleware token", function () {
+    Superlists.Accounts.initialize(mockNavigator, user, token, urls);
+    var onloginCallback = mockNavigator.id.watch.firstCall.args[0].onlogin;
+    var assertion = 'browser-id assertion'
+    onloginCallback(assertion);
     equal(
         requests[0].requestBody,
         $.param({ assertion: assertion, csrfmiddlewaretoken: token }),
         'check POST data'
     );
-
 });
+
+test("onlogout posts to logout url", function () {
+    Superlists.Accounts.initialize(mockNavigator, user, token, urls);
+    var onlogoutCallback = mockNavigator.id.watch.firstCall.args[0].onlogout;
+    onlogoutCallback();
+    equal(requests.length, 1, 'check ajax request');
+    equal(requests[0].method, 'POST');
+    equal(requests[0].url, urls.logout, 'check url');
+});
+
+
+test("onlogin post failure should do navigator.id.logout ", function () {
+    mockNavigator.id.logout = sinon.spy();
+    Superlists.Accounts.initialize(mockNavigator, user, token, urls);
+    var onloginCallback = mockNavigator.id.watch.firstCall.args[0].onlogin;
+    server = sinon.fakeServer.create();
+    server.respondWith([403, {}, "permission denied"]);
+
+    onloginCallback();
+    equal(mockNavigator.id.logout.called, false, 'should not logout yet');
+
+    server.respond()
+    equal(mockNavigator.id.logout.called, true, 'should call logout');
+});
+
     </script>
 </body>
 </html>
