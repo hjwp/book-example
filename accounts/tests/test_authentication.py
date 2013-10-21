@@ -67,6 +67,13 @@ class AuthenticateTest(TestCase):
         self.assertEqual(user.email, 'a@b.com')
 
 
+    @patch('accounts.authentication.PersonaAuthenticationBackend.authenticate')
+    def test_is_activated_in_settings(self, mock_our_authenticate):
+        from django.contrib.auth import authenticate
+        authenticate(email='foo')
+        mock_our_authenticate.assert_called_once_with(email='foo')
+
+
 class GetUserTest(TestCase):
 
     def test_get_user_gets_user_from_database(self):
