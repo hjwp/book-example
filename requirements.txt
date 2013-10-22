@@ -1,3 +1,4 @@
 Django==1.5.1
 South==0.8.2
 gunicorn==17.5
+requests==2.0.0
