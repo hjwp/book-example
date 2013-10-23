@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,6 +18,7 @@
                 <h1>{% block header_text %}{% endblock %}</h1>
                 <form method="POST" action="{% block form_action %}{% endblock %}">
                     <input name="item_text" id="id_new_item"
+                           class="form-control input-lg"
                            placeholder="Enter a to-do item"
                     />
                     {% csrf_token %}
