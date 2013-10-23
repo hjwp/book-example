@@ -1,7 +1,11 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <title>To-Do lists</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     </head>
+
     <body>
         <h1>{% block header_text %}{% endblock %}</h1>
         <form method="POST" action="{% block form_action %}{% endblock %}">
