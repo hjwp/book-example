@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,7 +14,7 @@
 <div class="container">
 
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-6 col-md-offset-3 jumbotron">
             <div class="text-center">
                 <h1>{% block header_text %}{% endblock %}</h1>
                 <form method="POST" action="{% block form_action %}{% endblock %}">
@@ -22,7 +23,6 @@
                     />
                     {% csrf_token %}
                 </form>
-
             </div>
         </div>
     </div>
