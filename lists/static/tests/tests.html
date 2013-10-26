@@ -20,15 +20,9 @@
     <script>
 /*global $, test, equal */
 
-test("smoke test", function () {
-    equal($('.has-error').is(':visible'), true);
-    $('.has-error').hide();
-    equal($('.has-error').is(':visible'), false);
-});
-test("smoke test 2", function () {
-    equal($('.error').is(':visible'), true);
-    $('.error').hide();
-    equal($('.error').is(':visible'), false);
+test("errors should be hidden on keypress", function () {
+    $('input').trigger('keypress');
+    equal($('.has-error').is(':visible'), false); 
 });
 
     </script>
