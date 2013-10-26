@@ -25,6 +25,11 @@ test("smoke test", function () {
     $('.has-error').hide();
     equal($('.has-error').is(':visible'), false);
 });
+test("smoke test 2", function () {
+    equal($('.error').is(':visible'), true);
+    $('.error').hide();
+    equal($('.error').is(':visible'), false);
+});
 
     </script>
 
