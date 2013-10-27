@@ -90,13 +90,11 @@ test("onlogin sends assertion with middleware token", function () {
     );
 });
 
-test("onlogout posts to logout url", function () {
+
+test("onlogout is just a placeholder", function () {
     Superlists.Accounts.initialize(mockNavigator, user, token, urls);
     var onlogoutCallback = mockNavigator.id.watch.firstCall.args[0].onlogout;
-    onlogoutCallback();
-    equal(requests.length, 1, 'check ajax request');
-    equal(requests[0].method, 'POST');
-    equal(requests[0].url, urls.logout, 'check url');
+    equal(typeof onlogoutCallback, "function", "onlogout should be a function");
 });
 
 

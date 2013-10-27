@@ -15,10 +15,7 @@ $(document).ready(function() {
                 .done(function () { window.location.reload(); })
                 .fail(function () { navigator.id.logout(); } );
             },
-            onlogout: function (assertion) {
-                $.post(urls.logout)
-                .always(function () { window.location.reload(); });
-            }
+            onlogout: function () {}
         });
     };
 
