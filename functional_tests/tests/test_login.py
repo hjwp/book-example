@@ -87,10 +87,6 @@ class PreLoginTest(FunctionalTest):
 
     def test_should_be_logged_in(self):
         self.browser.get(self.server_url)
-        import time
-        time.sleep(20)
         self.browser.find_element_by_id('id_logout')
-
-
 
 
