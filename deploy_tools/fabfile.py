@@ -1,3 +1,4 @@
+from django.utils.crypto import get_random_string
 from fabric.contrib.files import append, exists, sed
 from fabric.api import env, local, run
 from os import path
@@ -34,6 +35,11 @@ def _update_settings(source_folder, site_name):
     settings_path = path.join(source_folder, 'superlists/settings.py')
     sed(settings_path, "DEBUG = True", "DEBUG = False")
     append(settings_path, 'ALLOWED_HOSTS = ["%s"]' % (site_name,))
+    secret_key_file = path.join(source_folder, 'superlists/secret_key.py')
+    if not exists(secret_key_file):
+        key = get_random_string(50, 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)')
+        append(secret_key_file, "SECRET_KEY = '%s'" % (key,))
+        append(settings_path, 'from .secret_key import SECRET_KEY')
 
 def _update_virtualenv(source_folder):
     virtualenv_folder = path.join(source_folder, '../virtualenv')
