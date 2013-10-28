@@ -58,7 +58,26 @@ class LoginTest(FunctionalTest):
         self.wait_for_element_with_id('id_logout')
         navbar = self.browser.find_element_by_css_selector('.navbar')
         self.assertIn(TEST_EMAIL, navbar.text)
-        self.fail(self.browser.get_cookies())
+
+        # Refreshing the page, she sees it's a real session login,
+        # not just a one-off for that page
+        self.browser.refresh()
+        self.wait_for_element_with_id('id_logout')
+        navbar = self.browser.find_element_by_css_selector('.navbar')
+        self.assertIn(TEST_EMAIL, navbar.text)
+
+        # Terrified of this new feature, she reflexively clicks "logout"
+        self.browser.find_element_by_id('id_logout').click()
+        self.wait_for_element_with_id('id_login')
+        navbar = self.browser.find_element_by_css_selector('.navbar')
+        self.assertNotIn(TEST_EMAIL, navbar.text)
+
+        # The "logged out" status also persists after a refresh
+        self.browser.refresh()
+        self.wait_for_element_with_id('id_login')
+        navbar = self.browser.find_element_by_css_selector('.navbar')
+        self.assertNotIn(TEST_EMAIL, navbar.text)
+
 
 
 from django.contrib.sessions.backends.db import SessionStore
