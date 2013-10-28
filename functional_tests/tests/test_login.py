@@ -1,7 +1,5 @@
 import time
 from selenium.webdriver.support.ui import WebDriverWait
-from django.contrib.auth import get_user_model
-User = get_user_model()
 
 from .base import FunctionalTest
 
@@ -80,41 +78,4 @@ class LoginTest(FunctionalTest):
             self.wait_for_element_with_id('id_login')
             navbar = self.browser.find_element_by_css_selector('.navbar')
             self.assertNotIn(TEST_EMAIL, navbar.text)
-
-
-
-
-from django.contrib.sessions.backends.db import SessionStore
-from django.contrib.auth import BACKEND_SESSION_KEY, SESSION_KEY
-from django.conf import settings
-
-
-class PreLoginTest(FunctionalTest):
-
-    def create_pre_logged_in_user(self):
-        user = User.objects.create(email='edith@email.com')
-        session = SessionStore()
-        session[SESSION_KEY] = user.pk
-        session[BACKEND_SESSION_KEY] = settings.AUTHENTICATION_BACKENDS[0]
-        session.save()
-        ## to set a cookie we need to first visit the domain.
-        ## 404 pages load the quickest!
-        self.browser.get(self.server_url + "/404_no_such_url/")
-        self.browser.add_cookie(dict(
-            name=settings.SESSION_COOKIE_NAME,
-            value=session.session_key,
-            path='/',
-        ))
-        print(self.browser.get_cookies())
-
-
-    def setUp(self):
-        super().setUp()
-        self.create_pre_logged_in_user()
-
-
-    def test_should_be_logged_in(self):
-        self.browser.get(self.server_url)
-        self.browser.find_element_by_id('id_logout')
-
 
