@@ -87,21 +87,26 @@ from django.conf import settings
 
 class PreLoginTest(FunctionalTest):
 
-    def setUp(self):
-        super().setUp()
+    def create_pre_logged_in_user(self):
         user = User.objects.create(email='edith@email.com')
         session = SessionStore()
         session[SESSION_KEY] = user.pk
         session[BACKEND_SESSION_KEY] = settings.AUTHENTICATION_BACKENDS[0]
         session.save()
-        self.browser.get(self.server_url) # needed to be able to set cookie for domain
-        #print(self.browser.get_cookies())
+        ## to set a cookie we need to first visit the domain.
+        ## 404 pages load the quickest!
+        self.browser.get(self.server_url + "/404_no_such_url/")
         self.browser.add_cookie(dict(
             name=settings.SESSION_COOKIE_NAME,
             value=session.session_key,
             path='/',
         ))
         print(self.browser.get_cookies())
+
+
+    def setUp(self):
+        super().setUp()
+        self.create_pre_logged_in_user()
 
 
     def test_should_be_logged_in(self):
