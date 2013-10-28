@@ -55,28 +55,32 @@ class LoginTest(FunctionalTest):
         self.switch_to_new_window('To-Do')
 
         # She can see that she is logged in
-        self.wait_for_element_with_id('id_logout')
-        navbar = self.browser.find_element_by_css_selector('.navbar')
-        self.assertIn(TEST_EMAIL, navbar.text)
+        self.assert_logged_in()
 
         # Refreshing the page, she sees it's a real session login,
         # not just a one-off for that page
         self.browser.refresh()
-        self.wait_for_element_with_id('id_logout')
-        navbar = self.browser.find_element_by_css_selector('.navbar')
-        self.assertIn(TEST_EMAIL, navbar.text)
+        self.assert_logged_in()
 
         # Terrified of this new feature, she reflexively clicks "logout"
         self.browser.find_element_by_id('id_logout').click()
-        self.wait_for_element_with_id('id_login')
-        navbar = self.browser.find_element_by_css_selector('.navbar')
-        self.assertNotIn(TEST_EMAIL, navbar.text)
+        self.assert_logged_in(False)
 
         # The "logged out" status also persists after a refresh
         self.browser.refresh()
-        self.wait_for_element_with_id('id_login')
-        navbar = self.browser.find_element_by_css_selector('.navbar')
-        self.assertNotIn(TEST_EMAIL, navbar.text)
+        self.assert_logged_in(False)
+
+
+    def assert_logged_in(self, logged_in=True):
+        if logged_in:
+            self.wait_for_element_with_id('id_logout')
+            navbar = self.browser.find_element_by_css_selector('.navbar')
+            self.assertIn(TEST_EMAIL, navbar.text)
+        else:
+            self.wait_for_element_with_id('id_login')
+            navbar = self.browser.find_element_by_css_selector('.navbar')
+            self.assertNotIn(TEST_EMAIL, navbar.text)
+
 
 
 
