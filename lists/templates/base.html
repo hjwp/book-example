@@ -13,11 +13,15 @@
             <nav class="navbar navbar-default" role="navigation">
                 <a class="navbar-brand" href="/">Superlists</a>
                 {% if user.email %}
-                <a class="btn navbar-btn navbar-right" id="id_logout" href="{% url 'logout' %}">Log out</a>
+                    <ul class="nav navbar-nav">
+                        <li><a href="{% url 'me' user.email %}">My lists</a></li>
+                    </ul>
+                    <a class="btn navbar-btn navbar-right" id="id_logout" href="{% url 'logout' %}">Log out</a>
                     <span class="navbar-text navbar-right">Logged in as {{ user.email }}</span>
                 {% else %}
                     <a class="btn navbar-btn navbar-right" id="id_login" href="#">Sign in</a>
                 {% endif %}
+
             </nav>
             <div class="row">
                 <div class="col-md-6 col-md-offset-3 jumbotron">
@@ -37,6 +41,8 @@
                     {% endblock %}
                 </div>
             </div>
+            {% block more_content %}
+            {% endblock %}
         </div>
 
         <script src="/static/jquery.js"></script>
