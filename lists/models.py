@@ -1,8 +1,10 @@
 from django.db import models
 from django.shortcuts import resolve_url
+from django.conf import settings
 
 
 class List(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
 
     def get_absolute_url(self):
         return resolve_url('view_list', self.id)
