@@ -12,7 +12,7 @@ def login(request):
     return HttpResponse('OK')
 
 
-def me(request, email):
+def my_lists(request, email):
     user = User.objects.get(email=email)
     return render(request, 'my_lists.html', {'owner': user})
 
