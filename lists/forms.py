@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AnonymousUser
 from django import forms
 from django.core.exceptions import ValidationError
 
@@ -24,8 +25,11 @@ class ItemForm(forms.models.ModelForm):
         self.fields['text'].error_messages['required'] = EMPTY_LIST_ERROR
 
 
-    def save(self, for_list):
+    def save(self, for_list, user):
         self.instance.list = for_list
+        if not isinstance(user, AnonymousUser):
+            self.instance.list.owner = user
+            self.instance.list.save()
         return super().save()
 
 

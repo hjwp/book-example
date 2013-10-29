@@ -12,10 +12,7 @@ def new_list(request):
     form = ItemForm(data=request.POST)
     if form.is_valid():
         list_ = List.objects.create()
-        if hasattr(request.user, 'email'):
-            list_.owner = request.user
-            list_.save()
-        form.save(for_list=list_)
+        form.save(for_list=list_, user=request.user)
         return redirect(list_)
     else:
         return render(request, 'home.html', {"form": form})
