@@ -1,7 +1,23 @@
+from django.contrib.auth import get_user_model
+User = get_user_model()
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from lists.models import Item, List
+
+class ListModelTest(TestCase):
+
+    def test_get_absolute_url(self):
+        list1 = List.objects.create()
+        self.assertEqual(list1.get_absolute_url(), '/lists/%d/' % (list1.id,))
+
+
+    def test_can_optionally_set_owner(self):
+        list1 = List.objects.create()
+        list1.full_clean()
+        user = User.objects.create(email='a@b.com')
+        list2 = List.objects.create(owner=user)
+        list2.full_clean()
 
 
 class ListAndItemModelsTest(TestCase):
@@ -33,10 +49,6 @@ class ListAndItemModelsTest(TestCase):
         self.assertEqual(second_saved_item.text, 'Item the second')
         self.assertEqual(second_saved_item.list, list)
 
-
-    def test_get_absolute_url(self):
-        list1 = List.objects.create()
-        self.assertEqual(list1.get_absolute_url(), '/lists/%d/' % (list1.id,))
 
 
     def test_cannot_save_empty_list_items(self):

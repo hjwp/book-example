@@ -1,3 +1,6 @@
+from django.contrib.auth import get_user_model
+User = get_user_model()
+from django.http import HttpRequest
 from django.test import TestCase
 from django.utils.html import escape
 
@@ -6,6 +9,7 @@ from lists.forms import (
     ExistingListItemForm, ItemForm,
 )
 from lists.models import Item, List
+from lists.views import new_list
 
 
 class HomePageTest(TestCase):
@@ -22,28 +26,34 @@ class HomePageTest(TestCase):
 
 
 class NewListTest(TestCase):
+    def post_new_list(self, text):
+        return self.client.post('/lists/new', dict(text=text))
 
     def test_saving_a_POST_request(self):
-        self.client.post(
-            '/lists/new',
-            data={'text': 'A new list item'}
-        )
+        self.post_new_list('A new list item')
         self.assertEqual(Item.objects.all().count(), 1)
         new_item = Item.objects.all()[0]
         self.assertEqual(new_item.text, 'A new list item')
 
 
     def test_redirects_after_POST(self):
-        response = self.client.post(
-            '/lists/new',
-            data={'text': 'A new list item'}
-        )
-        new_list = List.objects.all()[0]
-        self.assertRedirects(response, '/lists/%d/' % (new_list.id,))
+        response = self.post_new_list('A new list item')
+        list_ = List.objects.all()[0]
+        self.assertRedirects(response, '/lists/%d/' % (list_.id,))
+
+
+    def test_POST_from_real_user_sets_owner_on_list(self):
+        user = User.objects.create(email='a@b.com')
+        request = HttpRequest()
+        request.user = user
+        request.POST['text'] = 'new item'
+        new_list(request)
+        list_ = List.objects.all().get()
+        self.assertEqual(list_.owner, user)
 
 
     def test_validation_errors_sent_back_to_home_page_template(self):
-        response = self.client.post('/lists/new', data={'text': ''})
+        response = self.post_new_list('')
         self.assertEqual(List.objects.all().count(), 0)
         self.assertEqual(Item.objects.all().count(), 0)
         self.assertTemplateUsed(response, 'home.html')

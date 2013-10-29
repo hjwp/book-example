@@ -6,6 +6,7 @@ from unittest.mock import patch
 User = get_user_model()
 
 from accounts.views import login
+from lists.models import List, Item
 
 
 class LoginViewTest(TestCase):
@@ -54,3 +55,30 @@ class LoginViewTest(TestCase):
         self.assertFalse(mock_auth_login.called)
 
 
+class MyListsViewTest(TestCase):
+
+    def test_uses_my_lists_template(self):
+        user = User.objects.create(email='list@user.com')
+        response = self.client.get('/accounts/list@user.com/')
+        self.assertTemplateUsed(response, 'my_lists.html')
+
+
+    def test_passes_user_in_context(self):
+        wrong_user = User.objects.create(email='not@me.com')
+        user = User.objects.create(email='list@user.com')
+        response = self.client.get('/accounts/list@user.com/')
+        self.assertEqual(response.context['owner'], user)
+
+
+    def test_template_displays_lists_using_first_item_text(self):
+        user = User.objects.create(email='list@user.com')
+        list1 = List.objects.create(owner=user)
+        item1 = Item.objects.create(list=list1, text='i1')
+        item2 = Item.objects.create(list=list1, text='i2')
+        list2 = List.objects.create(owner=user)
+        item3 = Item.objects.create(list=list2, text='i3')
+        item4 = Item.objects.create(list=list2, text='i4')
+
+        response = self.client.get('/accounts/list@user.com/')
+        self.assertContains(response, 'i1')
+        self.assertContains(response, 'i3')
