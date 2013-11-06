@@ -1,6 +1,7 @@
 from django.test import LiveServerTestCase
 from selenium import webdriver
 import sys
+from .server_tools import reset_database
 
 class FunctionalTest(LiveServerTestCase):
 
@@ -8,10 +9,12 @@ class FunctionalTest(LiveServerTestCase):
     def setUpClass(cls):
         for arg in sys.argv:
             if 'liveserver' in arg:
-                cls.server_url = 'http://' + arg.split('=')[1]
+                cls.server_host = arg.split('=')[1]
+                cls.server_url = 'http://' + cls.server_host
                 cls.against_staging = True
                 return
         LiveServerTestCase.setUpClass()
+        cls.against_staging = False
         cls.server_url = cls.live_server_url
 
     @classmethod
@@ -20,6 +23,9 @@ class FunctionalTest(LiveServerTestCase):
             LiveServerTestCase.tearDownClass()
 
     def setUp(self):
+        if self.against_staging:
+            reset_database(self.server_host)
+
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
 

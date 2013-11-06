@@ -1,25 +1,15 @@
 from django.conf import settings
-from django.contrib.auth import BACKEND_SESSION_KEY, SESSION_KEY, get_user_model
-User = get_user_model()
-from django.contrib.sessions.backends.db import SessionStore
 
 from .base import FunctionalTest
-
-def create_pre_authenticated_session():
-    user = User.objects.create(email='edith@email.com')
-    session = SessionStore()
-    session[SESSION_KEY] = user.pk
-    session[BACKEND_SESSION_KEY] = settings.AUTHENTICATION_BACKENDS[0]
-    session.save()
-    return session.session_key
-
+from .server_tools import create_session_on_server
+from ..management.commands.create_session import create_pre_authenticated_session
 
 
 class MyListsTest(FunctionalTest):
 
     def create_pre_authenticated_session(self):
         if self.against_staging:
-            session_key = create_pre_authenticated_session()
+            session_key = create_session_on_server(self.server_host)
         else:
             session_key = create_pre_authenticated_session()
         ## to set a cookie we need to first visit the domain.
