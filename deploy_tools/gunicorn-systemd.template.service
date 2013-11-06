@@ -9,9 +9,12 @@ WorkingDirectory=/home/elspeth/sites/DOMAIN
 Environment=DJANGO_DEBUG_FALSE=y
 Environment=DJANGO_SECRET_KEY="1*b84qe7z%4v)(_ji01k^_xx2tkhs062zpsza9gpzl3rxdfhfv"
 Environment=SITENAME=DOMAIN
+Environment=EMAIL_PASSWORD=SEKRIT
 
 ExecStart=/home/elspeth/sites/DOMAIN/virtualenv/bin/gunicorn \
     --bind unix:/tmp/DOMAIN.socket \
+    --access-logfile access.log \
+    --error-logfile error.log \
     superlists.wsgi:application
 
 [Install]
