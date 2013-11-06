@@ -4,9 +4,12 @@ Description=Gunicorn server for SITENAME
 [Service]
 Restart=on-failure
 User=elspeth
+Environment=EMAIL_PASSWORD=SEKRIT
 WorkingDirectory=/home/elspeth/sites/SITENAME/source
 ExecStart=/home/elspeth/sites/SITENAME/virtualenv/bin/gunicorn \
     --bind unix:/tmp/SITENAME.socket \
+    --access-logfile ../access.log \
+    --error-logfile ../error.log \
     superlists.wsgi:application
 
 [Install]
