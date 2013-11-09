@@ -1,0 +1,41 @@
+---
+
+- hosts: all
+
+  sudo: yes
+
+  vars: 
+      host: $inventory_hostname
+
+  tasks:
+    - name: make sure required packages are installed
+      apt: pkg=nginx,git,python3,python3-pip state=present
+    - name: make sure virtualenv is installed
+      shell: pip3 install virtualenv
+
+    - name: make sure nginx is running
+      service: name=nginx state=running
+
+    - name: add nginx config to sites-available
+      template: src=./nginx.conf.j2 dest=/etc/nginx/sites-available/{{ host }}
+      notify:
+          - restart nginx
+
+    - name: add symlink in nginx sites-enabled
+      file: src=/etc/nginx/sites-available/{{ host }} dest=/etc/nginx/sites-enabled/{{ host }} state=link
+      notify:
+          - restart nginx
+
+
+    - name: write gunicorn init script
+      template: src=./gunicorn-upstart.conf.j2 dest=/etc/init/gunicorn-{{ host }}.conf
+      notify:
+          - restart gunicorn
+
+
+  handlers:
+    - name: restart nginx
+      service:  name=nginx state=restarted
+
+    - name: restart gunicorn
+      service:  name=gunicorn-{{ host }} state=restarted

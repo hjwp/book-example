@@ -1,0 +1,6 @@
+[staging]
+superlists-staging.ottg.eu
+
+[local]
+localhost ansible_ssh_port=6666 ansible_host=127.0.0.1
+

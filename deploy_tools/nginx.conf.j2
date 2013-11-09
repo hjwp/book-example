@@ -1,0 +1,13 @@
+server {
+    listen 80;
+    server_name {{ host }};
+
+    location /static {
+        alias /home/harry/sites/{{ host }}/static;
+    }
+
+    location / {
+        proxy_set_header Host $host;
+        proxy_pass http://unix:/tmp/{{ host }}.socket;
+    }
+}

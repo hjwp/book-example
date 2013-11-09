@@ -1,13 +1,13 @@
-description "Gunicorn server for SITENAME"
+description "Gunicorn server for {{ host }}"
 
 start on net-device-up
 stop on shutdown
 
 respawn
 
-chdir /home/harry/sites/SITENAME/source
+chdir /home/harry/sites/{{ host }}/source
 exec ../virtualenv/bin/gunicorn \
-    --bind unix:/tmp/SITENAME.socket \
+    --bind unix:/tmp/{{ host }}.socket \
     --access-logfile ../access.log \
     --error-logfile ../error.log \
     superlists.wsgi:application
