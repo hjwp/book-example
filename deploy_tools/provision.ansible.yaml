@@ -13,6 +13,12 @@
     - name: make sure virtualenv is installed
       shell: pip3 install virtualenv
 
+    - name: allow long hostnames in nginx
+      lineinfile: 
+        dest=/etc/nginx/nginx.conf 
+        regexp='# server_names_hash_bucket_size' 
+        line='server_names_hash_bucket_size 64;'
+
     - name: make sure nginx is running
       service: name=nginx state=running
 
