@@ -5,6 +5,10 @@ Provisioning a new site
 
     ansible-playbook -i ansible.inventory provision.ansible.yaml --limit=staging
 
+For localhost where sudo needs a password, add the flag `--ask-sudo-pass`
+
+    ansible-playbook -i ansible.inventory provision.ansible.yaml --limit=local --ask-sudo-pass
+
 ## Folder structure:
 Assume we have a user account at /home/username
 
