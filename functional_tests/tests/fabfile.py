@@ -1,23 +1,27 @@
 from fabric.api import env, run
 
 
-def _get_paths(host):
-    base_folder = '~/sites/{host}'.format(host=host)
-    manage_py = '{path}/virtualenv/bin/python {path}/source/manage.py'.format(
-        path=base_folder
+def _get_base_folder(host):
+    return '~/sites/{host}'.format(host=host)
+
+def _get_manage_dot_py(host):
+    return '{path}/virtualenv/bin/python {path}/source/manage.py'.format(
+        path=_get_base_folder(host)
     )
-    return base_folder, manage_py
 
 
 def reset_database():
-    base_folder, manage_py = _get_paths(env.host)
-    run('rm -f {path}/database/database.sqlite'.format(path=base_folder))
-    run('{manage_py} syncdb --noinput'.format(manage_py=manage_py))
-    run('{manage_py} migrate'.format(manage_py=manage_py))
+    run('rm -f {path}/database/database.sqlite'.format(
+        path=_get_base_folder(env.host)
+    ))
+    run('{manage_py} syncdb --migrate --noinput'.format(
+        manage_py=_get_manage_dot_py(env.host)
+    ))
 
 
 def create_session_on_server():
-    base_folder, manage_py = _get_paths(env.host)
-    session_key = run('{manage_py} create_session'.format(manage_py=manage_py))
+    session_key = run('{manage_py} create_session'.format(
+        manage_py=_get_manage_dot_py(env.host)
+    ))
     print(session_key)
 
