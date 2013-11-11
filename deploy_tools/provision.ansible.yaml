@@ -16,8 +16,9 @@
     - name: allow long hostnames in nginx
       lineinfile: 
         dest=/etc/nginx/nginx.conf 
-        regexp='# server_names_hash_bucket_size' 
-        line='server_names_hash_bucket_size 64;'
+        regexp='(\s+)#? ?server_names_hash_bucket_size' 
+        backrefs=yes
+        line='\1server_names_hash_bucket_size 64;'
 
     - name: add nginx config to sites-available
       template: src=./nginx.conf.j2 dest=/etc/nginx/sites-available/{{ host }}
