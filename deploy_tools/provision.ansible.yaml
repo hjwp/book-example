@@ -19,9 +19,6 @@
         regexp='# server_names_hash_bucket_size' 
         line='server_names_hash_bucket_size 64;'
 
-    - name: make sure nginx is running
-      service: name=nginx state=running
-
     - name: add nginx config to sites-available
       template: src=./nginx.conf.j2 dest=/etc/nginx/sites-available/{{ host }}
       notify:
@@ -38,6 +35,10 @@
       notify:
           - restart gunicorn
 
+    - name: make sure nginx is running
+      service: name=nginx state=running
+    - name: make sure gunicorn is running
+      service: name=gunicorn-{{ host }} state=running
 
   handlers:
     - name: restart nginx
