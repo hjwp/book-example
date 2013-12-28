@@ -40,6 +40,41 @@
 </div>
 <script src="http://code.jquery.com/jquery.min.js"></script>
 <script src="/static/list.js"></script>
+
+<script src="https://login.persona.org/include.js"></script>
+<script>
+$(document).ready(function() {
+
+var loginLink = document.getElementById('login');
+if (loginLink) {
+  loginLink.onclick = function() { navigator.id.request(); };
+}
+
+var logoutLink = document.getElementById('logout');
+if (logoutLink) {
+  logoutLink.onclick = function() { navigator.id.logout(); };
+}
+
+var currentUser = '{{ user.email }}' || null;
+var csrf_token = '{{ csrf_token }}';
+console.log(currentUser);
+
+navigator.id.watch({
+  loggedInUser: currentUser,
+  onlogin: function(assertion) {
+    $.post('/accounts/login', {assertion: assertion, csrfmiddlewaretoken: csrf_token})
+    .done(function() { window.location.reload(); })
+    .fail(function() { navigator.id.logout();});
+  },
+  onlogout: function() {
+    $.post('/accounts/logout')
+    .always(function() { window.location.reload(); });
+  }
+});
+
+});
+</script>
+
 </body>
 
 </html>
