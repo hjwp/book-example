@@ -1,4 +1,5 @@
 import time
+from selenium.webdriver.support.ui import WebDriverWait
 
 from .base import FunctionalTest
 
@@ -15,6 +16,12 @@ class LoginTest(FunctionalTest):
             retries -= 1
             time.sleep(0.5)
         self.fail('could not find window')
+
+
+    def wait_for_element_with_id(self, element_id):
+        WebDriverWait(self.browser, timeout=30).until(
+            lambda b: b.find_element_by_id(element_id)
+        )
 
 
     def test_login_with_persona(self):
