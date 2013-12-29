@@ -36,6 +36,27 @@ test("initialize binds sign in button to navigator.id.request", function () {
     equal(requestWasCalled, true, 'check request called after click');
 });
 
+var user, token, urls, mockNavigator, requests, xhr;
+module("navigator.id.watch tests", {
+    setup: function () {
+        user = 'current user';
+        token = 'csrf token';
+        urls = { login: 'login url', logout: 'logout url' };
+        mockNavigator = {
+            id: {
+                watch: sinon.mock()
+            }
+        };
+        xhr = sinon.useFakeXMLHttpRequest();
+        requests = [];
+        xhr.onCreate = function (request) { requests.push(request); };
+    },
+    teardown: function () {
+        mockNavigator.id.watch.reset();
+        xhr.restore();
+    }
+});
+
 test("initialize calls navigator.id.watch", function () {
     var user = 'current user';
     var token = 'csrf token';
