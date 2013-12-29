@@ -7,7 +7,9 @@ var initialize = function (navigator, user, token, urls) {
 
     navigator.id.watch({
         loggedInUser: user,
-        onlogin: function () {}
+        onlogin: function () {
+            $.post();
+        }
     });
 };
 
