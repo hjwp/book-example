@@ -28,10 +28,10 @@ test("initialize binds sign in button to navigator.id.request", function () {
     };
 
     Superlists.Accounts.initialize(mockNavigator);
+    equal(requestWasCalled, false, 'check request not called before click');
 
     $('#id_login').trigger('click');
-
-    equal(requestWasCalled, true);
+    equal(requestWasCalled, true, 'check request called after click');
 });
 
     </script>
