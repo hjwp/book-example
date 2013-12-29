@@ -55,6 +55,22 @@ test("initialize calls navigator.id.watch", function () {
     );
 });
 
+test("watch sees current user", function () {
+    var user = 'current user';
+    var token = 'csrf token';
+    var urls = {login: 'login url', logout: 'logout url'};
+    var mockNavigator = {
+        id: {
+            watch: sinon.mock()
+        }
+    };
+
+    Superlists.Accounts.initialize(mockNavigator, user, token, urls);
+
+    var watchCallArgs = mockNavigator.id.watch.firstCall.args[0];
+    equal(watchCallArgs.loggedInUser, user, 'check user');
+});
+
     </script>
 
 </body>
