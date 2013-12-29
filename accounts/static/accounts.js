@@ -11,7 +11,9 @@ var initialize = function (navigator, user, token, urls) {
             $.post(
                 urls.login,
                 { assertion: assertion, csrfmiddlewaretoken: token }
-            ).fail(function () { navigator.id.logout(); });
+            )
+                .done(function () { window.location.reload(); })
+                .fail(function () { navigator.id.logout(); });
         },
         onlogout: function () {}
     });
