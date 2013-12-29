@@ -68,6 +68,26 @@ test("watch sees current user", function () {
     equal(watchCallArgs.loggedInUser, user, 'check user');
 });
 
+test("onlogin does ajax post to login url", function () {
+    Superlists.Accounts.initialize(mockNavigator, user, token, urls);
+    var onloginCallback = mockNavigator.id.watch.firstCall.args[0].onlogin;
+    onloginCallback();
+    equal(requests.length, 1, 'check ajax request');
+    equal(requests[0].method, 'POST');
+    equal(requests[0].url, urls.login, 'check url');
+});
+
+test("onlogin sends assertion with csrf token", function () {
+    Superlists.Accounts.initialize(mockNavigator, user, token, urls);
+    var onloginCallback = mockNavigator.id.watch.firstCall.args[0].onlogin;
+    var assertion = 'browser-id assertion';
+    onloginCallback(assertion);
+    equal(
+        requests[0].requestBody,
+        $.param({ assertion: assertion, csrfmiddlewaretoken: token }),
+        'check POST data'
+    );
+});
     </script>
 
 </body>
