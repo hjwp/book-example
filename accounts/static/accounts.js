@@ -6,7 +6,8 @@ var initialize = function (navigator, user, token, urls) {
     });
 
     navigator.id.watch({
-        loggedInUser: user
+        loggedInUser: user,
+        onlogin: function () {}
     });
 };
 
