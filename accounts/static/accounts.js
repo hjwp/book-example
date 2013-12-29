@@ -12,7 +12,8 @@ var initialize = function (navigator, user, token, urls) {
                 urls.login,
                 { assertion: assertion, csrfmiddlewaretoken: token }
             );
-        }
+        },
+        onlogout: function () {}
     });
 };
 
