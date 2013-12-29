@@ -35,6 +35,25 @@ test("initialize binds sign in button to navigator.id.request", function () {
     equal(requestWasCalled, true, 'check request called after click');
 });
 
+test("initialize calls navigator.id.watch", function () {
+    var user = 'current user';
+    var token = 'csrf token';
+    var urls = {login: 'login url', logout: 'logout url'};
+    var mockNavigator = {
+        id: {
+            watch: sinon.mock()
+        }
+    };
+
+    Superlists.Accounts.initialize(mockNavigator, user, token, urls);
+
+    equal(
+        mockNavigator.id.watch.calledOnce,
+        true,
+        'check watch function called'
+    );
+});
+
     </script>
 
 </body>
