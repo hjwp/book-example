@@ -24,7 +24,8 @@ test("initialize binds sign in button to navigator.id.request", function () {
     var mockRequestFunction = function () { requestWasCalled = true; };
     var mockNavigator = {
         id: {
-            request: mockRequestFunction
+            request: mockRequestFunction,
+            watch: function () {}
         }
     };
 
