@@ -1,5 +1,5 @@
 var initialize = function (navigator) {
-    console.log(navigator);
+    navigator.id.request();
 };
 
 window.Superlists = {
