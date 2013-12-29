@@ -88,6 +88,12 @@ test("onlogin sends assertion with csrf token", function () {
         'check POST data'
     );
 });
+
+test("onlogout is just a placeholder", function () {
+    Superlists.Accounts.initialize(mockNavigator, user, token, urls);
+    var onlogoutCallback = mockNavigator.id.watch.firstCall.args[0].onlogout;
+    equal(typeof onlogoutCallback, "function", "onlogout should be a function");
+});
     </script>
 
 </body>
