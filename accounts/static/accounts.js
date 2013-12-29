@@ -5,7 +5,7 @@ var initialize = function (navigator) {
         navigator.id.request();
     });
 
-    navigator.id.watch();
+    navigator.id.watch({});
 };
 
 window.Superlists = {
