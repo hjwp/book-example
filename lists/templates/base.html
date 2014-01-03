@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,7 +16,7 @@
     <nav class="navbar navbar-default" role="navigation">
         <a class="navbar-brand" href="/">Superlists</a>
         {% if user.email %}
-            <a class="btn navbar-btn navbar-right" id="id_logout" href="#">Log out</a>
+            <a class="btn navbar-btn navbar-right" id="id_logout" href="{% url 'logout' %}">Log out</a>
             <span class="navbar-text navbar-right">Logged in as {{ user.email }}</span>
         {% else %}
             <a class="btn navbar-btn navbar-right" id="id_login" href="#">Sign in</a>
