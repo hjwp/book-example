@@ -20,3 +20,7 @@ class PersonaAuthenticationBackend(object):
             except User.DoesNotExist:
                 return User.objects.create(email=email)
 
+
+    def get_user(self):
+        pass
+
