@@ -62,3 +62,13 @@ class GetUserTest(TestCase):
         self.assertEqual(found_user, mock_User_get.return_value)
         mock_User_get.assert_called_once_with(email='a@b.com')
 
+
+    @patch('accounts.authentication.User.objects.get')
+    def test_returns_none_if_user_does_not_exist(self, mock_User_get):
+        def raise_no_user_error(*_, **__):
+            raise User.DoesNotExist()
+        mock_User_get.side_effect = raise_no_user_error
+        backend = PersonaAuthenticationBackend()
+
+        self.assertIsNone(backend.get_user('a@b.com'))
+
