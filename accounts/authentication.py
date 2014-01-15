@@ -13,5 +13,5 @@ class PasswordlessAuthenticationBackend(object):
 
 
     def get_user(self, email):
-        return User.objects.first()
+        return User.objects.get(email=email)
 
