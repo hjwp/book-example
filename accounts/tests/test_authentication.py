@@ -51,3 +51,14 @@ class AuthenticateTest(TestCase):
         new_user = User.objects.get(email='a@b.com')
         self.assertEqual(found_user, new_user)
 
+
+
+class GetUserTest(TestCase):
+
+    @patch('accounts.authentication.User.objects.get')
+    def test_gets_user_from_ORM_using_email(self, mock_User_get):
+        backend = PersonaAuthenticationBackend()
+        found_user = backend.get_user('a@b.com')
+        self.assertEqual(found_user, mock_User_get.return_value)
+        mock_User_get.assert_called_once_with(email='a@b.com')
+
