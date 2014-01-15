@@ -44,3 +44,10 @@ class AuthenticateTest(TestCase):
         found_user = self.backend.authenticate('an assertion')
         self.assertEqual(found_user, actual_user)
 
+
+    def test_creates_new_user_if_necessary_for_valid_assertion(self, mock_post):
+        mock_post.return_value.json.return_value = {'status': 'okay', 'email': 'a@b.com'}
+        found_user = self.backend.authenticate('an assertion')
+        new_user = User.objects.get(email='a@b.com')
+        self.assertEqual(found_user, new_user)
+
