@@ -75,3 +75,7 @@ class ListModelTest(TestCase):
         list_ = List.objects.create(owner=user)
         self.assertIn(list_, user.list_set.all())
 
+
+    def test_list_owner_is_optional(self):
+        List.objects.create()  # should not raise
+
