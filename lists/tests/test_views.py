@@ -1,5 +1,7 @@
 from django.test import TestCase
 from django.utils.html import escape
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 from lists.forms import (
     DUPLICATE_ITEM_ERROR, EMPTY_ITEM_ERROR,
@@ -173,4 +175,11 @@ class MyListsTest(TestCase):
         response = self.client.get('/lists/users/a@b.com/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'my_lists.html')
+
+
+    def test_passes_correct_owner_to_template(self):
+        User.objects.create(email='wrong@owner.com')
+        correct_user = User.objects.create(email='a@b.com')
+        response = self.client.get('/lists/users/a@b.com/')
+        self.assertEqual(response.context['owner'], correct_user)
 
