@@ -1,4 +1,14 @@
 {% extends 'base.html' %}
 
-{% block header_text %}My Lists{% endblock %}
+{% block list_form %}{% endblock %}
+
+{% block header_text %}{{ owner.email }}'s lists</h2>{% endblock %}
+
+{% block extra_content %}
+    <ul>
+        {% for list in owner.list_set.all %}
+            <li><a href="{{ list.get_absolute_url }}">{{ list.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
 
