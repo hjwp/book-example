@@ -10,6 +10,11 @@
             <tr><td>{{ forloop.counter }}: {{ item.text }}</td></tr>
         {% endfor %}
     </table>
+
+    {% if list.owner %}
+        <p>List owner: <span id="id_list_owner">{{ list.owner.email }}</span><p>
+    {% endif %}
+
 {% endblock %}
 
 {% block extra_content %}
