@@ -44,3 +44,17 @@ class SharingTest(FunctionalTest):
         # He sees Edith's list in there!
         self.browser.find_element_by_link_text('Get help').click()
 
+        # On the list page, Oniciferous can see says that it's Edith's list
+        self.wait_for(lambda: self.assertEqual(
+            list_page.get_list_owner(),
+            'edith@example.com'
+        ))
+
+        # He adds an item to the list
+        list_page.add_new_item('Hi Edith!')
+
+        # When Edith refreshes the page, she sees Oniciferous's addition
+        self.browser = edith_browser
+        self.browser.refresh()
+        list_page.wait_for_new_item_in_list('Hi Edith!', 2)
+
