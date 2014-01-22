@@ -41,3 +41,23 @@ class ListPage(object):
             [row.text for row in self.get_list_table_rows()]
         ))
 
+
+    def get_share_box(self):
+        return self.test.browser.find_element_by_css_selector(
+            'input[name=email]'
+        )
+
+
+    def get_shared_with_list(self):
+        return self.test.browser.find_elements_by_css_selector(
+            '.list-sharee'
+        )
+
+
+    def share_list_with(self, email):
+        self.get_share_box().send_keys(email + '\n')
+        self.test.wait_for(lambda: self.test.assertIn(
+            email,
+            [item.text for item in self.get_shared_with_list()]
+        ))
+
