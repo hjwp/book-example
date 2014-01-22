@@ -23,6 +23,14 @@ class HomePage(object):
         return list_page
 
 
+    def go_to_my_lists_page(self):
+        self.test.browser.find_element_by_link_text('My lists').click()
+        self.test.wait_for(lambda: self.test.assertEqual(
+            self.test.browser.find_element_by_tag_name('h1').text,
+            'My Lists'
+        ))
+
+
 
 class ListPage(object):
 
