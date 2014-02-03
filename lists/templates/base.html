@@ -12,7 +12,6 @@
 
   <body>
     <div class="container">
-
       <nav class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
           <a class="navbar-brand" href="/">Superlists</a>
@@ -56,15 +55,17 @@
         <div class="col-md-6 col-md-offset-3 jumbotron">
           <div class="text-center">
             <h1>{% block header_text %}{% endblock %}</h1>
-            <form method="POST" action="{% block form_action %}{% endblock %}">
-              {{ form.text }}
-              {% csrf_token %}
-              {% if form.errors %}
-                <div class="form-group has-error">
-                  <div class="help-block">{{ form.text.errors }}</div>
-                </div>
-              {% endif %}
-            </form>
+            {% block list_form %}
+              <form method="POST" action="{% block form_action %}{% endblock %}">
+                {{ form.text }}
+                {% csrf_token %}
+                {% if form.errors %}
+                  <div class="form-group has-error">
+                    <div class="help-block">{{ form.text.errors }}</div>
+                  </div>
+                {% endif %}
+              </form>
+            {% endblock %}
           </div>
         </div>
       </div>
