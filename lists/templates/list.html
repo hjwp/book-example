@@ -22,7 +22,7 @@
 {% block extra_content %}
 <div class="row">
 
-    <div class="col-md-6 col-md-offset-2">
+    <div class="col-md-6">
         <h3>Shared with</h3>
         <ul>
             {% for sharee in list.shared_with.all %}
@@ -31,7 +31,7 @@
         </ul>
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-4 col-md-offset-1">
         <h3>Share this list:</h3>
         <form class="form-inline" method="POST" action="{% url 'share_list' list.id %}" >
             <input name="email" placeholder="your-friend@example.com" />
