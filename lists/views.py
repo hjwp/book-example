@@ -14,7 +14,7 @@ def new_list(request):
     try:
         item.full_clean()
     except ValidationError:
-        pass
+        return render(request, 'home.html')
     return redirect('/lists/%d/' % (list_.id,))
 
 
