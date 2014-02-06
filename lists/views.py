@@ -7,7 +7,8 @@ def home_page(request):
 
 def new_list(request):
     list_ = List.objects.create()
-    Item.objects.create(text=request.POST['item_text'], list=list_)
+    item = Item.objects.create(text=request.POST['item_text'], list=list_)
+    item.full_clean()
     return redirect(f'/lists/{list_.id}/')
 
 
