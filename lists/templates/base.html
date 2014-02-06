@@ -22,6 +22,11 @@
                      class="form-control input-lg"
                      placeholder="Enter a to-do item" />
               {% csrf_token %}
+              {% if error %}
+                <div class="form-group has-error">
+                  <span class="help-block">{{ error }}</span>
+                </div>
+              {% endif %}
             </form>
           </div>
         </div>
