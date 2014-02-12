@@ -77,7 +77,7 @@ class ListViewTest(TestCase):
     def test_displays_item_form(self):
         list_ = List.objects.create()
         response = self.client.get(f'/lists/{list_.id}/')
-        self.assertIsInstance(response.context['form'], ItemForm)
+        self.assertIsInstance(response.context['form'], ExistingListItemForm)
         self.assertContains(response, 'name="text"')
 
 
@@ -139,7 +139,7 @@ class ListViewTest(TestCase):
 
     def test_for_invalid_input_passes_form_to_template(self):
         response = self.post_invalid_input()
-        self.assertIsInstance(response.context['form'], ItemForm)
+        self.assertIsInstance(response.context['form'], ExistingListItemForm)
 
     def test_for_invalid_input_shows_error_on_page(self):
         response = self.post_invalid_input()
