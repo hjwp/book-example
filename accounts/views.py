@@ -1,7 +1,9 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 
 def persona_login(request):
-    authenticate(assertion=request.POST['assertion'])
-    return HttpResponse()
+    user = authenticate(assertion=request.POST['assertion'])
+    if user:
+        login(request, user)
+    return HttpResponse('OK')
 
