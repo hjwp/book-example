@@ -14,5 +14,5 @@ class PersonaAuthenticationBackend(object):
             data={'assertion': assertion, 'audience': DOMAIN}
         )
         if response.json()['status'] == 'okay':
-            return User.objects.first()
+            return User.objects.get(email=response.json()['email'])
 
