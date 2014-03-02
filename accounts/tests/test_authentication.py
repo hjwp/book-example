@@ -12,6 +12,10 @@ class AuthenticateTest(TestCase):
 
     def setUp(self):
         self.backend = PersonaAuthenticationBackend()
+        user = User(email='other@user.com')
+        user.username = 'otheruser'
+        user.save()
+
 
     def test_sends_assertion_to_mozilla_with_domain(self, mock_post):
         self.backend.authenticate('an assertion')
