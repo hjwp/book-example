@@ -23,6 +23,7 @@ class MyListsTest(FunctionalTest):
 
 
     def test_logged_in_users_lists_are_saved_as_my_lists(self):
+        self.fail('testey')
         # Edith is a logged-in user
         self.create_pre_authenticated_session('edith@example.com')
 
