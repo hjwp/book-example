@@ -2,3 +2,4 @@ __pycache__
 *.pyc
 db.sqlite3
 geckodriver.log
+functional_tests/screendumps
