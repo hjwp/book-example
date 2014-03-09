@@ -39,7 +39,7 @@ class MyListsTest(FunctionalTest):
         # first list item
         self.browser.find_element_by_link_text('Reticulate splines').click()
         self.wait_for(
-            lambda: self.assertEqual(self.browser.current_url, 'barf')
+            lambda: self.assertEqual(self.browser.current_url, first_list_url)
         )
 
         # She decides to start another list, just to see
