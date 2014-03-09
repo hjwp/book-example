@@ -51,6 +51,16 @@ class FunctionalTest(StaticLiveServerTestCase):
         # slightly obscure but couldn't find a better way!
         return self._outcome.result.failures or self._outcome.result.errors
 
+    def take_screenshot(self):
+        path = SCREEN_DUMP_LOCATION / self._get_filename("png")
+        print("screenshotting to", path)
+        self.browser.get_screenshot_as_file(str(path))
+
+    def dump_html(self):
+        path = SCREEN_DUMP_LOCATION / self._get_filename("html")
+        print("dumping page HTML to", path)
+        path.write_text(self.browser.page_source)
+
     @wait
     def wait_for(self, fn):
         return fn()
