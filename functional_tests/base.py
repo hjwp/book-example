@@ -73,6 +73,17 @@ class FunctionalTest(StaticLiveServerTestCase):
             f.write(self.browser.page_source)
 
 
+    def _get_filename(self):
+        timestamp = datetime.now().isoformat().replace(':', '.')[:19]
+        return '{folder}/{classname}.{method}-window{windowid}-{timestamp}'.format(
+            folder=SCREEN_DUMP_LOCATION,
+            classname=self.__class__.__name__,
+            method=self._testMethodName,
+            windowid=self._windowid,
+            timestamp=timestamp
+        )
+
+
     def get_item_input_box(self):
         return self.browser.find_element_by_id('id_text')
 
