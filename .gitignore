@@ -5,3 +5,4 @@ __pycache__
 /static
 src/db.sqlite3
 src/static
+src/functional_tests/screendumps
