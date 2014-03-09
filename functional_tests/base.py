@@ -1,6 +1,12 @@
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 import sys
+import time
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+
+from selenium.common.exceptions import WebDriverException
+
+DEFAULT_WAIT = 3
+
 
 class FunctionalTest(StaticLiveServerTestCase):
 
@@ -21,10 +27,21 @@ class FunctionalTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
-        self.browser.implicitly_wait(3)
+        self.browser.implicitly_wait(DEFAULT_WAIT)
 
     def tearDown(self):
         self.browser.quit()
+
+
+    def wait_for(self, function_with_assertion, timeout=DEFAULT_WAIT):
+        start_time = time.time()
+        while time.time() - start_time < timeout:
+            try:
+                return function_with_assertion()
+            except (AssertionError, WebDriverException):
+                time.sleep(0.1)
+        # one more try, which will raise any errors if they are outstanding
+        return function_with_assertion()
 
 
     def get_item_input_box(self):
