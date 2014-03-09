@@ -51,6 +51,17 @@ class FunctionalTest(StaticLiveServerCase):
         super().tearDown()
 
 
+    def _get_filename(self):
+        timestamp = datetime.now().isoformat().replace(':', '.')[:19]
+        return '{folder}/{classname}.{method}-window{windowid}-{timestamp}'.format(
+            folder=SCREEN_DUMP_LOCATION,
+            classname=self.__class__.__name__,
+            method=self._testMethodName,
+            windowid=self._windowid,
+            timestamp=timestamp
+        )
+
+
     def take_screenshot(self):
         filename = self._get_filename() + '.png'
         print('screenshotting to', filename)
