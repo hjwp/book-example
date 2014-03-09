@@ -59,6 +59,19 @@ class FunctionalTest(StaticLiveServerTestCase):
         return any(error for (method, error) in self._outcome.errors)
 
 
+    def take_screenshot(self):
+        filename = self._get_filename() + '.png'
+        print('screenshotting to', filename)
+        self.browser.get_screenshot_as_file(filename)
+
+
+    def dump_html(self):
+        filename = self._get_filename() + '.html'
+        print('dumping page HTML to', filename)
+        with open(filename, 'w') as f:
+            f.write(self.browser.page_source)
+
+
     def get_item_input_box(self):
         return self.browser.find_element_by_id('id_text')
 
