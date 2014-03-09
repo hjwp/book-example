@@ -61,6 +61,12 @@ class FunctionalTest(StaticLiveServerTestCase):
         print("dumping page HTML to", path)
         path.write_text(self.browser.page_source)
 
+    def _get_filename(self, extension):
+        timestamp = datetime.now().isoformat().replace(":", ".")[:19]
+        return (
+            f"{self.__class__.__name__}.{self._testMethodName}-{timestamp}.{extension}"
+        )
+
     @wait
     def wait_for(self, fn):
         return fn()
