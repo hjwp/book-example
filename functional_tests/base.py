@@ -9,6 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 from .server_tools import reset_database
 
+DEFAULT_WAIT = 5
 SCREEN_DUMP_LOCATION = os.path.abspath(
     os.path.join(os.path.dirname(__file__), 'screendumps')
 )
@@ -38,7 +39,7 @@ class FunctionalTest(StaticLiveServerCase):
             reset_database(self.server_host)
 
         self.browser = webdriver.Firefox()
-        self.browser.implicitly_wait(3)
+        self.browser.implicitly_wait(DEFAULT_WAIT)
 
     def tearDown(self):
         if not self._outcomeForDoCleanups.success:
