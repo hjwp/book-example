@@ -60,6 +60,12 @@ class ItemModelTest(TestCase):
         self.assertEqual(str(item), 'some text')
 
 
+    def test_get_absolute_url_returns_parent_list_url(self):
+        list_ = List.objects.create()
+        item = Item(list=list_)
+        self.assertEqual(item.get_absolute_url(), list_.get_absolute_url())
+
+
 
 class ListModelTest(TestCase):
 

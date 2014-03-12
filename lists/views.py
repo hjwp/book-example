@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
-from django.views.generic import FormView, CreateView
+from django.views.generic import FormView, CreateView, DetailView, UpdateView
+from django.views.generic.detail import SingleObjectMixin
 
 from lists.forms import ExistingListItemForm, ItemForm
 from lists.models import List
@@ -37,4 +38,14 @@ def view_list(request, list_id):
             form.save()
             return redirect(list_)
     return render(request, 'list.html', {'list': list_, "form": form})
+
+
+class ViewAndAddToList(CreateView, SingleObjectMixin):
+    model = List
+    template_name = 'list.html'
+    form_class = ExistingListItemForm
+
+    def get_form(self, form_class):
+        self.object = self.get_object()
+        return form_class(for_list=self.object, data=self.request.POST)
 
