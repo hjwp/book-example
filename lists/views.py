@@ -13,6 +13,11 @@ class NewListView(CreateView):
     form_class = ItemForm
     template_name = 'home.html'
 
+    def form_valid(self, form):
+        list_ = List.objects.create()
+        form.save(for_list=list_)
+        return redirect(list_)
+
 def new_list(request):
     form = ItemForm(data=request.POST)
     if form.is_valid():
