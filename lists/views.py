@@ -9,9 +9,7 @@ class HomePageView(FormView):
     form_class = ItemForm
 
 
-class NewListView(CreateView):
-    form_class = ItemForm
-    template_name = 'home.html'
+class NewListView(CreateView, HomePageView):
 
     def form_valid(self, form):
         list_ = List.objects.create()
