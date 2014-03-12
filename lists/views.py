@@ -11,6 +11,7 @@ class HomePageView(FormView):
 
 class NewListView(CreateView):
     form_class = ItemForm
+    template_name = 'home.html'
 
 def new_list(request):
     form = ItemForm(data=request.POST)
