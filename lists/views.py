@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from django.views.generic import FormView
+from django.views.generic import FormView, CreateView
 
 from lists.forms import ExistingListItemForm, ItemForm
 from lists.models import List
@@ -8,6 +8,9 @@ class HomePageView(FormView):
     template_name = 'home.html'
     form_class = ItemForm
 
+
+class NewListView(CreateView):
+    form_class = ItemForm
 
 def new_list(request):
     form = ItemForm(data=request.POST)
