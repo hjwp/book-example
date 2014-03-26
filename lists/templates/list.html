@@ -11,3 +11,28 @@
         {% endfor %}
     </table>
 {% endblock %}
+<<<<<<< HEAD
+=======
+
+{% block extra_content %}
+<div class="row">
+
+    <div class="col-md-6 col-md-offset-2">
+        <h3>Shared with</h3>
+        <ul>
+            {% for sharee in list.shared_with.all %}
+                <li class="list-sharee">{{ sharee.email }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="col-md-3">
+        <h3>Share this list:</h3>
+        <form class="form-inline" method="POST" action="{% url 'share_list' list.id %}" >
+            <input name="email" placeholder="your-friend@example.com" />
+        </form>
+    </div>
+
+</div>
+{% endblock %}
+>>>>>>> db740dd... Add email form and sharee list to list template.
