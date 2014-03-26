@@ -7,3 +7,7 @@ class User(models.Model):
     REQUIRED_FIELDS = ()
     USERNAME_FIELD = 'email'
 
+
+    def is_authenticated(self):
+        return True
+
