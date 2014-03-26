@@ -61,6 +61,30 @@ class NewListFormTest(unittest.TestCase):
         self.assertTrue(mock_item.save.called)
 
 
+    def test_save_saves_owner_if_authenticated(self, mockItem, mockList):
+        mock_list = mockList.return_value
+        mock_list.owner = None
+        user = Mock(is_authenticated=lambda: True)
+        form = NewListForm()
+        form.cleaned_data = {'text': 'new item text'}
+
+        form.save(owner=user)
+
+        self.assertEqual(mock_list.owner, user)
+
+
+    def test_does_not_save_owner_if_not_authenticated(self, mockItem, mockList):
+        mock_list = mockList.return_value
+        mock_list.owner = None
+        user = Mock(is_authenticated=lambda: False)
+        form = NewListForm()
+        form.cleaned_data = {'text': 'new item text'}
+
+        form.save(owner=user)
+
+        self.assertEqual(mock_list.owner, None)
+
+
 
 class ExistingListItemFormTest(TestCase):
 
