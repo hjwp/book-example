@@ -102,6 +102,13 @@ class NewListViewUnitTest(unittest.TestCase):
         mock_form.save.assert_called_once_with(owner=self.request.user)
 
 
+    def test_does_not_save_if_form_invalid(self, mockNewListForm):
+        mock_form = mockNewListForm.return_value
+        mock_form.is_valid.return_value = False
+        new_list2(self.request)
+        self.assertFalse(mock_form.save.called)
+
+
     @patch('lists.views.redirect')
     def test_redirects_to_form_returned_object_if_form_valid(
         self, mock_redirect, mockNewListForm
