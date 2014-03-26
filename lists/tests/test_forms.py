@@ -1,8 +1,10 @@
+import unittest
+from unittest.mock import patch, Mock
 from django.test import TestCase
 
 from lists.forms import (
     DUPLICATE_ITEM_ERROR, EMPTY_LIST_ERROR,
-    ExistingListItemForm, ItemForm
+    ExistingListItemForm, ItemForm, NewListForm
 )
 from lists.models import Item, List
 
@@ -28,6 +30,31 @@ class ItemFormTest(TestCase):
         self.assertEqual(new_item, Item.objects.first())
         self.assertEqual(new_item.text, 'do me')
         self.assertEqual(new_item.list, list_)
+
+
+
+@patch('lists.forms.List')
+@patch('lists.forms.Item')
+class NewListFormTest(unittest.TestCase):
+
+    def test_save_creates_new_list_and_item_from_cleaned_data(
+        self, mockItem, mockList
+    ):
+        mock_item = mockItem.return_value
+        mock_list = mockList.return_value
+        user = Mock()
+        form = NewListForm()
+        form.cleaned_data = {'text': 'new item text'}
+
+        def check_item_text_and_list():
+            self.assertEqual(mock_item.text, 'new item text')
+            self.assertEqual(mock_item.list, mock_list)
+            self.assertTrue(mock_list.save.called)
+        mock_item.save.side_effect = check_item_text_and_list
+
+        form.save(owner=user)
+
+        self.assertTrue(mock_item.save.called)
 
 
 
