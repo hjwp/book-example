@@ -37,6 +37,10 @@ class ItemFormTest(TestCase):
 @patch('lists.forms.Item')
 class NewListFormTest(unittest.TestCase):
 
+    def test_is_an_ItemForm(self, mockItem, mockList):
+        self.assertIsInstance(NewListForm(), ItemForm)
+
+
     def test_save_creates_new_list_and_item_from_cleaned_data(
         self, mockItem, mockList
     ):
