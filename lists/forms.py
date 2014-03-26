@@ -39,6 +39,7 @@ class NewListForm(ItemForm):
         item.list = list_
         item.text = self.cleaned_data['text']
         item.save()
+        return list_
 
 
 
