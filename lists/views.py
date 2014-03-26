@@ -24,8 +24,8 @@ def new_list(request):
 
 def new_list2(request):
     form = NewListForm(data=request.POST)
-    list_ = form.save(owner=request.user)
     if form.is_valid():
+        list_ = form.save(owner=request.user)
         return redirect(list_)
     return render(request, 'home.html', {'form': form})
 
