@@ -71,12 +71,11 @@ class NewListViewIntegratedTest(TestCase):
         self.assertEqual(Item.objects.count(), 0)
 
 
-    @unittest.skip
     def test_list_owner_is_saved_if_user_is_authenticated(self):
         request = HttpRequest()
         request.user = User.objects.create(email='a@b.com')
         request.POST['text'] = 'new list item'
-        new_list(request)
+        new_list2(request)
         list_ = List.objects.first()
         self.assertEqual(list_.owner, request.user)
 
