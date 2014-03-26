@@ -28,7 +28,7 @@ class ItemForm(forms.models.ModelForm):
 
 
 
-class NewListForm(object):
+class NewListForm(ItemForm):
 
     def save(self, owner):
         list_ = List()
