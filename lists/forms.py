@@ -32,6 +32,8 @@ class NewListForm(ItemForm):
 
     def save(self, owner):
         list_ = List()
+        if owner.is_authenticated():
+            list_.owner = owner
         list_.save()
         item = Item()
         item.list = list_
