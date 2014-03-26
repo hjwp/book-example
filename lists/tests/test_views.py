@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 from django.contrib.auth import get_user_model
 from django.http import HttpRequest
 from django.test import TestCase
@@ -80,10 +80,18 @@ class NewListViewUnitTest(unittest.TestCase):
     def setUp(self):
         self.request = HttpRequest()
         self.request.POST['text'] = 'new list item'
+        self.request.user = Mock()
 
     def test_passes_POST_data_to_NewListForm(self, mockNewListForm):
         new_list2(self.request)
         mockNewListForm.assert_called_once_with(data=self.request.POST)
+
+
+    def test_saves_form_with_owner_if_form_valid(self, mockNewListForm):
+        mock_form = mockNewListForm.return_value
+        mock_form.is_valid.return_value = True
+        new_list2(self.request)
+        mock_form.save.assert_called_once_with(owner=self.request.user)
 
 
 
