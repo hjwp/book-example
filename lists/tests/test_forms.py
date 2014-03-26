@@ -85,6 +85,17 @@ class NewListFormTest(unittest.TestCase):
         self.assertEqual(mock_list.owner, None)
 
 
+    def test_save_returns_new_list_object(self, mockItem, mockList):
+        mock_list = mockList.return_value
+        user = Mock(is_authenticated=lambda: True)
+        form = NewListForm()
+        form.cleaned_data = {'text': 'new item text'}
+
+        response = form.save(owner=user)
+
+        self.assertEqual(response, mock_list)
+
+
 
 class ExistingListItemFormTest(TestCase):
 
