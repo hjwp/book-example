@@ -23,7 +23,7 @@ def new_list(request):
 
 
 def new_list2(request):
-    pass
+    NewListForm(data=request.POST)
 
 
 def view_list(request, list_id):
