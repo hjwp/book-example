@@ -68,11 +68,15 @@ class NewListTest(TestCase):
     ):
         user = User.objects.create(email='a@b.com')
         self.client.force_login(user)
+        mock_list = mockListClass.return_value
+
+        def check_owner_assigned():
+            self.assertEqual(mock_list.owner, user)
+        mock_list.save.side_effect = check_owner_assigned
 
         self.client.post('/lists/new', data={'text': 'new item'})
 
-        mock_list = mockListClass.return_value
-        self.assertEqual(mock_list.owner, user)
+        mock_list.save.assert_called_once_with()
 
 
 
