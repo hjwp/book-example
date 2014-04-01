@@ -1,9 +1,15 @@
+import os
+import sys
+from datetime import datetime
 from django.contrib.staticfiles.testing import StaticLiveServerCase
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
-import sys
+
 from .server_tools import reset_database
 
+SCREEN_DUMP_LOCATION = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), 'screendumps')
+)
 
 class FunctionalTest(StaticLiveServerCase):
 
@@ -33,7 +39,16 @@ class FunctionalTest(StaticLiveServerCase):
         self.browser.implicitly_wait(3)
 
     def tearDown(self):
+        if not self._outcomeForDoCleanups.success:
+            if not os.path.exists(SCREEN_DUMP_LOCATION):
+                os.makedirs(SCREEN_DUMP_LOCATION)
+            for ix, handle in enumerate(self.browser.window_handles):
+                self._windowid = ix
+                self.browser.switch_to_window(handle)
+                self.take_screenshot()
+                self.dump_html()
         self.browser.quit()
+        super().tearDown()
 
 
     def get_item_input_box(self):
