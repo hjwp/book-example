@@ -1,7 +1,15 @@
+import os
+from datetime import datetime
+import sys
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
-import sys
+
 from .server_tools import reset_database
+
+
+SCREEN_DUMP_LOCATION = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), 'screendumps'
+)
 
 
 class FunctionalTest(StaticLiveServerTestCase):
@@ -32,8 +40,23 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
 
+
     def tearDown(self):
+        if self._test_has_failed():
+            if not os.path.exists(SCREEN_DUMP_LOCATION):
+                os.makedirs(SCREEN_DUMP_LOCATION)
+            for ix, handle in enumerate(self.browser.window_handles):
+                self._windowid = ix
+                self.browser.switch_to_window(handle)
+                self.take_screenshot()
+                self.dump_html()
         self.browser.quit()
+        super().tearDown()
+
+
+    def _test_has_failed(self):
+        # slightly obscure but couldn't find a better way!
+        return any(error for (method, error) in self._outcome.errors)
 
 
     def get_item_input_box(self):
