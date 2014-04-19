@@ -47,6 +47,19 @@ class NewListFormTest(unittest.TestCase):
         )
 
 
+    @patch('lists.forms.List.create_new')
+    def test_save_creates_new_list_with_owner_if_user_authenticated(
+        self, mock_List_create_new
+    ):
+        user = Mock(is_authenticated=True)
+        form = NewListForm(data={'text': 'new item text'})
+        form.is_valid()
+        form.save(owner=user)
+        mock_List_create_new.assert_called_once_with(
+            first_item_text='new item text', owner=user
+        )
+
+
 
 class ExistingListItemFormTest(TestCase):
 
