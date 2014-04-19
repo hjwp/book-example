@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user_model
+User = get_user_model()
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 from lists.models import Item, List
@@ -72,4 +74,11 @@ class ListModelTest(TestCase):
         self.assertEqual(new_item.text, 'new item text')
         new_list = List.objects.first()
         self.assertEqual(new_item.list, new_list)
+
+
+    def test_create_new_optionally_saves_owner(self):
+        user = User.objects.create()
+        List.create_new(first_item_text='new item text', owner=user)
+        new_list = List.objects.first()
+        self.assertEqual(new_list.owner, user)
 
