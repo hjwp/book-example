@@ -68,6 +68,14 @@ class ListModelTest(TestCase):
         self.assertEqual(list_.get_absolute_url(), f'/lists/{list_.id}/')
 
 
+    def test_lists_can_have_owners(self):
+        List(owner=User())  # should not raise
+
+
+    def test_list_owner_is_optional(self):
+        List().full_clean()  # should not raise
+
+
     def test_create_new_creates_list_and_first_item(self):
         List.create_new(first_item_text='new item text')
         new_item = Item.objects.first()
