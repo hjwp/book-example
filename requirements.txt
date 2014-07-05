@@ -1,2 +1,2 @@
-https://www.djangoproject.com/download/1.7b1/tarball/
+https://github.com/django/django/archive/stable/1.7.x.zip
 gunicorn==18.0
