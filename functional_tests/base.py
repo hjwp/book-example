@@ -3,7 +3,7 @@ import sys
 import time
 from datetime import datetime
 from django.conf import settings
-from django.contrib.staticfiles.testing import StaticLiveServerCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support.ui import WebDriverWait
@@ -17,7 +17,7 @@ SCREEN_DUMP_LOCATION = os.path.abspath(
     os.path.join(os.path.dirname(__file__), 'screendumps')
 )
 
-class FunctionalTest(StaticLiveServerCase):
+class FunctionalTest(StaticLiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):
