@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'lists',
     'accounts',
     'functional_tests',
+    'bdd_tests',
 )
 
 AUTH_USER_MODEL = 'accounts.User'
