@@ -40,10 +40,10 @@ def click_link(context, link_text):
     context.browser.find_element_by_link_text(link_text).click()
 
 
-@when('I click the link to "Reticulate Splines"')
-def step_impl(context):
-    assert False
+@then('I will be on the "{first_item_text}" list page')
+def step_impl(context, first_item_text):
+    table = context.browser.find_element_by_id('id_list_table')
+    rows = table.find_elements_by_tag_name('tr')
+    expected_row_text = '1: ' + first_item_text
+    assert rows[0].text == expected_row_text
 
-@then('I will be on the "Reticulate Splines" list page')
-def step_impl(context):
-    assert False
