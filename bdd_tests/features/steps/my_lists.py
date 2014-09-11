@@ -17,9 +17,12 @@ def given_i_am_logged_in(context):
     ))
 
 
-@when('I create a list with first item "Reticulate Splines"')
-def step_impl(context):
-    assert False
+@when('I create a list with first item "{first_item_text}"')
+def create_a_list(context, first_item_text):
+    context.browser.get(context.server_url)
+    context.browser.find_element_by_id('id_text').send_keys(first_item_text)
+    context.browser.find_element_by_id('id_text').send_keys('\n')
+
 
 @when('I add an item "Immanentize Eschaton"')
 def step_impl(context):
