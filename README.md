@@ -10,3 +10,4 @@ In other words, if you want to start on a particular chapter in the book, you sh
 
 So, eg, [chapter_05](https://github.com/hjwp/book-example/tree/chapter_05) has all the commits up to the end of chapter 5, so it's the branch to check out if you want to skip to the beginning of chapter 6.
 
+Branches follow the syntax chapter_XX, so they're zero-padded.
