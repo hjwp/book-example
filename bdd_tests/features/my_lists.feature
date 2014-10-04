@@ -1,9 +1,9 @@
 Feature: My Lists
-    Scenario:
-        As a logged-in user
-        I want to be able to see all my lists in one page
-        So that I can find them all afer I've written them
+    As a logged-in user
+    I want to be able to see all my lists in one page
+    So that I can find them all afer I've written them
 
+    Scenario: Create two lists and see them on the My Lists page
         Given I am a logged-in user
 
         When I create a list with first item "Reticulate Splines"
@@ -13,7 +13,6 @@ Feature: My Lists
         Then I will see a link to "My lists"
 
         When I click the link to "My lists"
-
         Then I will see a link to "Reticulate Splines"
         And I will see a link to "Buy milk"
 
