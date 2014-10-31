@@ -34,7 +34,6 @@ class ItemValidationTest(FunctionalTest):
         self.check_for_row_in_list_table('1: Buy milk')
         self.check_for_row_in_list_table('2: Make tea')
 
-
     def test_cannot_add_duplicate_items(self):
         # Edith goes to the home page and starts a new list
         self.browser.get(self.server_url)
@@ -49,7 +48,6 @@ class ItemValidationTest(FunctionalTest):
         error = self.get_error_element()
         self.assertEqual(error.text, "You've already got this in your list")
 
-
     def test_error_messages_are_cleared_on_input(self):
         # Edith starts a new list in a way that causes a validation error:
         self.browser.get(self.server_url)
@@ -63,4 +61,3 @@ class ItemValidationTest(FunctionalTest):
         # She is pleased to see that the error message disappears
         error = self.get_error_element()
         self.assertFalse(error.is_displayed())
-
