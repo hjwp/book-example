@@ -1,6 +1,7 @@
-from .base import FunctionalTest
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+
+from .base import FunctionalTest
 
 
 class NewVisitorTest(FunctionalTest):
@@ -18,8 +19,8 @@ class NewVisitorTest(FunctionalTest):
         # She is invited to enter a to-do item straight away
         inputbox = self.get_item_input_box()
         self.assertEqual(
-                inputbox.get_attribute('placeholder'),
-                'Enter a to-do item'
+            inputbox.get_attribute('placeholder'),
+            'Enter a to-do item'
         )
 
         # She types "Buy peacock feathers" into a text box (Edith's hobby
@@ -76,4 +77,3 @@ class NewVisitorTest(FunctionalTest):
         self.assertIn('Buy milk', page_text)
 
         # Satisfied, they both go back to sleep
-

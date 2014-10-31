@@ -1,9 +1,10 @@
-from django.shortcuts import redirect, render
 from django.contrib.auth import get_user_model
-User = get_user_model()
+from django.shortcuts import redirect, render
 
 from lists.forms import ExistingListItemForm, ItemForm, NewListForm
 from lists.models import List
+
+User = get_user_model()
 
 
 def home_page(request):
@@ -38,4 +39,3 @@ def share_list(request, list_id):
     list_ = List.objects.get(id=list_id)
     list_.shared_with.add(request.POST['email'])
     return redirect(list_)
-

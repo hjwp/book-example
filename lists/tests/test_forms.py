@@ -1,5 +1,6 @@
-import unittest
 from unittest.mock import patch, Mock
+import unittest
+
 from django.test import TestCase
 
 from lists.forms import (
@@ -16,12 +17,10 @@ class ItemFormTest(TestCase):
         self.assertIn('placeholder="Enter a to-do item"', form.as_p())
         self.assertIn('class="form-control input-lg"', form.as_p())
 
-
     def test_form_validation_for_blank_items(self):
         form = ItemForm(data={'text': ''})
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['text'], [EMPTY_ITEM_ERROR])
-
 
 
 class NewListFormTest(unittest.TestCase):
@@ -38,7 +37,6 @@ class NewListFormTest(unittest.TestCase):
             first_item_text='new item text'
         )
 
-
     @patch('lists.forms.List.create_new')
     def test_save_creates_new_list_with_owner_if_user_authenticatd(
         self, mock_List_create_new
@@ -51,7 +49,6 @@ class NewListFormTest(unittest.TestCase):
             first_item_text='new item text', owner=user
         )
 
-
     @patch('lists.forms.List.create_new')
     def test_save_returns_new_list_object(self, mock_List_create_new):
         user = Mock(is_authenticated=lambda: True)
@@ -61,7 +58,6 @@ class NewListFormTest(unittest.TestCase):
         self.assertEqual(response, mock_List_create_new.return_value)
 
 
-
 class ExistingListItemFormTest(TestCase):
 
     def test_form_renders_item_text_input(self):
@@ -69,13 +65,11 @@ class ExistingListItemFormTest(TestCase):
         form = ExistingListItemForm(for_list=list_)
         self.assertIn('placeholder="Enter a to-do item"', form.as_p())
 
-
     def test_form_validation_for_blank_items(self):
         list_ = List.objects.create()
         form = ExistingListItemForm(for_list=list_, data={'text': ''})
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['text'], [EMPTY_ITEM_ERROR])
-
 
     def test_form_validation_for_duplicate_items(self):
         list_ = List.objects.create()
@@ -84,10 +78,8 @@ class ExistingListItemFormTest(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['text'], [DUPLICATE_ITEM_ERROR])
 
-
     def test_form_save(self):
         list_ = List.objects.create()
         form = ExistingListItemForm(for_list=list_, data={'text': 'hi'})
         new_item = form.save()
-        self.assertEqual(new_item, Item.objects.all()[0])
-
+        self.assertEqual(new_item, Item.objects.first())
