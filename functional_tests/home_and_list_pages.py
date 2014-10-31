@@ -1,7 +1,7 @@
 ITEM_INPUT_ID = 'id_text'
 
 
-class HomePage(object):
+class HomePage:
 
     def __init__(self, test):
         self.test = test
@@ -30,7 +30,7 @@ class HomePage(object):
         ))
 
 
-class ListPage(object):
+class ListPage:
 
     def __init__(self, test):
         self.test = test
