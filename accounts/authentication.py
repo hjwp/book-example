@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 PERSONA_VERIFY_URL = 'https://verifier.login.persona.org/verify'
 
 
-class PersonaAuthenticationBackend(object):
+class PersonaAuthenticationBackend:
 
     def authenticate(self, assertion):
         response = requests.post(
