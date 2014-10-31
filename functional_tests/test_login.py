@@ -1,4 +1,5 @@
 import time
+
 from .base import FunctionalTest
 
 TEST_EMAIL = 'edith@mockmyid.com'
@@ -16,7 +17,6 @@ class LoginTest(FunctionalTest):
             retries -= 1
             time.sleep(0.5)
         self.fail('could not find window')
-
 
     def test_login_with_persona(self):
         # Edith goes to the awesome superlists site
@@ -52,4 +52,3 @@ class LoginTest(FunctionalTest):
         # The "logged out" status also persists after a refresh
         self.browser.refresh()
         self.wait_to_be_logged_out(email=TEST_EMAIL)
-
