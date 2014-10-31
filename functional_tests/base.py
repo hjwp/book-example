@@ -1,16 +1,18 @@
+from datetime import datetime
 import os
 import sys
 import time
-from datetime import datetime
+
 from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support.ui import WebDriverWait
 
-from .server_tools import reset_database
-from .server_tools import create_session_on_server
 from .management.commands.create_session import create_pre_authenticated_session
+from .server_tools import create_session_on_server
+from .server_tools import reset_database
 
 DEFAULT_WAIT = 5
 SCREEN_DUMP_LOCATION = os.path.join(
@@ -145,4 +147,3 @@ class FunctionalTest(StaticLiveServerTestCase):
             value=session_key,
             path='/',
         ))
-
