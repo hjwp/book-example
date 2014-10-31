@@ -108,18 +108,18 @@ class ListViewTest(TestCase):
 
     def test_uses_list_template(self):
         list_ = List.objects.create()
-        response = self.client.get('/lists/%d/' % (list_.id,))
+        response = self.client.get('/lists/{}/'.format(list_.id,))
         self.assertTemplateUsed(response, 'list.html')
 
     def test_passes_correct_list_to_template(self):
         other_list = List.objects.create()
         correct_list = List.objects.create()
-        response = self.client.get('/lists/%d/' % (correct_list.id,))
+        response = self.client.get('/lists/{}/'.format(correct_list.id,))
         self.assertEqual(response.context['list'], correct_list)
 
     def test_displays_item_form(self):
         list_ = List.objects.create()
-        response = self.client.get('/lists/%d/' % (list_.id,))
+        response = self.client.get('/lists/{}/'.format(list_.id,))
         self.assertIsInstance(response.context['form'], ExistingListItemForm)
         self.assertContains(response, 'name="text"')
 
@@ -131,7 +131,7 @@ class ListViewTest(TestCase):
         Item.objects.create(text='other list item 1', list=other_list)
         Item.objects.create(text='other list item 2', list=other_list)
 
-        response = self.client.get('/lists/%d/' % (correct_list.id,))
+        response = self.client.get('/lists/{}/'.format(correct_list.id,))
 
         self.assertContains(response, 'itemey 1')
         self.assertContains(response, 'itemey 2')
@@ -142,7 +142,7 @@ class ListViewTest(TestCase):
         other_list = List.objects.create()
         correct_list = List.objects.create()
         self.client.post(
-            '/lists/%d/' % (correct_list.id,),
+            '/lists/{}/'.format(correct_list.id,),
             data={'text': 'A new item for an existing list'}
         )
 
@@ -155,15 +155,15 @@ class ListViewTest(TestCase):
         other_list = List.objects.create()
         correct_list = List.objects.create()
         response = self.client.post(
-            '/lists/%d/' % (correct_list.id,),
+            '/lists/{}/'.format(correct_list.id,),
             data={'text': 'A new item for an existing list'}
         )
-        self.assertRedirects(response, '/lists/%d/' % (correct_list.id,))
+        self.assertRedirects(response, '/lists/{}/'.format(correct_list.id,))
 
     def post_invalid_input(self):
         list_ = List.objects.create()
         return self.client.post(
-            '/lists/%d/' % (list_.id,),
+            '/lists/{}/'.format(list_.id,),
             data={'text': ''}
         )
 
@@ -188,7 +188,7 @@ class ListViewTest(TestCase):
         list1 = List.objects.create()
         item1 = Item.objects.create(list=list1, text='textey')
         response = self.client.post(
-            '/lists/%d/' % (list1.id,),
+            '/lists/{}/'.format(list1.id,),
             data={'text': 'textey'}
         )
 
@@ -218,7 +218,7 @@ class ShareListTest(TestCase):
         sharee = User.objects.create(email='share.with@me.com')
         list_ = List.objects.create()
         self.client.post(
-            '/lists/%d/share' % (list_.id),
+            '/lists/{}/share'.format(list_.id),
             {'email': 'share.with@me.com'}
         )
         self.assertIn(sharee, list_.shared_with.all())
@@ -227,7 +227,7 @@ class ShareListTest(TestCase):
         sharee = User.objects.create(email='share.with@me.com')
         list_ = List.objects.create()
         response = self.client.post(
-            '/lists/%d/share' % (list_.id),
+            '/lists/{}/share'.format(list_.id),
             {'email': 'share.with@me.com'}
         )
         self.assertRedirects(response, list_.get_absolute_url())
