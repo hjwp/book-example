@@ -2,5 +2,5 @@ django==1.7
 gunicorn==18.0
 requests==2.1.0
 behave==1.2.4
--e git+https://github.com/django-behave/django-behave.git@ce6d63ab04aa68bcd9ba49de1b9fb105943b61fb#egg=django_behave-origin/HEAD
+-e git+https://github.com/django-behave/django-behave.git@ce6d63ab04aa68bcd9ba49de1b9fb105943b61fb#egg=django_behave-origin
 selenium==2.42.1
