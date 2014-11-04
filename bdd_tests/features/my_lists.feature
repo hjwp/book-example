@@ -1,7 +1,7 @@
 Feature: My Lists
     As a logged-in user
     I want to be able to see all my lists in one page
-    So that I can find them all afer I've written them
+    So that I can find them all after I've written them
 
     Scenario: Create two lists and see them on the My Lists page
         Given I am a logged-in user
