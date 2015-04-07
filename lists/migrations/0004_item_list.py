@@ -15,6 +15,5 @@ class Migration(migrations.Migration):
             model_name='item',
             name='list',
             field=models.ForeignKey(default=None, to='lists.List'),
-            preserve_default=True,
         ),
     ]
