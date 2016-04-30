@@ -99,6 +99,7 @@ QUnit.test("should intercept form submit and do ajax post", function (assert) {
   $('#id_item_form input[name="text"]').val('user input');
   $('#id_item_form input[name="csrfmiddlewaretoken"]').val('tokeney');
   $('#id_item_form').submit();
+  server.respond();
 
   assert.equal(server.requests.length, 2);
   var request = server.requests[1];
@@ -133,6 +134,22 @@ QUnit.test("should call updateItems after successful post", function (assert) {
   );
 });
 
+QUnit.test("should display errors on post failure", function (assert) {
+  var url = '/listitemsapi/';
+  window.Superlists.initialize(url);
+  server.respondWith('POST', url, [
+    400,
+    {"Content-Type": "application/json"},
+    JSON.stringify({'error': 'something is amiss'})
+  ]);
+
+  console.log('now');
+  $('#id_item_form').submit();
+  server.respond(); // post
+
+  assert.equal($('.has-error').text(), 'something is amiss');
+
+});
   </script>
 
 </body>

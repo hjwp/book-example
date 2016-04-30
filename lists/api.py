@@ -17,6 +17,7 @@ def list(request, list_id):
         else:
             return HttpResponse(
                 json.dumps({'error': form.errors['text'][0]}),
+                content_type='application/json',
                 status=400
             )
     item_dicts = [

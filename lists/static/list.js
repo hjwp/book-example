@@ -27,9 +27,11 @@ window.Superlists.initialize = function (url) {
         'csrfmiddlewaretoken': form.find('input[name="csrfmiddlewaretoken"]').val(),
       }).done(function () {
         window.Superlists.updateItems(url);
+      }).fail(function (xhr, response, error) {
+        console.log(xhr.responseText);
+        $('.has-error').text(xhr.responseText.error);
       });
-
     });
-  };
+  }
 };
 
