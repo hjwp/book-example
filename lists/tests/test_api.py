@@ -1,7 +1,7 @@
 import json
 from django.test import TestCase
 from lists.models import List, Item
-from lists.forms import EMPTY_ITEM_ERROR
+from lists.forms import DUPLICATE_ITEM_ERROR, EMPTY_ITEM_ERROR
 
 
 class ListAPITest(TestCase):
@@ -60,5 +60,16 @@ class ListAPITest(TestCase):
         self.assertEqual(
             json.loads(response.content.decode('utf8')),
             {'error': EMPTY_ITEM_ERROR}
+        )
+
+
+    def test_duplicate_items_error(self):
+        list_ = List.objects.create()
+        self.client.post(self.base_url.format(list_.id), data={'text': 'thing'})
+        response = self.client.post(self.base_url.format(list_.id), data={'text': 'thing'})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            json.loads(response.content.decode('utf8')),
+            {'error': DUPLICATE_ITEM_ERROR}
         )
 
