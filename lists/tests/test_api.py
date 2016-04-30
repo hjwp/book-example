@@ -1,6 +1,7 @@
 import json
 from django.test import TestCase
 from lists.models import List, Item
+from lists.forms import EMPTY_ITEM_ERROR
 
 
 class ListAPITest(TestCase):
@@ -38,4 +39,26 @@ class ListAPITest(TestCase):
         self.assertEqual(response.status_code, 201)
         new_item = list_.item_set.get()
         self.assertEqual(new_item.text, 'new item')
+
+
+    def post_invalid_input(self):
+        list_ = List.objects.create()
+        return self.client.post(
+            self.base_url.format(list_.id),
+            data={'text': ''}
+        )
+
+
+    def test_for_invalid_input_nothing_saved_to_db(self):
+        self.post_invalid_input()
+        self.assertEqual(Item.objects.count(), 0)
+
+
+    def test_for_invalid_input_returns_error_code(self):
+        response = self.post_invalid_input()
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            json.loads(response.content.decode('utf8')),
+            {'error': EMPTY_ITEM_ERROR}
+        )
 
