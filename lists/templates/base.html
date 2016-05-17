@@ -1,69 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>To-Do lists</title>
     <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/base.css" rel="stylesheet">
-</head>
+  </head>
 
-<body>
-<div class="container">
+  <body>
 
-    <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+
+      <nav class="navbar navbar-default" role="navigation">
         <a class="navbar-brand" href="/">Superlists</a>
         {% if user.email %}
-            <a class="btn navbar-btn navbar-right" id="id_logout" href="{% url 'logout' %}">Log out</a>
-            <span class="navbar-text navbar-right">Logged in as {{ user.email }}</span>
+          <a class="btn navbar-btn navbar-right" id="id_logout" href="{% url 'logout' %}">Log out</a>
+          <span class="navbar-text navbar-right">Logged in as {{ user.email }}</span>
         {% else %}
-            <a class="btn navbar-btn navbar-right" id="id_login" href="#">Sign in</a>
+          <a class="btn navbar-btn navbar-right" id="id_login" href="#">Sign in</a>
         {% endif %}
-    </nav>
+      </nav>
 
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3 jumbotron">
-            <div class="text-center">
-                <h1>{% block header_text %}{% endblock %}</h1>
-                <form method="POST" action="{% block form_action %}{% endblock %}">
-                    {{ form.text }}
-                    {% csrf_token %}
-                    {% if form.errors %}
-                        <div class="form-group has-error">
-                            <div class="help-block">{{ form.text.errors }}</div>
-                        </div>
-                    {% endif %}
-                </form>
-            </div>
-        </div>
+      {% block content %}
+      {% endblock content %}
+
     </div>
 
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            {% block table %}
-            {% endblock %}
-        </div>
-    </div>
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="https://login.persona.org/include.js"></script>
+    <script src="/static/accounts.js"></script>
+    {% block extra_scripts %}
+    {% endblock extra_scripts %}
 
-</div>
-<script src="http://code.jquery.com/jquery.min.js"></script>
-<script src="https://login.persona.org/include.js"></script>
-<script src="/static/accounts.js"></script>
-<script src="/static/list.js"></script>
-<script>
-    /*global $, Superlists, navigator */
-    $(document).ready(function () {
-        var user = "{{ user.email }}" || null;
-        var token = "{{ csrf_token }}";
-        var urls = {
-            login: "{% url 'persona_login' %}",
-            logout: "TODO",
-        };
-        Superlists.Accounts.initialize(navigator, user, token, urls);
-    });
-</script>
-</body>
+    <script>
+/*global $, Superlists, navigator */
+$(document).ready(function () {
+  var user = "{{ user.email }}" || null;
+  var token = "{{ csrf_token }}";
+  var urls = {
+    login: "{% url 'persona_login' %}",
+    logout: "TODO",
+  };
+  Superlists.Accounts.initialize(navigator, user, token, urls);
+});
+    </script>
 
+  </body>
 </html>
