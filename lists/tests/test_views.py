@@ -165,3 +165,11 @@ class ListViewTest(TestCase):
         self.assertTemplateUsed(response, 'list.html')
         self.assertEqual(Item.objects.all().count(), 1)
 
+
+class MyListsViewTest(TestCase):
+
+    def test_uses_my_lists_template(self):
+        response = self.client.get('/lists/my_lists/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'my_lists.html')
+
