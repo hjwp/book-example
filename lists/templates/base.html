@@ -1,46 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>To-Do lists</title>
     <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/base.css" rel="stylesheet">
-</head>
+  </head>
 
-<body>
-<div class="container">
+  <body>
+    <div class="container">
 
-    <div class="row">
+      <div class="row">
         <div class="col-md-6 col-md-offset-3 jumbotron">
-            <div class="text-center">
-                <h1>{% block header_text %}{% endblock %}</h1>
-                <form method="POST" action="{% block form_action %}{% endblock %}">
-                    {{ form.text }}
-                    {% csrf_token %}
-                    {% if form.errors %}
-                        <div class="form-group has-error">
-                            <div class="help-block">{{ form.text.errors }}</div>
-                        </div>
-                    {% endif %}
-                </form>
-            </div>
+          <div class="text-center">
+            <h1>{% block header_text %}{% endblock %}</h1>
+            <form method="POST" action="{% block form_action %}{% endblock %}">
+              {{ form.text }}
+              {% csrf_token %}
+              {% if form.errors %}
+                <div class="form-group has-error">
+                  <div class="help-block">{{ form.text.errors }}</div>
+                </div>
+              {% endif %}
+            </form>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <div class="row">
+      <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            {% block table %}
-            {% endblock %}
+          {% block table %}
+          {% endblock %}
         </div>
+      </div>
+
     </div>
 
-</div>
-
-<script src="/static/jquery/jquery.min.js"></script>
-<script src="/static/list.js"></script>
-</body>
+    <script src="/static/jquery/jquery.min.js"></script>
+    <script src="/static/list.js"></script>
+  </body>
 
 </html>
