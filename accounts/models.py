@@ -5,3 +5,7 @@ class User(models.Model):
     REQUIRED_FIELDS = ()
     USERNAME_FIELD = 'email'
 
+
+class Token(models.Model):
+    pass
+
