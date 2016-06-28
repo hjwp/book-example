@@ -8,4 +8,5 @@ class User(models.Model):
 
 class Token(models.Model):
     email = models.EmailField()
+    uid = models.CharField(max_length=40)
 
