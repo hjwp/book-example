@@ -8,3 +8,8 @@ class User(models.Model):
     is_anonymous = False
     is_authenticated = True
 
+
+
+class Token(models.Model):
+    pass
+
