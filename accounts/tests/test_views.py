@@ -11,6 +11,19 @@ class SendLoginEmailViewTest(TestCase):
         self.assertRedirects(response, '/')
 
 
+    def test_adds_success_message(self):
+        response = self.client.post('/accounts/send_login_email', data={
+            'email': 'edith@example.com'
+        }, follow=True)
+
+        message = list(response.context['messages'])[0]
+        self.assertEqual(
+            message.message,
+            "Check your email, we've sent you a link you can use to log in."
+        )
+        self.assertEqual(message.tags, "success")
+
+
     @patch('accounts.views.send_mail')
     def test_sends_mail_to_address_from_post(self, mock_send_mail):
         self.client.post('/accounts/send_login_email', data={
