@@ -27,6 +27,6 @@ def send_login_email(request):
 
 
 def login(request):
-    auth.authenticate('bang!')
+    auth.authenticate(uid=request.GET.get('token'))
     return redirect('/')
 
