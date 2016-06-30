@@ -18,4 +18,5 @@ def send_login_email(request):
 
 
 def login(request):
-    pass
+    return redirect('/')
+
