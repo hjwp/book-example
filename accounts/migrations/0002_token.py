@@ -15,6 +15,7 @@ class Migration(migrations.Migration):
             name='Token',
             fields=[
                 ('id', models.AutoField(primary_key=True, auto_created=True, verbose_name='ID', serialize=False)),
+                ('email', models.EmailField(max_length=254)),
             ],
         ),
     ]
