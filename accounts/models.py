@@ -11,5 +11,5 @@ class User(models.Model):
 
 
 class Token(models.Model):
-    pass
+    email = models.EmailField()
 
