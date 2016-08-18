@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn server for {{ host }}
+User=elspeth
+
+[Service]
+WorkingDirectory=/home/elspeth/sites/{{ host }}/source
+Restart=on-failure
+ExecStart=/home/elspeth/sites/{{ host }}/virtualenv/bin/gunicorn \
+    --bind unix:/tmp/{{ host }}.socket \
+    --access-logfile ../access.log \
+    --error-logfile ../error.log \
+    superlists.wsgi:application
+

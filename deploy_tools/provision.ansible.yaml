@@ -2,10 +2,8 @@
 
 - hosts: all
 
-  sudo: yes
-
   vars: 
-      host: $inventory_hostname
+      host: "{{ inventory_hostname }}"
 
   tasks:
     - name: make sure required packages are installed
@@ -26,13 +24,17 @@
           - restart nginx
 
     - name: add symlink in nginx sites-enabled
-      file: src=/etc/nginx/sites-available/{{ host }} dest=/etc/nginx/sites-enabled/{{ host }} state=link
+      file:
+          src=/etc/nginx/sites-available/{{ host }}
+          dest=/etc/nginx/sites-enabled/{{ host }}
+          state=link
       notify:
           - restart nginx
 
-
-    - name: write gunicorn init script
-      template: src=./gunicorn-upstart.conf.j2 dest=/etc/init/gunicorn-{{ host }}.conf
+    - name: write gunicorn service script
+      template:
+          src=./gunicorn.service.j2
+          dest=/etc/systemd/system/gunicorn-{{ host }}.service
       notify:
           - restart gunicorn
 
@@ -47,3 +49,4 @@
 
     - name: restart gunicorn
       service:  name=gunicorn-{{ host }} state=restarted
+
