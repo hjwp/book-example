@@ -3,7 +3,7 @@ server {
     server_name {{ host }};
 
     location /static {
-        alias /home/harry/sites/{{ host }}/static;
+        alias /home/{{ user }}/sites/{{ host }}/static;
     }
 
     location / {

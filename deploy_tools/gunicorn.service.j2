@@ -1,11 +1,11 @@
 [Unit]
 Description=Gunicorn server for {{ host }}
-User=elspeth
 
 [Service]
-WorkingDirectory=/home/elspeth/sites/{{ host }}/source
+User={{ user }}
+WorkingDirectory=/home/{{ user }}/sites/{{ host }}/source
 Restart=on-failure
-ExecStart=/home/elspeth/sites/{{ host }}/virtualenv/bin/gunicorn \
+ExecStart=/home/{{ user }}/sites/{{ host }}/virtualenv/bin/gunicorn \
     --bind unix:/tmp/{{ host }}.socket \
     --access-logfile ../access.log \
     --error-logfile ../error.log \
