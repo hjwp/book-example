@@ -1,6 +1,8 @@
 describe("list js", function() {
-  it("should have working maths", function() {
-    expect(1 + 1).toEqual(2);
+  it("should be able to use jquery to create and hide things", function() {
+    expect( $('.has-error').is(':visible') ).toBe(true);
+    $('.has-error').hide();
+    expect( $('.has-error').is(':visible') ).toBe(false);
   });
 });
 
