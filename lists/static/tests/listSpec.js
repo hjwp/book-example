@@ -14,21 +14,15 @@ describe("list js", function() {
   });
 
   it("should hide errors on keypress", function() {
-    $('body').trigger('keypress');
+    initialize();
+    $('#testform input').trigger('keypress');
     expect( $('.has-error').is(':visible') ).toBe(false);
   });
 
   it("should not hide errors unnecessarily", function() {
+    initialize();
     expect( $('.has-error').is(':visible') ).toBe(true);
   });
 
-  it("should attach an event handler to the body", function() {
-    $('body').on('foo', function baz() {});
-    expect( $._data(document.body, 'events') ).toEqual([]);
-  });
-
-  it("shouldnt mess with the body element", function() {
-    expect(window.oldBody).toBe(document.body);
-  });
 });
 
