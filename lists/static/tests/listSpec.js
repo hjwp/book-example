@@ -14,13 +14,13 @@ describe("list js", function() {
   });
 
   it("should hide errors on keypress", function() {
-    initialize();
+    window.Superlists.hideErrorsOnInput();
     $('#testform input').trigger('keypress');
     expect( $('.has-error').is(':visible') ).toBe(false);
   });
 
   it("should not hide errors unnecessarily", function() {
-    initialize();
+    window.Superlists.hideErrorsOnInput();
     expect( $('.has-error').is(':visible') ).toBe(true);
   });
 
