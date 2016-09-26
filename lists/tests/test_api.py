@@ -61,6 +61,7 @@ class ListAPITest(TestCase):
             json.loads(response.content.decode('utf8')),
             {'error': EMPTY_ITEM_ERROR}
         )
+        self.assertEqual(response['content-type'], 'application/json')
 
 
     def test_duplicate_items_error(self):
