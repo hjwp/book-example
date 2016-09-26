@@ -1,5 +1,7 @@
-jQuery(document).ready(function ($) {
-    $('input').on('keypress', function () {
-        $('.has-error').hide();
-    });
-});
+window.Superlists = {};
+
+window.Superlists.hideErrorsOnInput = function () {
+  $('input[name="text"]').on('keypress', function () {
+    $('.has-error').hide();
+  });
+};
