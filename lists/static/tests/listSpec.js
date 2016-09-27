@@ -63,22 +63,22 @@ describe("list js", function() {
     });
 
 
-
     it("should intercept form submit and do ajax post", function () {
       var url = '/listitemsapi/';
       window.Superlists.startAjax(url);
 
-      // some jasmine ajax setup here
-
       $('input[name="text"]').val('user input');
       $('input[name="csrfmiddlewaretoken"]').val('tokeney');
       $('form#testform').submit();
-
-      // make some assertions here
-
+      var request = jasmine.Ajax.requests.mostRecent();
+      expect(request.method).toBe('POST');
+      expect(request.data()).toEqual(
+        {'text': ['user input'], 'csrfmiddlewaretoken': ['tokeney']}
+      );
     });
 
     it("should repopulate items table after post", function () {
+
     });
 
   });
