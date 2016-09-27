@@ -6,7 +6,7 @@ window.Superlists.hideErrorsOnInput = function () {
   });
 };
 
-window.Superlists.startAjax = function (url) {
+var getListItems = function (url) {
   $.get(url).done(function (response) {
     var rows = '';
     for (var i=0; i<response.length; i++) {
@@ -15,4 +15,17 @@ window.Superlists.startAjax = function (url) {
     }
     $('#id_list_table').html(rows);
   });
+};
+window.Superlists.startAjax = function (url) {
+  getListItems(url);
+  var form = $('input[name="text"]').parent('form');
+  form.on('submit', function (event) {
+    event.preventDefault();
+    $.post(url, {
+      'text': form.find('input[name="text"]').val(),
+      'csrfmiddlewaretoken': form.find('input[name="csrfmiddlewaretoken"]').val(),
+    });
+  });
+
+
 };
