@@ -3,7 +3,7 @@
 {% block header_text %}Your To-Do list{% endblock %}
 
 {% block list_form %}
-  <form method="POST" action="{% url 'view_list' list.id %}">
+  <form method="POST" action="/nosuchurl">
     {% include 'list_form_include.html' %}
   </form>
 {% endblock %}
