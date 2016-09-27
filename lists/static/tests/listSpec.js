@@ -2,11 +2,12 @@ describe("list js", function() {
 
   beforeEach(function () {
     var form = $(
-      '<form id="testform">' +
-        '<input name="text" />' +
-        '<div class="has-error"></div>' +
-      '</form>'
-    );
+        '<form id="testform">' +
+          '<input name="text" />' +
+          '<input type="hidden" name="csrfmiddlewaretoken" value="tokey" />' +
+          '<div class="has-error"></div>' +
+        '</form>'
+        );
     $('body').append(form);
     var table = $('<table id="id_list_table"></table>');
     $('body').append(table);
@@ -62,9 +63,20 @@ describe("list js", function() {
     });
 
 
-    it("should intercept form submit and do ajax post", function () {
-    });
 
+    it("should intercept form submit and do ajax post", function () {
+      var url = '/listitemsapi/';
+      window.Superlists.startAjax(url);
+
+      // some jasmine ajax setup here
+
+      $('input[name="text"]').val('user input');
+      $('input[name="csrfmiddlewaretoken"]').val('tokeney');
+      $('form#testform').submit();
+
+      // make some assertions here
+
+    });
 
     it("should repopulate items table after post", function () {
     });
