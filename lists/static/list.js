@@ -16,6 +16,7 @@ var getListItems = function (url) {
     $('#id_list_table').html(rows);
   });
 };
+
 window.Superlists.startAjax = function (url) {
   getListItems(url);
   var form = $('input[name="text"]').parent('form');
@@ -24,8 +25,8 @@ window.Superlists.startAjax = function (url) {
     $.post(url, {
       'text': form.find('input[name="text"]').val(),
       'csrfmiddlewaretoken': form.find('input[name="csrfmiddlewaretoken"]').val(),
+    }).done(function () {
+      getListItems(url);
     });
   });
-
-
 };
