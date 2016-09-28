@@ -37,9 +37,17 @@ describe("list js", function() {
 
   describe("retrieving and adding to existing lists via ajax", function() {
 
-    it("should retrieve items via ajax and fill in lists table on page load", function () {
+    it("startAjax should call getListItems", function () {
       var url = '/listitemsapi/';
+      spyOn(window, 'getListItems');
       window.Superlists.startAjax(url);
+      expect(window.getListItems).toHaveBeenCalledWith(url);
+    });
+
+
+    it("getListItems should retrieve items via ajax and fill in lists table on page load", function () {
+      var url = '/listitemsapi/';
+      window.getListItems(url);
 
       expect(jasmine.Ajax.requests.mostRecent().url).toBe(url);
 
@@ -77,38 +85,19 @@ describe("list js", function() {
       );
     });
 
-    it("should repopulate items table after post", function () {
+    it("should call getListItems after post", function () {
       var url = '/listitemsapi/';
       window.Superlists.startAjax(url);
       $('form#testform').submit();
+      spyOn(window, 'getListItems');
+
       jasmine.Ajax.requests.mostRecent().respondWith({
         "status": 201,
         "contentType": 'application/json',
         'responseText': '{}'
       });
 
-      var getRequest = jasmine.Ajax.requests.mostRecent();
-
-      expect(getRequest.url).toBe(url);
-      expect(getRequest.method).toBe('GET');
-
-      var rowsJson = JSON.stringify([
-          {'id': 101, 'text': 'item 1 text'},
-          {'id': 102, 'text': 'item 2 text'},
-      ]);
-
-      getRequest.respondWith({
-        "status": 200,
-        "contentType": 'application/json',
-        "responseText": rowsJson
-      });
-
-      var rows = $('#id_list_table tr');
-      expect(rows.length).toEqual(2);
-      var row1 = $('#id_list_table tr:first-child td');
-      expect(row1.text()).toEqual('1: item 1 text');
-      var row2 = $('#id_list_table tr:last-child td');
-      expect(row2.text()).toEqual('2: item 2 text');
+      expect(window.getListItems).toHaveBeenCalledWith(url);
     });
   });
 });
