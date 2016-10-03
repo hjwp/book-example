@@ -1,0 +1,585 @@
+== Dipping Our Toes, Very Tentatively, into JavaScript
+
+
+[quote, 'John Calvin (as portrayed in http://onemillionpoints.blogspot.co.uk/2008/08/calvin-and-chipmunks.html[Calvin and the Chipmunks])']
+______________________________________________________________
+If the Good Lord had wanted us to enjoy ourselves, he wouldn't have granted us
+his precious gift of relentless misery.
+______________________________________________________________
+
+
+Original description:
+
+'1/2 day: "JavaScript testing".  Working in Python is just too nice, so every
+so often we have to work with JavaScript just to remind ourselves of how
+lucky we are.  What to do when our javascript codebase starts to get more
+complex?  This course will cover the essentials of javascript testing, from
+setting up a test runner, organising fixtures, ensuring isolation between
+tests, through testing AJAX calls and mocking with javascript.'
+
+
+Initial setup:
+~~~~~~~~~~~~~~
+
+----
+mkvirtualenv tdd-workshop --python=python3
+pip install 'django<1.9' selenium
+git clone https://github.com/hjwp/book-example.git tdd-workshop
+cd tdd-workshop
+git checkout js-workshop-start
+git checkout -b mybranch
+
+python manage.py test
+# should show one test failure:
+[...]
+    self.assertFalse(error.is_displayed())
+AssertionError: True is not false
+----
+
+If any problems with Selenium not being able to start Firefox,
+
+* Either try switching to Firefox 45 ESR
+
+* Or switch to Chrome (`webdriver.Chrome` in 'base.py', and you'll
+  need to download a thing called "chromedriver")
+
+
+Intro
+~~~~~
+
+* Not a Js expert
+* Who is familiar with: JavaScript (or never used?), jQuery, jasmine, angular,
+ require.js
+
+
+Objectives
+~~~~~~~~~~
+
+* Get a basic js test environment going,
+* Meet some of the common js testing challenges
+* See how it fits in with a Python TDD cycle
+
+
+
+Context and site tour
+~~~~~~~~~~~~~~~~~~~~~
+
+If needed: recap general superlists stuff:
+
+* concept: to-do lists app
+* models, views, templates
+* unit tests
+* functional tests
+
+New bits: 
+
+* validation errors (not dynamic)
+* forms
+
+Then:
+
+* current test failure / today's goals.
+  'functional_tests/test_list_item_validation.py'
+
+
+
+Exercise 1: Get it working!
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+No need for tests, just hack in some javascript, and see if you can get our
+test passing
+
+To run just our test:
+
+[subs="specialcharacters,macros"]
+----
+$ pass:quotes[*python3 manage.py test functional_tests.test_list_item_validation*]
+----
+
+Then run all the tests with `manage.py test` to make sure we didn't
+break anything.
+
+Do a `git stash` to reset your code when you're done.
+
+
+Setting Up the Jasmine browser-based test runner
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Discussion:
+
+* Python's relatively small range of testing tools
+* vs Javascript: YUI, jsUnit, QUnit, Mocha, Chutzpah, Karma, Jasmine, 
+* And then you need to choose an 'assertion framework' and a
+'reporter', and maybe a 'mocking library', and it never ends!
+* and it all changes every five minutes.
+
+We'll use http://jasmine.github.io/[Jasmine] because it's already in
+use here at the org, and is increasingly popular particularly in the
+Angular.js world.  In the book I use QUnit, which is relatively
+straighforward and make jQuery easy, but it comes at the expense of
+flexibility.  And it's  a bit fuddy-duddy.
+
+Make a directory called 'tests' inside 'lists/static', download the jasmine
+release, unzip it, and tidy up the folder structure a little, removing the
+example code.  Also create an empty file at 'lists/static/list.js', and
+another one at 'lists/static/tests/listSpec.js'.
+
+You should end up with something like this:
+
+
+----
+lists/static
+├── base.css
+├── bootstrap
+│   └── [...]
+├── list.js
+└── tests
+    ├── jasmine-2.5.2
+    │   ├── boot.js
+    │   ├── console.js
+    │   ├── jasmine.css
+    │   ├── jasmine_favicon.png
+    │   ├── jasmine-html.js
+    │   └── jasmine.js
+    ├── listSpec.js
+    └── SpecRunner.html
+
+----
+
+And then edit 'SpecRunner.html' to tweak the paths for our new folder
+structure:
+
+[role="sourcecode"]
+.lists/static/tests/SpecRunner.html
+[source,html]
+----
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>JavaScript unit tests</title>
+
+  <link rel="shortcut icon" type="image/png" href="jasmine-2.5.2/jasmine_favicon.png">
+  <link rel="stylesheet" href="jasmine-2.5.2/jasmine.css">
+  <script src="jasmine-2.5.2/jasmine.js"></script>
+  <script src="jasmine-2.5.2/jasmine-html.js"></script>
+  <script src="jasmine-2.5.2/boot.js"></script>
+
+  <script src="../list.js"></script>
+  <script src="listSpec.js"></script>
+</head>
+
+<body>
+</body>
+</html>
+----
+
+Both 'list.js' and 'listSpec.js' are empty, but we should still see something
+like this if you load 'SpecRunner.html' up in a browser:
+
+.Basic Jasmine Spec runner with no specs
+image::images/empty_jasmine_specrunner.png["Jasmine Spec Runner with no specs"]
+
+
+Smoke test
+^^^^^^^^^^
+
+Edit 'listSpec.js' and create a "smoke test"
+
+[role="sourcecode"]
+.lists/static/tests/listSpec.js
+[source,javascript]
+----
+describe("list js", function() {
+  it("should have working maths", function() {
+    expect(1 + 1).toEqual(2);
+  });
+});
+----
+
+// harry to live-code this based on copy-paste example from jasmine site?
+// explain as we go
+
+
+And you should see something like this:
+
+
+.Maths works
+image::images/maths_works.png["Jasmine with 1 passing spec"]
+
+
+And if you deliberately break the test you should get this:
+
+.Maths is broken
+image::images/maths_broken.png["Jasmine with 1 failing spec"]
+
+
+
+Concepts recap
+^^^^^^^^^^^^^^
+
+* "spec files" aka tests
+* "source files" ie your real javascript
+* "SpecRunner.html" ie the browser-based test runner
+    - as we'll see later you can also have a command-line test runner
+* smoke test is always a nice way to try out any testing framework.
+* Jasmine "BDD" tests:
+    * `describe` = test class
+    * `it` = test
+    * `expect` + `toEqual` = assert
+
+
+
+.Basic Jasmine setup: advanced exercises
+****************************************
+
+1. Browse the http://jasmine.github.io/2.5/introduction.html[Jasmine docs] to
+  learn more about Jasmine
+
+2. Checkout out https://github.com/jasmine/jasmine-py[Jasmine-Py], 
+  `pip install jasmine`, and see if you can get its alternative test runner
+  working
+
+****************************************
+
+
+Adding jQuery
+~~~~~~~~~~~~~
+
+Download from jquery.com and put it in 'lists/static/jquery-3.1.1.min.js' 
+(don't worry if you get a slightly different version)
+
+
+Add it to the SpecRunner
+
+[role="sourcecode"]
+.lists/static/tests/SpecRunner.html
+[source,diff]
+----
+@@ -10,6 +10,7 @@
+   <script src="jasmine-2.5.2/jasmine-html.js"></script>
+   <script src="jasmine-2.5.2/boot.js"></script>
+ 
++  <script src="../jquery-3.1.1.min.js"></script>
+   <script src="../list.js"></script>
+   <script src="listSpec.js"></script>
+ </head>
+----
+
+
+And also add a bit of HTML to represent the form
+and its error div which we want to hide:
+
+[role="sourcecode"]
+.lists/static/tests/SpecRunner.html
+[source,diff]
+----
+@@ -16,5 +16,11 @@
+ </head>
+ 
+ <body>
++
++  <form>
++    <input name="text" />
++    <div class="has-error"></div>
++  </form>
++
+ </body>
+ </html>
+----
+
+
+Now let's use jQuery in our test:
+
+[role="sourcecode"]
+.lists/static/tests/listSpec.js
+[source,javascript]
+----
+  it("should be able to use jquery to create and hide things", function() {
+    expect( $('.has-error').is(':visible') ).toBe(true);
+    $('.has-error').hide();
+    expect( $('.has-error').is(':visible') ).toBe(false);
+  });
+----
+
+
+Global state:  the key challenge of js testing. Lesson 1: HTML fixtures
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* what happens if we dupe the test?
+
+[subs="specialcharacters,quotes"]
+----
+2 specs, 1 failure
+
+list js should be able to run the same test twice
+  Expected false to be true.
+----
+
+
+* need some way of re-setting the DOM before each test?
+* or we only do things that are non-destructive
+
+--> use `beforeEach` and `afterEach` and jQuery append/remove
+--> not only solution!
+
+
+.HTML fixtures advanced exercise
+****************************************
+
+Check out "jasmine-jquery" and "jasmine-fixtures" as alternative ways
+of loading fixtures.
+
+****************************************
+
+
+
+
+Testing our actual intended behaviour
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Replace our tests with what we actually want to test:
+
+[role="sourcecode"]
+.lists/static/tests/listSpec.js
+[source,javascript]
+----
+  it("should hide errors on keypress", function() {
+    $('#testform input').trigger('keypress');
+    expect( $('.has-error').is(':visible') ).toBe(false);
+  });
+----
+
+And maybe this too?  Always check the negative case!
+
+[role="sourcecode"]
+.lists/static/tests/listSpec.js
+[source,javascript]
+----
+  it("should not hide errors unnecessarily", function() {
+    expect( $('.has-error').is(':visible') ).toBe(true);
+  });
+----
+
+
+The key challenge of js testing. Lesson 2: Execution order
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* What's the simplest thing we can do?
+* Does your hacked-in implementation from earlier work?
+* If not, why not?  Debug with some `console.logs`
+* If you didn't already, try an 'jquery-wait-for-document-ready' invocation.
+  Does that help?
+
+Tips:
+
+* Be clear on what gets executed when:
+* When does our HTML fixture get added?  When do we attach our event listeners?
+* Want to ask jQuery what event listeners are attached to an element?
+
+[source,javascript]
+----
+$._data($('selector')[0], 'events')
+----
+
+
+
+Building a solution that works
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We'll have to bite the bullet and use an initialization function.  It's
+a common pattern.
+
+[role="sourcecode"]
+.lists/static/tests/listSpec.js
+[source,javascript]
+----
+  it("should hide errors on keypress", function() {
+    initialize();
+    $('#testform input').trigger('keypress');
+    expect( $('.has-error').is(':visible') ).toBe(false);
+  });
+----
+
+* Get this working
+* How can we improve on it?
+
+
+.JavaScript testing: final advanced challenges
+**********************************************
+
+1. Add onclick handler, with fts and unit tests
+2. Install jslint or jshint into your editor and get it to check your code.
+3. Rewrite everything to not use jQuery
+4. Require.js?
+5. Skip to REST branch for testing ajax!
+
+**********************************************
+
+
+Final discussion
+~~~~~~~~~~~~~~~~
+
+----
+git stash show -p
+# vs
+git diff js-workshop-start
+----
+
+Compare our finalised JavaScript with our first hacked-in solution.  Was it
+worth it?  If not in the immediate, how might it be worth it in the longer run?
+
+
+
+Recap: JavaScript Testing Notes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* One of the great advantages of Selenium is that it allows you to test that
+  your JavaScript really works, just as it tests your Python code.
+
+* There are many JavaScript test running libraries out there.  Jasmine is
+  popular with the Angular.js crowd.  QUnit is a nice simple one if you're
+  only using jQuery
+
+* No matter which testing library you use, you'll always need to find solutions
+  to the main challenge of JavaScript testing, which is about 'managing global
+  state'.  That includes:
+    - the DOM / HTML fixtures
+    - namespacing
+    - understanding and controlling execution order.
+
+* I don't really mean it when I say that JavaScript is awful. It can actually
+  be quite fun.  But I'll say it again: make sure you've read
+  <<jsgoodparts,'JavaScript: The Good Parts'>>.
+
+
+
+Bonus round: Ajax and Mocking
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Still with me?  Glutton for punishment?  OK, let's do a little more.
+
+    git checkout js-workshop-bonus-start
+
+Here's a new file:
+
+[role="sourcecode"]
+.lists/api.py
+[source,html]
+----
+def list(request, list_id):
+    list_ = List.objects.get(id=list_id)
+    if request.method == 'POST':
+        form = ExistingListItemForm(for_list=list_, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponse(status=201)
+        else:
+            return HttpResponse(
+                json.dumps({'error': form.errors['text'][0]}),
+                content_type='application/json',
+                status=400
+            )
+    item_dicts = [
+        {'id': item.id, 'text': item.text}
+        for item in list_.item_set.all()
+    ]
+    return HttpResponse(
+        json.dumps(item_dicts),
+        content_type='application/json'
+    )
+----
+
+You now have a new API view you can use, for an existing list, to do retrieving
+and adding list items via REST calls.  Can we test-drive the development
+of our Ajax in 'list.js'?
+
+We won't worry about errors for now.
+
+
+
+Testing an Ajax get with jasmine-ajax-mock
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Here's our first test, for retrieving list items via ajax GET and populating
+the list table:
+
+[role="sourcecode"]
+.lists/static/tests/listSpec.js
+[source,javascript]
+----
+  it("should retrieve items via ajax and fill in lists table on page load", function () {
+    var url = '/listitemsapi/';
+    window.Superlists.startAjax(url);
+
+    expect(jasmine.Ajax.requests.mostRecent().url).toBe(url);
+
+    var rowsJson = JSON.stringify([
+        {'id': 101, 'text': 'item 1 text'},
+        {'id': 102, 'text': 'item 2 text'},
+    ]);
+
+    jasmine.Ajax.requests.mostRecent().respondWith({
+      "status": 200,
+      "contentType": 'application/json',
+      "responseText": rowsJson
+    });
+
+    var rows = $('#id_list_table tr');
+    expect(rows.length).toEqual(2);
+    var row1 = $('#id_list_table tr:first-child td');
+    expect(row1.text()).toEqual('1: item 1 text');
+    var row2 = $('#id_list_table tr:last-child td');
+    expect(row2.text()).toEqual('2: item 2 text');
+  });
+----
+
+Let's get it passing!
+
+
+Cheating and working backwards: test a POST that already exists
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    git checkout js-workshop-bonus-start
+
+Functional Tests should pass.
+
+
+[role="sourcecode"]
+.lists/static/tests/list.js
+[source,javascript]
+----
+window.Superlists.startAjax = function (url) {
+  getListItems(url);
+  var form = $('input[name="text"]').parent('form');
+  form.on('submit', function (event) {
+    event.preventDefault();
+    $.post(url, {
+      'text': form.find('input[name="text"]').val(),
+      'csrfmiddlewaretoken': form.find('input[name="csrfmiddlewaretoken"]').val(),
+    }).done(function () {
+      getListItems(url);
+    });
+  });
+};
+----
+
+Can we reverse-engineer  some js tests for that?
+
+What about for repopulating the table?
+
+
+Finally: Mocking with JavaScript
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+What about our `getListItems` helper function?  Could we de-duplicate our tests
+by using some mocks!  Yes indeed we could!  (whether it's actually worth it is
+debatable, but we may as well learn the technique).
+
+* use spyOn(window, 'getListItems') (or add it to Superlists)
+* refactor two tests
+* or, debatably, leave one sanity-check test, add a second.
+* don't forget to deliberately break things to see them fail.
+
+    git checkout js-workshop-bonus-part3 if you need to
+
