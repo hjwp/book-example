@@ -1,12 +1,17 @@
 describe('my test runner', function () {
 
   beforeEach(function () {
-    var htmlFixture = $('<div id="myfixture" class="has-error">Error!</div>');
-    $('body').append(htmlFixture);
+    var myFixture = $(
+        '<form id="testform">' + 
+          '<input name="text" />' +
+          '<div class="has-error">Error!</div>' + 
+        '</form>'
+    );
+    $('body').append(myFixture);
   });
 
   afterEach(function () {
-    $('#myfixture').remove();
+    $('#testform').remove();
   });
 
   it('should be able to check element visibility', function () {
