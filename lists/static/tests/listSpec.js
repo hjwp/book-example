@@ -1,4 +1,4 @@
-describe('my test runner', function () {
+describe('javascript for lists', function () {
 
   beforeEach(function () {
     var myFixture = $(
@@ -14,19 +14,14 @@ describe('my test runner', function () {
     $('#testform').remove();
   });
 
-  it('should be able to check element visibility', function () {
-    expect( $('.has-error').length ).toEqual(1);
-    expect( $('.has-error').is(':visible') ).toBe(true);
-    $('.has-error').hide();
+  it('hide errors on input', function () {
+    console.log('input test');
+    $('input[name="text"]').trigger('keypress');
     expect( $('.has-error').is(':visible') ).toBe(false);
   });
 
-  it('should be able to check element visibility twice', function () {
-    expect( $('.has-error').length ).toEqual(1);
+  it('should not hide errors unnecessarily', function () {
     expect( $('.has-error').is(':visible') ).toBe(true);
-    $('.has-error').hide();
-    expect( $('.has-error').is(':visible') ).toBe(false);
-
   });
 
 });
