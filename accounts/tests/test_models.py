@@ -9,3 +9,8 @@ class UserModelTest(TestCase):
         user = User(email='a@b.com')
         user.full_clean()  # should not raise
 
+
+    def test_is_authenticated(self):
+        user = User()
+        self.assertTrue(user.is_authenticated())
+
