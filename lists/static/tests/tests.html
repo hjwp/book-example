@@ -58,6 +58,28 @@ QUnit.test("should get items by ajax on initialize", function (assert) {
   assert.equal(request.method, 'GET');
 });
 
+QUnit.test("should fill in lists table from ajax response", function (assert) {
+  var url = '/getitems/';
+  var responseData = [
+    {'id': 101, 'text': 'item 1 text'},
+    {'id': 102, 'text': 'item 2 text'},
+  ];
+  server.respondWith('GET', url, [
+    200, {"Content-Type": "application/json"}, JSON.stringify(responseData)
+  ]);
+  window.Superlists.initialize(url);
+
+  server.respond();
+
+  var rows = $('#id_list_table tr');
+  assert.equal(rows.length, 2);
+  var row1 = $('#id_list_table tr:first-child td');
+  console.log(row1);
+  assert.equal(row1.text(), '1: item 1 text');
+  var row2 = $('#id_list_table tr:last-child td');
+  assert.equal(row2.text(), '2: item 2 text');
+});
+
     </script>
 
 </body>
