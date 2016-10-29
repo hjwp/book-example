@@ -41,3 +41,13 @@
     </div>
   </div>
 {% endblock %}
+
+{% block scripts %}
+  <script>
+$(document).ready(function () {
+  var url = "{% url 'api_list' list.id %}";
+  window.Superlists.initialize(url);
+});
+  </script>
+{% endblock scripts %}
+
