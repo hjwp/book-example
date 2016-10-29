@@ -40,7 +40,6 @@ QUnit.test("errors aren't hidden if there is no keypress", function (assert) {
 
 
 var server;
-
 QUnit.testStart(function () {
   server = sinon.fakeServer.create();
 });
@@ -81,7 +80,34 @@ QUnit.test("should fill in lists table from ajax response", function (assert) {
   assert.equal(row2.text(), '2: item 2 text');
 });
 
-    </script>
+
+QUnit.test("should intercept form submit and do ajax post", function (assert) {
+  var url = '/listitemsapi/';
+  window.Superlists.initialize(url);
+
+  var server = sinon.fakeServer.create();
+  var response = [
+    201,
+    {"Content-Type": "application/json"},
+    JSON.stringify({}),
+  ];
+  server.respondWith('POST', url, response);
+
+  $('#id_item_form input[name="text"]').val('user input');
+  $('#id_item_form input[name="csrfmiddlewaretoken"]').val('tokeney');
+  $('#id_item_form').submit();
+  server.respond();
+
+  assert.equal(server.requests.length, 1);
+  var request = server.requests[0];
+  assert.equal(request.url, url);
+  assert.equal(
+    request.requestBody,
+    'text=user+input&csrfmiddlewaretoken=tokeney'
+  );
+});
+
+  </script>
 
 </body>
 </html>
