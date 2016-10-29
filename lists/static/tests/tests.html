@@ -9,8 +9,9 @@
 <body>
   <div id="qunit"></div>
   <div id="qunit-fixture">
-    <form>
+    <form id="id_item_form">
       <input name="text" />
+      <input type="hidden" name="csrfmiddlewaretoken" value="tokey" />
       <div class="has-error">Error text</div>
     </form>
 
