@@ -59,7 +59,6 @@ QUnit.test("should get items by ajax on initialize", function (assert) {
 });
 
 QUnit.test("should fill in lists table from ajax response", function (assert) {
-  var done = assert.async();
   var url = '/getitems/';
   var responseData = [
     {'id': 101, 'text': 'item 1 text'},
@@ -72,16 +71,13 @@ QUnit.test("should fill in lists table from ajax response", function (assert) {
 
   server.respond();
 
-  setTimeout(function () {
-    var rows = $('#id_list_table tr');
-    assert.equal(rows.length, 2);
-    var row1 = $('#id_list_table tr:first-child td');
-    console.log(row1);
-    assert.equal(row1.text(), '1: item 1 text');
-    var row2 = $('#id_list_table tr:last-child td');
-    assert.equal(row2.text(), '2: item 2 text');
-    done();
-  }, 0);
+  var rows = $('#id_list_table tr');
+  assert.equal(rows.length, 2);
+  var row1 = $('#id_list_table tr:first-child td');
+  console.log(row1);
+  assert.equal(row1.text(), '1: item 1 text');
+  var row2 = $('#id_list_table tr:last-child td');
+  assert.equal(row2.text(), '2: item 2 text');
 });
 
     </script>
