@@ -74,7 +74,6 @@ QUnit.test("should fill in lists table from ajax response", function (assert) {
   var rows = $('#id_list_table tr');
   assert.equal(rows.length, 2);
   var row1 = $('#id_list_table tr:first-child td');
-  console.log(row1);
   assert.equal(row1.text(), '1: item 1 text');
   var row2 = $('#id_list_table tr:last-child td');
   assert.equal(row2.text(), '2: item 2 text');
