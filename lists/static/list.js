@@ -5,7 +5,7 @@ window.Superlists.initialize = function (url) {
   });
 
   if (url) {
-    $.get(url).done(function (response) {
+    $.get(url).then(function (response) {
       var rows = '';
       for (var i=0; i<response.length; i++) {
         var item = response[i];
@@ -15,6 +15,5 @@ window.Superlists.initialize = function (url) {
       $('#id_list_table').html(rows);
     });
   }
-
 };
 
