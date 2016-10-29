@@ -13,7 +13,15 @@ window.Superlists.initialize = function (url) {
       }
       $('#id_list_table').html(rows);
     });
-  }
 
+    var form = $('#id_item_form');
+    form.on('submit', function(event) {
+      event.preventDefault();
+      $.post(url, {
+        'text': form.find('input[name="text"]').val(),
+        'csrfmiddlewaretoken': form.find('input[name="csrfmiddlewaretoken"]').val(),
+      });
+    });
+  }
 };
 
