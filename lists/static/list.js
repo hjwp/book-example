@@ -26,10 +26,11 @@ window.Superlists.initialize = function (url) {
         'text': form.find('input[name="text"]').val(),
         'csrfmiddlewaretoken': form.find('input[name="csrfmiddlewaretoken"]').val(),
       }).done(function () {
+        $('.has-error').hide();
         window.Superlists.updateItems(url);
       }).fail(function (xhr) {
         $('.has-error').show();
-        $('.has-error .help-block').text(JSON.parse(xhr.responseText).error);
+        $('.has-error .help-block').text(xhr.responseJSON.error);
       });
     });
   }
