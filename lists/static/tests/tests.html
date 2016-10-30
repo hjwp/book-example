@@ -43,12 +43,14 @@ QUnit.test("errors aren't hidden if there is no keypress", function (assert) {
 });
 
 
-var server;
+var server, sandbox;
 QUnit.testStart(function () {
   server = sinon.fakeServer.create();
+  sandbox = sinon.sandbox.create();
 });
 QUnit.testDone(function () {
   server.restore();
+  sandbox.restore();
 });
 
 
