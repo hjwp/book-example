@@ -10,8 +10,9 @@ def send_login_email(request):
         'noreply@superlists',
         [email]
     )
-    messages.success(
+    messages.add_message(
         request,
+        messages.SUCCESS,
         "Check your email, we've sent you a link you can use to log in."
     )
     return redirect('/')
