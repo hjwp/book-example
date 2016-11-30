@@ -20,5 +20,5 @@ class HomePageTest(TestCase):
         self.assertIn('<title>To-Do lists</title>', html)
         self.assertTrue(html.strip().endswith('</html>'))
 
-        self.assertTemplateUsed(response, 'home.html')
+        self.assertTemplateUsed(response, 'wrong.html')
 
