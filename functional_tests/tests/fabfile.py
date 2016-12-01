@@ -14,7 +14,7 @@ def reset_database():
     run('rm -f {path}/database/database.sqlite'.format(
         path=_get_base_folder(env.host)
     ))
-    run('{manage_py} syncdb --migrate --noinput'.format(
+    run('{manage_py} migrate --migrate --noinput'.format(
         manage_py=_get_manage_dot_py(env.host)
     ))
 
