@@ -1,13 +1,16 @@
 import unittest
+from unittest.mock import call, patch
+from django.contrib.auth import get_user_model
+from django.http import HttpRequest
 from django.test import TestCase
 from django.utils.html import escape
-from django.contrib.auth import get_user_model
 
 from lists.forms import (
     DUPLICATE_ITEM_ERROR, EMPTY_ITEM_ERROR,
     ExistingListItemForm, ItemForm,
 )
 from lists.models import Item, List
+from lists.views import new_list2
 User = get_user_model()
 
 
@@ -68,6 +71,22 @@ class NewListViewIntegratedTest(TestCase):
         self.client.post('/lists/new', data={'text': 'new item'})
         list_ = List.objects.first()
         self.assertEqual(list_.owner, user)
+
+
+
+@patch('lists.views.NewListForm')
+class NewListViewUnitTest(unittest.TestCase):
+
+    def setUp(self):
+        self.request = HttpRequest()
+        self.request.POST['text'] = 'new list item'
+
+    def test_passes_POST_data_to_NewListForm(self, mockNewListForm):
+        new_list2(self.request)
+        self.assertEqual(
+            mockNewListForm.call_args,
+            call(data=self.request.POST)
+        )
 
 
 
