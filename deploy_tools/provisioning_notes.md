@@ -23,6 +23,7 @@ eg, on Ubuntu:
 
 * see gunicorn-upstart.template.conf
 * replace SITENAME with, eg, staging.my-domain.com
+* replace SEKRIT with email password
 
 ## Folder structure:
 Assume we have a user account at /home/username
