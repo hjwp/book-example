@@ -23,6 +23,7 @@ eg, on Ubuntu:
 
 * see gunicorn-systemd.template.service
 * replace DOMAIN with, e.g., staging.my-domain.com
+* replace SEKRIT with email password
 * Use this snippet to generate a unique secret key:
 
 python -c"import random; print(''.join(random.SystemRandom().
