@@ -12,9 +12,11 @@ class ItemValidationTest(FunctionalTest):
 
         # The home page refreshes, and there is an error message saying
         # that list items cannot be blank
-        self.assertEqual(
-            self.browser.find_element(By.CSS_SELECTOR, ".invalid-feedback").text,
-            "You can't have an empty list item",
+        self.wait_for(
+            lambda: self.assertEqual(
+                self.browser.find_element(By.CSS_SELECTOR, ".invalid-feedback").text,
+                "You can't have an empty list item",
+            )
         )
 
         # She tries again with some text for the item, which now works
