@@ -1,5 +1,6 @@
 from selenium import webdriver
 from .base import FunctionalTest
+from .list_page import ListPage
 
 
 def quit_if_possible(browser):
@@ -24,7 +25,7 @@ class SharingTest(FunctionalTest):
         # Edith goes to the home page and starts a list
         self.browser = edith_browser
         self.browser.get(self.server_url)
-        self.add_list_item('Get help')
+        list_page = ListPage(self).add_list_item('Get help')
 
         # She notices a "Share this list" option
         share_box = self.browser.find_element_by_css_selector(
