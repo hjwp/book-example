@@ -41,4 +41,5 @@ def view_list(request, list_id):
 
 class ViewAndAddToList(DetailView):
     model = List
+    template_name = 'list.html'
 
