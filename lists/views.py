@@ -39,7 +39,8 @@ def view_list(request, list_id):
     return render(request, 'list.html', {'list': list_, "form": form})
 
 
-class ViewAndAddToList(DetailView):
+class ViewAndAddToList(DetailView, CreateView):
     model = List
     template_name = 'list.html'
+    form_class = ExistingListItemForm
 
