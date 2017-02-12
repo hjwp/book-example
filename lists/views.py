@@ -44,3 +44,7 @@ class ViewAndAddToList(DetailView, CreateView):
     template_name = 'list.html'
     form_class = ExistingListItemForm
 
+    def get_form(self):
+        self.object = self.get_object()
+        return self.form_class(for_list=self.object, data=self.request.POST)
+
