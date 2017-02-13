@@ -2,6 +2,15 @@ from behave import given, when, then
 from functional_tests.management.commands.create_session import \
     create_pre_authenticated_session
 from django.conf import settings
+from functional_tests.base import wait
+
+
+@wait
+def wait_for_list_item(context, item_text):
+    context.test.assertIn(
+        item_text,
+        context.browser.find_element_by_css_selector('#id_list_table').text
+    )
 
 
 @given('I am a logged-in user')
