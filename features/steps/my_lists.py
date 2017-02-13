@@ -16,3 +16,11 @@ def given_i_am_logged_in(context):
         path='/',
     ))
 
+
+@when('I create a list with first item "{first_item_text}"')
+def create_a_list(context, first_item_text):
+    context.browser.get(context.get_url('/'))
+    context.browser.find_element_by_id('id_text').send_keys(first_item_text)
+    context.browser.find_element_by_id('id_text').send_keys(Keys.ENTER)
+    wait_for_list_item(context, first_item_text)
+
