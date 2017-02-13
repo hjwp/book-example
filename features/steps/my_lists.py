@@ -1,10 +1,11 @@
 from behave import given, when, then
-from selenium.webdriver.common.keys import Keys
 from django.conf import settings
+from selenium.webdriver.common.keys import Keys
 
 from functional_tests.base import wait
 from functional_tests.management.commands.create_session import \
     create_pre_authenticated_session
+
 
 
 @wait
@@ -52,3 +53,14 @@ def see_a_link(context, link_text):
 @when('I click the link to "{link_text}"')
 def click_link(context, link_text):
     context.browser.find_element_by_link_text(link_text).click()
+
+
+@then('I will be on the "{first_item_text}" list page')
+@wait
+def on_list_page(context, first_item_text):
+    first_row = context.browser.find_element_by_css_selector(
+        '#id_list_table tr:first-child'
+    )
+    expected_row_text = '1: ' + first_item_text
+    context.test.assertEqual(first_row.text, expected_row_text)
+
