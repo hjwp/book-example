@@ -1,8 +1,10 @@
 from behave import given, when, then
+from selenium.webdriver.common.keys import Keys
+from django.conf import settings
+
+from functional_tests.base import wait
 from functional_tests.management.commands.create_session import \
     create_pre_authenticated_session
-from django.conf import settings
-from functional_tests.base import wait
 
 
 @wait
@@ -33,3 +35,20 @@ def create_a_list(context, first_item_text):
     context.browser.find_element_by_id('id_text').send_keys(Keys.ENTER)
     wait_for_list_item(context, first_item_text)
 
+
+@when('I add an item "{item_text}"')
+def add_an_item(context, item_text):
+    context.browser.find_element_by_id('id_text').send_keys(item_text)
+    context.browser.find_element_by_id('id_text').send_keys(Keys.ENTER)
+    wait_for_list_item(context, item_text)
+
+
+@then('I will see a link to "{link_text}"')
+@wait
+def see_a_link(context, link_text):
+    context.browser.find_element_by_link_text(link_text)
+
+
+@when('I click the link to "{link_text}"')
+def click_link(context, link_text):
+    context.browser.find_element_by_link_text(link_text).click()
