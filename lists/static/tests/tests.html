@@ -178,6 +178,29 @@ QUnit.test("should hide errors on post success", function (assert) {
   assert.equal($('.has-error').is(':visible'), false);
 });
 
+
+QUnit.test("should display generic error if no error json", function (assert) {
+  var url = '/listitemsapi/';
+  window.Superlists.initialize(url);
+  server.respondWith('POST', url, [
+    502,
+    {},
+    ''
+  ]);
+  $('.has-error help-block').text('old error');
+  $('.has-error').hide();
+
+  $('#id_item_form').submit();
+  server.respond(); // post
+
+  assert.equal($('.has-error').is(':visible'), true);
+  assert.equal(
+    $('.has-error .help-block').text(),
+    'Error talking to server. Please try again.'
+  );
+});
+
+
   </script>
 
 </body>
