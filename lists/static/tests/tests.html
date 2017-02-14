@@ -136,6 +136,13 @@ QUnit.test("should call updateItems after successful post", function (assert) {
   );
 });
 
+
+QUnit.test("should not intercept form submit if no api url passed in", function (assert) {
+  window.Superlists.initialize();
+  assert.equal($._data($('#id_item_form')[0], 'events'), undefined);
+});
+
+
   </script>
 
 </body>
