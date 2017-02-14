@@ -143,6 +143,24 @@ QUnit.test("should not intercept form submit if no api url passed in", function 
 });
 
 
+QUnit.test("should display errors on post failure", function (assert) {
+  var url = '/listitemsapi/';
+  window.Superlists.initialize(url);
+  server.respondWith('POST', url, [
+    400,
+    {"Content-Type": "application/json"},
+    JSON.stringify({'error': 'something is amiss'})
+  ]);
+  $('.has-error').hide();
+
+  $('#id_item_form').submit();
+  server.respond(); // post
+
+  assert.equal($('.has-error').is(':visible'), true);
+  assert.equal($('.has-error .help-block').text(), 'something is amiss');
+});
+
+
 QUnit.test("should hide errors on post success", function (assert) {
   var url = '/listitemsapi/';
   window.Superlists.initialize(url);
@@ -159,7 +177,6 @@ QUnit.test("should hide errors on post success", function (assert) {
 
   assert.equal($('.has-error').is(':visible'), false);
 });
-
 
   </script>
 
