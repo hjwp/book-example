@@ -13,13 +13,18 @@
       <input name="text" />
       <div class="has-error">Error text</div>
     </form>
+
+    <table id="id_list_table">
+    </table>
   </div>
 
   <script src="../jquery-3.1.1.min.js"></script>
   <script src="../list.js"></script>
   <script src="qunit-2.0.1.js"></script>
+  <script src="sinon-1.17.6.js"></script>
 
   <script>
+/* global sinon */
 
 QUnit.test("errors should be hidden on keypress", function (assert) {
   window.Superlists.initialize();
@@ -30,6 +35,27 @@ QUnit.test("errors should be hidden on keypress", function (assert) {
 QUnit.test("errors aren't hidden if there is no keypress", function (assert) {
   window.Superlists.initialize();
   assert.equal($('.has-error').is(':visible'), true);
+});
+
+
+var server;
+
+QUnit.testStart(function () {
+  server = sinon.fakeServer.create();
+});
+QUnit.testDone(function () {
+  server.restore();
+});
+
+
+QUnit.test("should get items by ajax on initialize", function (assert) {
+  var url = '/getitems/';
+  window.Superlists.initialize(url);
+
+  assert.equal(server.requests.length, 1);
+  var request = server.requests[0];
+  assert.equal(request.url, url);
+  assert.equal(request.method, 'GET');
 });
 
   </script>
