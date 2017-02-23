@@ -9,3 +9,8 @@ class UserModelTest(TestCase):
         user = User(email='a@b.com')
         user.full_clean()  # should not raise
 
+
+    def test_email_is_primary_key(self):
+        user = User()
+        self.assertFalse(hasattr(user, 'id'))
+
