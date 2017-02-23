@@ -1,7 +1,7 @@
 from django.db import models
 
 class User(models.Model):
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
 
     REQUIRED_FIELDS = []
     USERNAME_FIELD = 'email'
