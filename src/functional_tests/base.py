@@ -1,5 +1,7 @@
 import os
 import time
+from datetime import datetime
+from pathlib import Path
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
@@ -10,6 +12,8 @@ from selenium.webdriver.common.keys import Keys
 from .server_tools import reset_database
 
 MAX_WAIT = 5
+
+SCREEN_DUMP_LOCATION = Path(__file__).absolute().parent / "screendumps"
 
 
 def wait(fn):
@@ -22,6 +26,7 @@ def wait(fn):
                 if time.time() - start_time > MAX_WAIT:
                     raise e
                 time.sleep(0.5)
+
     return modified_fn
 
 
@@ -34,7 +39,17 @@ class FunctionalTest(StaticLiveServerTestCase):
             reset_database(self.test_server)
 
     def tearDown(self):
+        if self._test_has_failed():
+            if not SCREEN_DUMP_LOCATION.exists():
+                SCREEN_DUMP_LOCATION.mkdir(parents=True)
+            self.take_screenshot()
+            self.dump_html()
         self.browser.quit()
+        super().tearDown()
+
+    def _test_has_failed(self):
+        # slightly obscure but couldn't find a better way!
+        return self._outcome.result.failures or self._outcome.result.errors
 
     @wait
     def wait_for(self, fn):
