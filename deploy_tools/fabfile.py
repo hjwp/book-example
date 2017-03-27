@@ -24,3 +24,9 @@ def _get_latest_source():
     current_commit = local("git log -n 1 --format=%H", capture=True)
     run(f'git reset --hard {current_commit}')
 
+
+def _update_virtualenv():
+    if not exists('virtualenv/bin/pip'):
+        run(f'python3.6 -m venv virtualenv')
+    run('./virtualenv/bin/pip install -r requirements.txt')
+
