@@ -44,3 +44,10 @@ def _update_settings(source_folder, site_name):
         append(secret_key_file, f'SECRET_KEY = "{key}"')
     append(settings_path, '\nfrom .secret_key import SECRET_KEY')
 
+
+def _update_virtualenv(source_folder):
+    virtualenv_folder = source_folder + '/../virtualenv'
+    if not exists(virtualenv_folder + '/bin/pip'):
+        run(f'python3.6 -m venv {virtualenv_folder}')
+    run(f'{virtualenv_folder}/bin/pip install -r {source_folder}/requirements.txt')
+
