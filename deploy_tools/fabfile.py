@@ -28,3 +28,7 @@ def _update_virtualenv():
         run(f'python3.6 -m venv virtualenv')
     run('./virtualenv/bin/pip install -r requirements.txt')
 
+
+def _update_static_files():
+    run('./virtualenv/bin/python manage.py collectstatic --noinput')
+
