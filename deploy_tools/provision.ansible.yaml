@@ -6,10 +6,12 @@
       host: "{{ inventory_hostname }}"
 
   tasks:
+
+    - name: Deadsnakes PPA to get Python 3.6
+      apt_repository:
+        repo='ppa:fkrull/deadsnakes'
     - name: make sure required packages are installed
-      apt: pkg=nginx,git,python3,python3-pip state=present
-    - name: make sure virtualenv is installed
-      shell: pip3 install virtualenv
+      apt: pkg=nginx,git,python3.6,python3.6-venv state=present
 
     - name: allow long hostnames in nginx
       lineinfile: 
@@ -38,15 +40,15 @@
       notify:
           - restart gunicorn
 
-    - name: make sure nginx is running
-      service: name=nginx state=running
-    - name: make sure gunicorn is running
-      service: name=gunicorn-{{ host }} state=running
 
   handlers:
     - name: restart nginx
       service:  name=nginx state=restarted
 
     - name: restart gunicorn
-      service:  name=gunicorn-{{ host }} state=restarted
+      systemd:
+          name=gunicorn-{{ host }}
+          daemon_reload=yes
+          enabled=yes
+          state=restarted
 

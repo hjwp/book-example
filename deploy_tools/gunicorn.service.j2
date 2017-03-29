@@ -2,10 +2,10 @@
 Description=Gunicorn server for {{ host }}
 
 [Service]
-User={{ user }}
-WorkingDirectory=/home/{{ user }}/sites/{{ host }}/source
+User={{ ansible_ssh_user }}
+WorkingDirectory=/home/{{ ansible_ssh_user }}/sites/{{ host }}/source
 Restart=on-failure
-ExecStart=/home/{{ user }}/sites/{{ host }}/virtualenv/bin/gunicorn \
+ExecStart=/home/{{ ansible_ssh_user }}/sites/{{ host }}/virtualenv/bin/gunicorn \
     --bind unix:/tmp/{{ host }}.socket \
     --access-logfile ../access.log \
     --error-logfile ../error.log \

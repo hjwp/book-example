@@ -3,7 +3,7 @@ server {
     server_name {{ host }};
 
     location /static {
-        alias /home/{{ user }}/sites/{{ host }}/static;
+        alias /home/{{ ansible_ssh_user }}/sites/{{ host }}/static;
     }
 
     location / {

@@ -1,6 +1,6 @@
 [staging]
-superlists-staging.ottg.eu ansible_user=root user=elspeth
+superlists-staging.ottg.eu ansible_become=yes ansible_ssh_user=elspeth
 
 [local]
-localhost ansible_user=root ansible_port=6666 ansible_host=127.0.0.1 user=elspeth
+localhost ansible_become=root ansible_port=6666 ansible_host=127.0.0.1 ansible_ssh_user=elspeth
 
