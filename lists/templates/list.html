@@ -43,7 +43,7 @@
 {% block scripts %}
   <script>
 $(document).ready(function () {
-  var url = "{% url 'api_list' list.id %}";
+  var url = "{% url 'list-detail' list.id %}";
   window.Superlists.initialize(url);
 });
   </script>
