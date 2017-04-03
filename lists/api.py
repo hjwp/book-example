@@ -46,3 +46,11 @@ def list(request, list_id):
         content_type='application/json'
     )
 
+
+class ListViewSet(viewsets.ModelViewSet):
+    queryset = List.objects.all()
+    serializer_class = ListSerializer
+
+
+router = routers.SimpleRouter()
+router.register(r'lists', ListViewSet)
