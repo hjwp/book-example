@@ -1,10 +1,27 @@
 import json
 from django.http import HttpResponse
-from lists.models import List
+from lists.models import List, Item
 from lists.forms import (
     ExistingListItemForm,
     EMPTY_ITEM_ERROR,
 )
+from rest_framework import routers, serializers, viewsets
+
+
+class ItemSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Item
+        fields = ('id', 'text')
+
+
+class ListSerializer(serializers.ModelSerializer):
+    items = ItemSerializer(many=True, source='item_set')
+
+    class Meta:
+        model = List
+        fields = ('id', 'items',)
+
 
 
 def list(request, list_id):
