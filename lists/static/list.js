@@ -11,23 +11,24 @@ window.Superlists.updateItems = function (url) {
   });
 };
 
-window.Superlists.initialize = function (url) {
+window.Superlists.initialize = function (params) {
   $('input[name="text"]').on('keypress', function () {
     $('.has-error').hide();
   });
 
-  if (url) {
-    window.Superlists.updateItems(url);
+  if (params) {
+    window.Superlists.updateItems(params.listApiUrl);
 
     var form = $('#id_item_form');
     form.on('submit', function(event) {
       event.preventDefault();
-      $.post(url, {
+      $.post(params.itemsApiUrl, {
+        'list': params.listId,
         'text': form.find('input[name="text"]').val(),
         'csrfmiddlewaretoken': form.find('input[name="csrfmiddlewaretoken"]').val(),
       }).done(function () {
         $('.has-error').hide();
-        window.Superlists.updateItems(url);
+        window.Superlists.updateItems(params.listApiUrl);
       }).fail(function (xhr) {
         $('.has-error').show();
         if (xhr.responseJSON && xhr.responseJSON.error) {
