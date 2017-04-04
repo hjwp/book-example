@@ -23,10 +23,10 @@ class ListAPITest(TestCase):
         response = self.client.get(self.base_url.format(our_list.id))
         self.assertEqual(
             json.loads(response.content.decode('utf8')),
-            [
+            {'id': our_list.id, 'items': [
                 {'id': item1.id, 'text': item1.text},
                 {'id': item2.id, 'text': item2.text},
-            ]
+            ]}
         )
 
 
