@@ -52,5 +52,13 @@ class ListViewSet(viewsets.ModelViewSet):
     serializer_class = ListSerializer
 
 
+
+class ItemViewSet(viewsets.ModelViewSet):
+    serializer_class = ItemSerializer
+    queryset = Item.objects.all()
+
+
+
 router = routers.SimpleRouter()
 router.register(r'lists', ListViewSet)
+router.register(r'items', ItemViewSet)
