@@ -54,21 +54,21 @@ class ItemsAPITest(TestCase):
         )
 
 
-    def DONTtest_for_invalid_input_nothing_saved_to_db(self):
+    def test_for_invalid_input_nothing_saved_to_db(self):
         self.post_empty_input()
         self.assertEqual(Item.objects.count(), 0)
 
 
-    def DONTtest_for_invalid_input_returns_error_code(self):
+    def test_for_invalid_input_returns_error_code(self):
         response = self.post_empty_input()
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             json.loads(response.content.decode('utf8')),
-            {'error': EMPTY_ITEM_ERROR}
+            {'text': [EMPTY_ITEM_ERROR]}
         )
 
 
-    def DONTtest_duplicate_items_error(self):
+    def test_duplicate_items_error(self):
         list_ = List.objects.create()
         self.client.post(
             self.base_url.format(list_.id), data={'text': 'thing'}
@@ -79,6 +79,6 @@ class ItemsAPITest(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             json.loads(response.content.decode('utf8')),
-            {'error': DUPLICATE_ITEM_ERROR}
+            {'non_field_errors': [DUPLICATE_ITEM_ERROR]}
         )
 
