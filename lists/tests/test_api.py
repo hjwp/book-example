@@ -25,8 +25,8 @@ class ListAPITest(TestCase):
         self.assertEqual(
             json.loads(response.content.decode('utf8')),
             {'id': our_list.id, 'items': [
-                {'id': item1.id, 'text': item1.text},
-                {'id': item2.id, 'text': item2.text},
+                {'id': item1.id, 'list': our_list.id, 'text': item1.text},
+                {'id': item2.id, 'list': our_list.id, 'text': item2.text},
             ]}
         )
 
