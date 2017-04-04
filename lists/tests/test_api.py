@@ -1,4 +1,5 @@
 import json
+from django.core.urlresolvers import reverse
 from django.test import TestCase
 from lists.models import List, Item
 from lists.forms import DUPLICATE_ITEM_ERROR, EMPTY_ITEM_ERROR
@@ -30,11 +31,15 @@ class ListAPITest(TestCase):
         )
 
 
+
+class ItemsAPITest(TestCase):
+    base_url = reverse('item-list')
+
     def test_POSTing_a_new_item(self):
         list_ = List.objects.create()
         response = self.client.post(
-            self.base_url.format(list_.id),
-            {'text': 'new item'},
+            self.base_url,
+            {'list': list_.id, 'text': 'new item'},
         )
         self.assertEqual(response.status_code, 201)
         new_item = list_.item_set.get()
