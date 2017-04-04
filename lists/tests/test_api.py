@@ -49,8 +49,8 @@ class ItemsAPITest(TestCase):
     def post_empty_input(self):
         list_ = List.objects.create()
         return self.client.post(
-            self.base_url.format(list_.id),
-            data={'text': ''}
+            self.base_url,
+            data={'list': list_.id, 'text': ''},
         )
 
 
