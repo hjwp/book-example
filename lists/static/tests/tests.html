@@ -165,7 +165,7 @@ QUnit.test("should display errors on post failure", function (assert) {
   server.respondWith('POST', params.itemsApiUrl, [
     400,
     {"Content-Type": "application/json"},
-    JSON.stringify({'error': 'something is amiss'})
+    JSON.stringify({'text': ['something is amiss']})
   ]);
   $('.has-error').hide();
 
@@ -176,6 +176,27 @@ QUnit.test("should display errors on post failure", function (assert) {
   assert.equal($('.has-error .help-block').text(), 'something is amiss');
 });
 
+
+QUnit.test("should display other errors on post failure", function (assert) {
+  var params = {
+    listApiUrl: '/list/api/x/',
+    itemsApiUrl: '/items/api/url/',
+    listId: 7
+  };
+  window.Superlists.initialize(params);
+  server.respondWith('POST', params.itemsApiUrl, [
+    400,
+    {"Content-Type": "application/json"},
+    JSON.stringify({'non_field_errors': ['something else is amiss']})
+  ]);
+  $('.has-error').hide();
+
+  $('#id_item_form').submit();
+  server.respond(); // post
+
+  assert.equal($('.has-error').is(':visible'), true);
+  assert.equal($('.has-error .help-block').text(), 'something else is amiss');
+});
 
 QUnit.test("should hide errors on post success", function (assert) {
   var params = {

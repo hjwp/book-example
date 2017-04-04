@@ -70,12 +70,12 @@ class ItemsAPITest(TestCase):
 
     def test_duplicate_items_error(self):
         list_ = List.objects.create()
-        self.client.post(
-            self.base_url.format(list_.id), data={'text': 'thing'}
-        )
-        response = self.client.post(
-            self.base_url.format(list_.id), data={'text': 'thing'}
-        )
+        self.client.post(self.base_url.format(list_.id), data={
+            'list': list_.id, 'text': 'thing'
+        })
+        response = self.client.post(self.base_url.format(list_.id), data={
+            'list': list_.id, 'text': 'thing'
+        })
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             json.loads(response.content.decode('utf8')),
