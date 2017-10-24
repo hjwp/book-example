@@ -5,3 +5,4 @@ __pycache__
 *.pyc
 ./static
 .env
+.venv
