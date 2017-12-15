@@ -26,6 +26,8 @@ SECRET_KEY = 'ip(3a2ev0*nbv_6)lq(euj#cp$l+)0g(h6$u25pkzpl4tk*m2n'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+if 'SITENAME' in os.environ:
+    ALLOWED_HOSTS = [os.environ['SITENAME']]
 
 
 # Application definition
