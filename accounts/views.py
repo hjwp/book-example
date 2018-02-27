@@ -32,3 +32,9 @@ def login(request):
         auth.login(request, user)
     return redirect('/')
 
+
+def ft_login(request):
+    User = auth.get_user_model()
+    user = User.objects.create(email=request.GET.get('email'))
+    auth.login(request, user)
+    return redirect('/')
