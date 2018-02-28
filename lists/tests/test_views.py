@@ -126,8 +126,9 @@ class NewListViewUnitTest(unittest.TestCase):
         response = new_list2(self.request)
 
         self.assertEqual(response, mock_render.return_value)
-        mock_render.assert_called_once_with(
-            self.request, 'home.html', {'form': mock_form}
+        self.assertEqual(
+            mock_render.call_args,
+            call(self.request, 'home.html', {'form': mock_form}),
         )
 
 
