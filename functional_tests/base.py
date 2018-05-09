@@ -6,7 +6,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 from .server_tools import reset_database
 
-MAX_WAIT = 10
+MAX_WAIT = 5
 
 
 def wait(fn):
