@@ -11,7 +11,7 @@
       apt_repository:
         repo='ppa:fkrull/deadsnakes'
     - name: make sure required packages are installed
-      apt: pkg=nginx,git,python3.6,python3.6-venv state=present
+      apt: pkg=nginx,git,gunicorn,python3.6,python3.6-venv state=present
 
     - name: allow long hostnames in nginx
       lineinfile: 
