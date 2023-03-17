@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class List(object):
+class List(models.Model):
     pass
 
 
