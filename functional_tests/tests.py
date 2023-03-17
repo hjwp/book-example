@@ -19,7 +19,7 @@ class NewVisitorTest(LiveServerTestCase):
         start_time = time.time()
         while True:
             try:
-                table = self.browser.find_element(By.ID, "id_nothing")
+                table = self.browser.find_element(By.ID, "id_list_table")
                 rows = table.find_elements(By.TAG_NAME, "tr")
                 self.assertIn(row_text, [row.text for row in rows])
                 return
