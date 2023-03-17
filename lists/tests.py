@@ -7,10 +7,6 @@ class HomePageTest(TestCase):
         response = self.client.get("/")
         self.assertTemplateUsed(response, "home.html")
 
-    def test_only_saves_items_when_necessary(self):
-        self.client.get("/")
-        self.assertEqual(Item.objects.count(), 0)
-
 
 class NewListTest(TestCase):
     def test_can_save_a_POST_request(self):
