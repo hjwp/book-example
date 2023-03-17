@@ -3,7 +3,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
-import unittest
 
 
 class NewVisitorTest(LiveServerTestCase):
@@ -55,7 +54,3 @@ class NewVisitorTest(LiveServerTestCase):
         self.check_for_row_in_list_table("1: Buy peacock feathers")
 
         # Satisfied, she goes back to sleep
-
-
-if __name__ == "__main__":
-    unittest.main()
