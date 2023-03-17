@@ -21,7 +21,7 @@ class NewVisitorTest(LiveServerTestCase):
             try:
                 table = self.browser.find_element(By.ID, "id_list_table")
                 rows = table.find_elements(By.TAG_NAME, "tr")
-                self.assertIn(row_text, [row.text for row in rows])
+                self.assertIn("foo", [row.text for row in rows])
                 return
             except (AssertionError, WebDriverException):
                 if time.time() - start_time > MAX_WAIT:
