@@ -1,27 +1,38 @@
+import unittest
 from selenium import webdriver
 
-browser = webdriver.Firefox()
 
-# Edith has heard about a cool new online to-do app.
-# She goes to check out its homepage
-browser.get("http://localhost:8000")
+class NewVisitorTest(unittest.TestCase):
+    def setUp(self):
+        self.browser = webdriver.Firefox()
 
-# She notices the page title and header mention to-do lists
-assert "To-Do" in browser.title
+    def tearDown(self):
+        self.browser.quit()
 
-# She is invited to enter a to-do item straight away
+    def test_can_start_a_todo_list(self):
+        # Edith has heard about a cool new online to-do app.
+        # She goes to check out its homepage
+        self.browser.get("http://localhost:8000")
 
-# She types "Buy peacock feathers" into a text box
-# (Edith's hobby is tying fly-fishing lures)
+        # She notices the page title and header mention to-do lists
+        self.assertIn("To-Do", self.browser.title)
 
-# When she hits enter, the page updates, and now the page lists
-# "1: Buy peacock feathers" as an item in a to-do list
+        # She is invited to enter a to-do item straight away
+        self.fail("Finish the test!")
 
-# There is still a text box inviting her to add another item.
-# She enters "Use peacock feathers to make a fly" (Edith is very methodical)
+        # She types "Buy peacock feathers" into a text box
+        # (Edith's hobby is tying fly-fishing lures)
 
-# The page updates again, and now shows both items on her list
+        # When she hits enter, the page updates, and now the page lists
+        # "1: Buy peacock feathers" as an item in a to-do list
 
-# Satisfied, she goes back to sleep
+        # There is still a text box inviting her to add another item.
+        # She enters "Use peacock feathers to make a fly" (Edith is very methodical)
 
-browser.quit()
+        # The page updates again, and now shows both items on her list
+
+        # Satisfied, she goes back to sleep
+
+
+if __name__ == "__main__":
+    unittest.main()
