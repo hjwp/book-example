@@ -2,9 +2,6 @@ from django.test import TestCase
 
 
 class HomePageTest(TestCase):
-    def test_home_page_returns_correct_html(self):
+    def test_uses_home_template(self):
         response = self.client.get("/")
-        self.assertContains(response, "<title>To-Do lists</title>")
-        self.assertContains(response, "<html>")
-        self.assertContains(response, "</html>")
-        self.assertTemplateUsed(response, "wrong.html")
+        self.assertTemplateUsed(response, "home.html")
