@@ -14,8 +14,7 @@ class HomePageTest(TestCase):
         new_item = Item.objects.first()
         self.assertEqual(new_item.text, "A new list item")
 
-        self.assertContains(response, "A new list item")
-        self.assertTemplateUsed(response, "home.html")
+        self.assertRedirects(response, "/")
 
     def test_only_saves_items_when_necessary(self):
         self.client.get("/")
