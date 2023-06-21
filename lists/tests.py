@@ -7,13 +7,6 @@ class HomePageTest(TestCase):
         response = self.client.get("/")
         self.assertTemplateUsed(response, "home.html")
 
-    def test_displays_all_list_items(self):
-        Item.objects.create(text="itemey 1")
-        Item.objects.create(text="itemey 2")
-        response = self.client.get("/")
-        self.assertContains(response, "itemey 1")
-        self.assertContains(response, "itemey 2")
-
     def test_can_save_a_POST_request(self):
         self.client.post("/", data={"item_text": "A new list item"})
         self.assertEqual(Item.objects.count(), 1)
@@ -28,6 +21,14 @@ class HomePageTest(TestCase):
         self.client.get("/")
         self.assertEqual(Item.objects.count(), 0)
 
+
+class ListViewTest(TestCase):
+    def test_displays_all_list_items(self):
+        Item.objects.create(text="itemey 1")
+        Item.objects.create(text="itemey 2")
+        response = self.client.get("/lists/the-only-list-in-the-world/")
+        self.assertContains(response, "itemey 1")
+        self.assertContains(response, "itemey 2")
 
 class ItemModelTest(TestCase):
     def test_saving_and_retrieving_items(self):
