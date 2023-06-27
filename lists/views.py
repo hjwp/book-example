@@ -18,5 +18,5 @@ def view_list(request, list_id):
     return render(request, "list.html", {"items": items})
 
 
-def add_item(request):
+def add_item(request, list_id):
     pass
