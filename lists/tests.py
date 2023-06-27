@@ -40,6 +40,12 @@ class ListViewTest(TestCase):
         self.assertContains(response, "itemey 2")
         self.assertNotContains(response, "other list item")
 
+    def test_passes_correct_list_to_template(self):
+        other_list = List.objects.create()
+        correct_list = List.objects.create()
+        response = self.client.get(f"/lists/{correct_list.id}/")
+        self.assertEqual(response.context["list"], correct_list)
+
 
 class NewItemTest(TestCase):
     def test_can_save_a_POST_request_to_an_existing_list(self):
