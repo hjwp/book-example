@@ -7,3 +7,4 @@ class List(models.Model):
 
 class Item(models.Model):
     text = models.TextField(default="")
+    list = models.TextField(default="")
