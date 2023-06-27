@@ -1,4 +1,5 @@
 from django.shortcuts import redirect, render
+
 from lists.models import Item
 
 
@@ -12,4 +13,4 @@ def home_page(request):
 
 
 def view_list(request):
-    pass
+    return render(request, "home.html")
