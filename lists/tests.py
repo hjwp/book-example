@@ -37,8 +37,9 @@ class ListViewTest(TestCase):
         self.assertContains(response, '<input name="item_text"')
 
     def test_displays_all_list_items(self):
-        Item.objects.create(text="itemey 1")
-        Item.objects.create(text="itemey 2")
+        mylist = List.objects.create()
+        Item.objects.create(text="itemey 1", list=mylist)
+        Item.objects.create(text="itemey 2", list=mylist)
 
         response = self.client.get("/lists/the-only-list-in-the-world/")
 
