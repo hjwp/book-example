@@ -13,4 +13,5 @@ def home_page(request):
 
 
 def view_list(request):
-    return render(request, "home.html")
+    items = Item.objects.all()
+    return render(request, "home.html", {"items": items})
