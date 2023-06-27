@@ -12,4 +12,4 @@ def home_page(request):
 
 
 def view_list(request):
-    pass
+    return render(request, "home.html")
