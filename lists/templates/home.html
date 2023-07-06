@@ -9,6 +9,9 @@
       {% csrf_token %}
     </form>
     <table id="id_list_table">
+      {% for item in items %}
+        <tr><td>{{ item.text }}</td></tr>
+      {% endfor %}
     </table>
   </body>
 </html>
