@@ -9,15 +9,31 @@
   </head>
 
   <body>
-    <h1>{% block header_text %}{% endblock %}</h1>
+    <div class="container">
 
-    <form method="POST" action="{% block form_action %}{% endblock %}">
-      <input name="item_text" id="id_new_item" placeholder="Enter a to-do item" />
-      {% csrf_token %}
-    </form>
+      <div class="row justify-content-center">
+        <div class="col-lg-6 text-center">
+          <h1>{% block header_text %}{% endblock %}</h1>
 
-    {% block table %}
-    {% endblock %}
+          <form method="POST" action="{% block form_action %}{% endblock %}" >
+            <input
+              name="item_text"
+              id="id_new_item"
+              placeholder="Enter a to-do item"
+            />
+            {% csrf_token %}
+          </form>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-lg-6">
+          {% block table %}
+          {% endblock %}
+        </div>
+      </div>
+
+    </div>
   </body>
 
 </html>
