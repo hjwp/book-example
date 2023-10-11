@@ -1,1 +1,2 @@
 Django==4.2.7
+gunicorn==21.2.0
