@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from django.test import TestCase
 
@@ -35,4 +36,10 @@ class ListAndItemModelsTest(TestCase):
         mylist = List.objects.create()
         item = Item(list=mylist, text=None)
         with self.assertRaises(IntegrityError):
+            item.save()
+
+    def test_cannot_save_empty_list_items(self):
+        mylist = List.objects.create()
+        item = Item(list=mylist, text="")
+        with self.assertRaises(ValidationError):
             item.save()
