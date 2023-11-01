@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
 from lists.models import Item, List
 
@@ -9,7 +10,10 @@ def home_page(request):
 def new_list(request):
     nulist = List.objects.create()
     item = Item.objects.create(text=request.POST["item_text"], list=nulist)
-    item.full_clean()
+    try:
+        item.full_clean()
+    except ValidationError:
+        pass
     return redirect(f"/lists/{nulist.id}/")
 
 
