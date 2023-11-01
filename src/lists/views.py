@@ -8,7 +8,8 @@ def home_page(request):
 
 def new_list(request):
     nulist = List.objects.create()
-    Item.objects.create(text=request.POST["item_text"], list=nulist)
+    item = Item.objects.create(text=request.POST["item_text"], list=nulist)
+    item.full_clean()
     return redirect(f"/lists/{nulist.id}/")
 
 
