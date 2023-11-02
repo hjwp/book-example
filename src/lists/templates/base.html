@@ -15,13 +15,8 @@
         <div class="col-lg-6 text-center">
           <h1 class="display-1 mb-4">{% block header_text %}{% endblock %}</h1>
 
-          <form method="POST" action="{% block form_action %}{% endblock %}">
-            <input
-              class="form-control form-control-lg {% if error %}is-invalid{% endif %}"
-              name="item_text"
-              id="id_new_item"
-              placeholder="Enter a to-do item"
-            />
+          <form method="POST" action="{% block form_action %}{% endblock %}" >
+            {{ form.text }}
             {% csrf_token %}
             {% if error %}
               <div class="invalid-feedback">{{ error }}</div>
