@@ -18,8 +18,8 @@
           <form method="POST" action="{% block form_action %}{% endblock %}" >
             {{ form.text }}
             {% csrf_token %}
-            {% if error %}
-              <div class="invalid-feedback">{{ error }}</div>
+            {% if form.errors %}
+              <div class="invalid-feedback">{{ form.errors.text }}</div>
             {% endif %}
           </form>
         </div>
