@@ -21,20 +21,11 @@ def new_list(request):
 
 def view_list(request, list_id):
     our_list = List.objects.get(id=list_id)
-    error = None
-
     if request.method == "POST":
-        try:
-            item = Item(text=request.POST["text"], list=our_list)
-            item.full_clean()
-            item.save()
+        form = ItemForm(data=request.POST)
+        if form.is_valid():
+            Item.objects.create(text=request.POST["text"], list=our_list)
             return redirect(our_list)
-        except ValidationError:
-            error = "You can't have an empty list item"
-
-    form = ItemForm()
-    return render(
-        request,
-        "list.html",
-        {"list": our_list, "form": form, "error": error},
-    )
+    else:
+        form = ItemForm()
+    return render(request, "list.html", {"list": our_list, "form": form})
