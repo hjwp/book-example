@@ -13,7 +13,7 @@ def new_list(request):
     form = ItemForm(data=request.POST)
     if form.is_valid():
         nulist = List.objects.create()
-        Item.objects.create(text=request.POST["text"], list=nulist)
+        form.save(for_list=nulist)
         return redirect(nulist)
     else:
         return render(request, "home.html", {"form": form})
