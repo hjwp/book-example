@@ -13,3 +13,7 @@ class ItemFormTest(TestCase):
         form = ItemForm(data={"text": ""})
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors["text"], [EMPTY_ITEM_ERROR])
+
+    def test_form_save_handles_saving_to_a_list(self):
+        form = ItemForm(data={"text": "do me"})
+        new_item = form.save()
