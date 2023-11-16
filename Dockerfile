@@ -9,4 +9,4 @@ COPY src /src
 
 WORKDIR /src
 
-CMD python manage.py runserver 8888
+CMD python manage.py runserver 0.0.0.0:8888
