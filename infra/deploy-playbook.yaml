@@ -75,3 +75,4 @@
           DJANGO_SECRET_KEY: "{{ secret_key.content | b64decode }}"
           DJANGO_ALLOWED_HOST: "{{ inventory_hostname }}"
           DJANGO_DB_PATH: "/home/nonroot/db.sqlite3"
+        ports: 80:8888
