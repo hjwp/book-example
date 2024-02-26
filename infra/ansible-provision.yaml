@@ -56,3 +56,4 @@
         state: started
         recreate: true
         env_file: ~/superlists.env
+        ports: 80:8888
