@@ -20,6 +20,17 @@
     - name: Reset ssh connection to allow the user/group change to take effect
       ansible.builtin.meta: reset_connection
 
+    - name: Build container image locally
+      community.docker.docker_image:
+        name: superlists
+        source: build
+        state: present
+        build:
+          path: ..
+          platform: linux/amd64
+        force_source: true
+      delegate_to: 127.0.0.1
+
     - name: Export container image locally
       community.docker.docker_image:
         name: superlists
