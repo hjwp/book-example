@@ -2,18 +2,36 @@
 - hosts: all
 
   tasks:
-
     - name: Install docker
       ansible.builtin.apt:
         name: docker.io
         state: latest
-        update_cache: true
       become: true
 
-    - name: Run test container
-      community.docker.docker_container:
-        name: testcontainer
-        state: started
-        image: busybox
-        command: echo hello world
+    - name: Export container image locally
+      community.docker.docker_image:
+        name: superlists
+        archive_path: /tmp/superlists-img.tar
+        source: local
+      delegate_to: 127.0.0.1
+
+    - name: Upload image to server
+      ansible.builtin.copy:
+        src: /tmp/superlists-img.tar
+        dest: /tmp/superlists-img.tar
+
+    - name: Import container image on server
+      community.docker.docker_image:
+        name: superlists
+        load_path: /tmp/superlists-img.tar
+        source: load
+        force_source: true
+        state: present
       become: true
+
+    - name: Run container
+      community.docker.docker_container:
+        name: superlists
+        image: superlists
+        state: started
+        recreate: true
