@@ -49,6 +49,11 @@
         host: "{{ inventory_hostname }}"
         secret_key: "{{ lookup('password', '/dev/null length=32 chars=ascii_letters') }}"
 
+    - name: Ensure db.sqlite3 file exists outside container
+      ansible.builtin.file:
+        path: /home/elspeth/db.sqlite3
+        state: touch
+
     - name: Run container
       community.docker.docker_container:
         name: superlists
@@ -56,4 +61,13 @@
         state: started
         recreate: true
         env_file: ~/superlists.env
+        mounts:
+          - type: bind
+            source: /home/elspeth/db.sqlite3
+            target: /src/db.sqlite3
         ports: 80:8888
+
+    - name: Run migration inside container
+      community.docker.docker_container_exec:
+        container: superlists
+        command: ./manage.py migrate
