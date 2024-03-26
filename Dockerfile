@@ -1,5 +1,10 @@
 FROM python:slim
 
+RUN python -m venv /venv
+ENV PATH="/venv/bin:$PATH"
+
+RUN pip install "django<6"
+
 COPY src /src
 
 WORKDIR /src
