@@ -3,8 +3,7 @@ FROM python:slim
 RUN python -m venv /venv
 ENV PATH="/venv/bin:$PATH"
 
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+RUN pip install "django<5"
 
 COPY src /src
 
