@@ -51,9 +51,27 @@
         force_source: true
         state: present
 
+    - name: Ensure .secret-key file exists
+      # the intention is that this only happens once per server
+      ansible.builtin.copy:
+        dest: ~/.secret-key
+        content: "{{ lookup('password', '/dev/null length=32 chars=ascii_letters') }}"
+        mode: 0600
+        force: false  # do not recreate file if it already exists.
+
+    - name: Read secret key back from file
+      ansible.builtin.slurp:
+        src: ~/.secret-key
+      register: secret_key
+
     - name: Run container
       community.docker.docker_container:
         name: superlists
         image: superlists
         state: started
         recreate: true
+        env:
+          DJANGO_DEBUG_FALSE: "1"
+          DJANGO_SECRET_KEY: "{{ secret_key.content | b64decode }}"
+          DJANGO_ALLOWED_HOST: "{{ inventory_hostname }}"
+          DJANGO_DB_PATH: "/home/nonroot/db.sqlite3"
