@@ -40,9 +40,19 @@
         state: present
       become: true
 
+    - name: Ensure .env file exists
+      ansible.builtin.template:
+        src: env.j2
+        dest: ~/superlists.env
+        force: false  # do not recreate file if it already exists.
+      vars:
+        host: "{{ inventory_hostname }}"
+        secret_key: "{{ lookup('password', '/dev/null length=32 chars=ascii_letters') }}"
+
     - name: Run container
       community.docker.docker_container:
         name: superlists
         image: superlists
         state: started
         recreate: true
+        env_file: ~/superlists.env
