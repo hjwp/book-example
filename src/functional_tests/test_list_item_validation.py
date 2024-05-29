@@ -63,7 +63,7 @@ class ItemValidationTest(FunctionalTest):
         # She sees a helpful error message
         self.wait_for(
             lambda: self.assertEqual(
-                self.browser.find_element(By.CSS_SELECTOR, ".invalid-feedback").text,
+                self.get_error_element().text,
                 "You've already got this in your list",
             )
         )
@@ -77,11 +77,7 @@ class ItemValidationTest(FunctionalTest):
         self.get_item_input_box().send_keys("Banter too thick")
         self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_for(
-            lambda: self.assertTrue(
-                self.browser.find_element(
-                    By.CSS_SELECTOR, ".invalid-feedback"
-                ).is_displayed()
-            )
+            lambda: self.assertTrue(self.get_error_element().is_displayed()),
         )
 
         # She starts typing in the input box to clear the error
@@ -89,9 +85,5 @@ class ItemValidationTest(FunctionalTest):
 
         # She is pleased to see that the error message disappears
         self.wait_for(
-            lambda: self.assertFalse(
-                self.browser.find_element(
-                    By.CSS_SELECTOR, ".invalid-feedback"
-                ).is_displayed()
-            )
+            lambda: self.assertFalse(self.get_error_element().is_displayed()),
         )
