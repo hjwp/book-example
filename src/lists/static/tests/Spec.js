@@ -1,7 +1,7 @@
 describe("Superlists tests", () => {
 
   it("smoke test", () => {
-    expect(1 + 1).toEqual(2);
+    expect(1 + 1).toEqual(3);
   });
 
 });
