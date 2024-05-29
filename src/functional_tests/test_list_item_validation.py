@@ -1,9 +1,13 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+
 from .base import FunctionalTest
 
 
 class ItemValidationTest(FunctionalTest):
+    def get_error_element(self):
+        return self.browser.find_element(By.CSS_SELECTOR, ".invalid-feedback")
+
     def test_cannot_add_empty_list_items(self):
         # Edith goes to the home page and accidentally tries to submit
         # an empty list item. She hits Enter on the empty input box
