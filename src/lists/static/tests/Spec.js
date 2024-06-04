@@ -24,8 +24,15 @@ describe("Superlists tests", () => {
     testDiv.remove();
   });
 
-  it("smoke test", () => {
-    expect(1 + 1).toEqual(2);
+  it("sense-check our html fixture", () => {
+    const errorMsg = document.querySelector(".invalid-feedback");
+    expect(errorMsg.checkVisibility()).toBe(true);
+  });
+
+  it("check we know how to hide things", () => {
+    const errorMsg = document.querySelector(".invalid-feedback");
+    errorMsg.style.display = "none";
+    expect(errorMsg.checkVisibility()).toBe(false);
   });
 
 });
