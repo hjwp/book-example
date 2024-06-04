@@ -24,8 +24,15 @@ describe("Superlists JavaScript", () => {
     testDiv.remove();
   });
 
-  it("should have working maths", () => {
-    expect(1 + 1).toEqual(2);
+  it("should have a useful html fixture", () => {
+    const errorMsg = document.querySelector(".invalid-feedback");
+    expect(errorMsg.checkVisibility()).toBe(true);
+  });
+
+  it("can hide things manually and check visibility in tests", () => {
+    const errorMsg = document.querySelector(".invalid-feedback");
+    errorMsg.style.display = "none";
+    expect(errorMsg.checkVisibility()).toBe(false);
   });
 
 });
