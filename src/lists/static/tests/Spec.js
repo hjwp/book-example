@@ -3,7 +3,10 @@ describe("Superlists tests", () => {
 
   const initialize = (inputSelector, errorSelector) => {
     const errorDiv = document.querySelector(errorSelector);
-    errorDiv.style.display = "none";
+    const textInput = document.querySelector(inputSelector);
+    textInput.oninput = () => {
+      errorDiv.style.display = "none";
+    }
   };
 
   beforeEach(() => {
