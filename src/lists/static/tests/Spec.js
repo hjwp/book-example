@@ -1,6 +1,9 @@
 describe("Superlists tests", () => {
   let testDiv;
 
+  const initialize = () => {
+  }
+
   beforeEach(() => {
     testDiv = document.createElement("div");
     testDiv.innerHTML = `
