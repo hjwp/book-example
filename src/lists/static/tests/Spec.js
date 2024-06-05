@@ -1,8 +1,10 @@
 describe("Superlists tests", () => {
   let testDiv;
 
-  const initialize = () => {
-  }
+  const initialize = (inputSelector, errorSelector) => {
+    const errorDiv = document.querySelector(errorSelector);
+    errorDiv.style.display = "none";
+  };
 
   beforeEach(() => {
     testDiv = document.createElement("div");
