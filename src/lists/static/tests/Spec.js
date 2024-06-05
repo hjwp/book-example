@@ -24,11 +24,19 @@ describe("Superlists tests", () => {
     testDiv.remove();
   });
 
-  it("smoke test for checking visibility", () => {
-    const errorDiv = document.querySelector("div.invalid-feedback");
+  it("error message should be hidden on input", () => {
+    const inputSelector = "input#id_text";
+    const errorSelector = "div.invalid-feedback";
+    const textInput = document.querySelector(inputSelector);
+    const errorDiv = document.querySelector(errorSelector);
     expect(errorDiv.checkVisibility()).toBe(true, "error div should be visible on load");
-    errorDiv.style.display = "none";
-    expect(errorDiv.checkVisibility()).toBe(false, "js hiding should work");
+
+    initialize(inputSelector, errorSelector);
+
+    expect(errorDiv.checkVisibility()).toBe(true, "error div should not be hidden by initialize()");
+
+    textInput.dispatchEvent(new InputEvent("input"));
+    expect(errorDiv.checkVisibility()).toBe(false, "error div should be hidden on input");
   });
 
 });
