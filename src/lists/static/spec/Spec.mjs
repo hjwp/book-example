@@ -2,6 +2,8 @@ import {initialize} from "../lists.mjs";
 
 describe("Superlists tests", () => {
   let testDiv;
+  const inputSelector = "input#id_text";
+  const errorSelector = "div.invalid-feedback";
 
   beforeEach(() => {
     testDiv = document.createElement("div");
@@ -26,21 +28,30 @@ describe("Superlists tests", () => {
     testDiv.remove();
   });
 
-  it("error message should be hidden on input", () => {
-    const inputSelector = "input#id_text";
-    const errorSelector = "div.invalid-feedback";
+  it("sense-check default dom fixture from beforeEach", () => {
     const textInput = document.querySelector(inputSelector);
     const errorDiv = document.querySelector(errorSelector);
-    expect(errorDiv.checkVisibility()).toBe(true, "error div should be visible on load");
-    expect(textInput.classList).toContain("is-invalid", "input should have is-invalid class by default");
+    expect(errorDiv.checkVisibility()).toBe(true);
+    expect(textInput.classList).toContain("is-invalid");
+  });
+
+  it("error div should not just be hidden immediately by initialize()", () => {
+    const errorDiv = document.querySelector(errorSelector);
 
     initialize(inputSelector);
 
-    expect(errorDiv.checkVisibility()).toBe(true, "error div should not be hidden by initialize()");
+    expect(errorDiv.checkVisibility()).toBe(true);
+  });
 
+  it("error message should be hidden on input", () => {
+    const textInput = document.querySelector(inputSelector);
+    const errorDiv = document.querySelector(errorSelector);
+
+    initialize(inputSelector);
     textInput.dispatchEvent(new InputEvent("input"));
-    expect(errorDiv.checkVisibility()).toBe(false, "error div should be hidden on input");
-    expect(textInput.classList).not.toContain("is-invalid", "should remove is-invalid class");
+
+    expect(errorDiv.checkVisibility()).toBe(false);
+    expect(textInput.classList).not.toContain("is-invalid");
   });
 
 });
