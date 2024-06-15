@@ -5,3 +5,4 @@ const initialize = (inputSelector) => {
   }
 };
 
+export { initialize };

@@ -1,3 +1,5 @@
+import {initialize} from "../lists.mjs";
+
 describe("Superlists tests", () => {
   let testDiv;
 
