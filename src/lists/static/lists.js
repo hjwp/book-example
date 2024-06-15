@@ -1,8 +1,6 @@
-const initialize = (inputSelector, errorSelector) => {
-  const errorDiv = document.querySelector(errorSelector);
+const initialize = (inputSelector) => {
   const textInput = document.querySelector(inputSelector);
   textInput.oninput = () => {
-    errorDiv.style.display = "none";
     textInput.classList.remove("is-invalid");
   }
 };
