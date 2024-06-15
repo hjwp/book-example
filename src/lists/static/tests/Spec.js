@@ -32,7 +32,7 @@ describe("Superlists tests", () => {
     expect(errorDiv.checkVisibility()).toBe(true, "error div should be visible on load");
     expect(textInput.classList).toContain("is-invalid", "input should have is-invalid class by default");
 
-    initialize(inputSelector, errorSelector);
+    initialize(inputSelector);
 
     expect(errorDiv.checkVisibility()).toBe(true, "error div should not be hidden by initialize()");
 
