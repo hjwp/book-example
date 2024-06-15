@@ -30,6 +30,7 @@ describe("Superlists tests", () => {
     const textInput = document.querySelector(inputSelector);
     const errorDiv = document.querySelector(errorSelector);
     expect(errorDiv.checkVisibility()).toBe(true, "error div should be visible on load");
+    expect(textInput.classList).toContain("is-invalid", "input should have is-invalid class by default");
 
     initialize(inputSelector, errorSelector);
 
@@ -37,6 +38,7 @@ describe("Superlists tests", () => {
 
     textInput.dispatchEvent(new InputEvent("input"));
     expect(errorDiv.checkVisibility()).toBe(false, "error div should be hidden on input");
+    expect(textInput.classList).not.toContain("is-invalid", "should remove is-invalid class");
   });
 
 });
