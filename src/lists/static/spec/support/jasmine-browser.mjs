@@ -1,7 +1,7 @@
 export default {
-  srcDir: "src",
+  srcDir: ".",
   srcFiles: [
-    "**/*.js"
+    "lists.js"
   ],
   specDir: "spec",
   specFiles: [
