@@ -24,11 +24,15 @@ describe("Superlists tests", () => {
     testDiv.remove();
   });
 
-  it("smoke test for checking visibility", () => {
-    const errorDiv = document.querySelector("div.invalid-feedback");
-    expect(errorDiv.checkVisibility()).toBe(true, "error div should be visible on load");
-    errorDiv.style.display = "none";
-    expect(errorDiv.checkVisibility()).toBe(false, "js hiding should work");
+  it("sense-check our html fixture", () => {
+    const errorMsg = document.querySelector(".invalid-feedback");
+    expect(errorMsg.checkVisibility()).toBe(true);
+  });
+
+  it("check we know how to hide things", () => {
+    const errorMsg = document.querySelector(".invalid-feedback");
+    errorMsg.style.display = "none";
+    expect(errorMsg.checkVisibility()).toBe(false);
   });
 
 });
