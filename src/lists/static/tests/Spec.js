@@ -29,10 +29,12 @@ describe("Superlists tests", () => {
     expect(errorMsg.checkVisibility()).toBe(true);
   });
 
-  it("check we know how to hide things", () => {
+  it("error message should be hidden on input", () => {
+    const textInput = document.querySelector("#id_text");
     const errorMsg = document.querySelector(".invalid-feedback");
-    errorMsg.style.display = "none";
+
+    textInput.dispatchEvent(new InputEvent("input"));
+
     expect(errorMsg.checkVisibility()).toBe(false);
   });
-
 });
