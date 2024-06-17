@@ -29,10 +29,12 @@ describe("Superlists JavaScript", () => {
     expect(errorMsg.checkVisibility()).toBe(true);
   });
 
-  it("can hide things manually and check visibility in tests", () => {
+  it("should hide error message on input", () => {
+    const textInput = document.querySelector("#id_text");
     const errorMsg = document.querySelector(".invalid-feedback");
-    errorMsg.style.display = "none";
+
+    textInput.dispatchEvent(new InputEvent("input"));
+
     expect(errorMsg.checkVisibility()).toBe(false);
   });
-
 });
