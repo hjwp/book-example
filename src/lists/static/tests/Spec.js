@@ -38,6 +38,7 @@ describe("Superlists tests", () => {
     const textInput = document.querySelector("#id_text");
     const errorMsg = document.querySelector(".invalid-feedback");
 
+    initialize();
     textInput.dispatchEvent(new InputEvent("input"));
 
     expect(errorMsg.checkVisibility()).toBe(false);
