@@ -36,14 +36,10 @@ describe("Superlists tests", () => {
   });
 
   it("sense-check our html fixture", () => {
-    const errorMsg = document.querySelector(".invalid-feedback");
     expect(errorMsg.checkVisibility()).toBe(true);
   });
 
   it("error message should be hidden on input", () => {
-    const textInput = document.querySelector("#id_text");
-    const errorMsg = document.querySelector(".invalid-feedback");
-
     initialize();
     textInput.dispatchEvent(new InputEvent("input"));
 
@@ -51,7 +47,6 @@ describe("Superlists tests", () => {
   });
 
   it("error message should not be hidden before input is fired", () => {
-    const errorMsg = document.querySelector(".invalid-feedback");
     initialize();
     expect(errorMsg.checkVisibility()).toBe(true);
   });
