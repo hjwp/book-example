@@ -28,13 +28,11 @@ describe("Superlists JavaScript", () => {
   });
 
   it("should have a useful html fixture", () => {
-    console.log("in test 1");
     const errorMsg = document.querySelector(".invalid-feedback");
     expect(errorMsg.checkVisibility()).toBe(true);
   });
 
   it("should hide error message on input", () => {
-    console.log("in test 2");
     const textInput = document.querySelector("#id_text");
     const errorMsg = document.querySelector(".invalid-feedback");
 
@@ -42,5 +40,11 @@ describe("Superlists JavaScript", () => {
     textInput.dispatchEvent(new InputEvent("input"));
 
     expect(errorMsg.checkVisibility()).toBe(false);
+  });
+
+  it("should not hide error message before event is fired", () => {
+    const errorMsg = document.querySelector(".invalid-feedback");
+    initialize();
+    expect(errorMsg.checkVisibility()).toBe(true);
   });
 });
