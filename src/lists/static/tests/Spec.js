@@ -28,13 +28,11 @@ describe("Superlists tests", () => {
   });
 
   it("sense-check our html fixture", () => {
-    console.log("in test 1");
     const errorMsg = document.querySelector(".invalid-feedback");
     expect(errorMsg.checkVisibility()).toBe(true);
   });
 
   it("error message should be hidden on input", () => {
-    console.log("in test 2");
     const textInput = document.querySelector("#id_text");
     const errorMsg = document.querySelector(".invalid-feedback");
 
@@ -42,5 +40,11 @@ describe("Superlists tests", () => {
     textInput.dispatchEvent(new InputEvent("input"));
 
     expect(errorMsg.checkVisibility()).toBe(false);
+  });
+
+  it("error message should not be hidden before input is fired", () => {
+    const errorMsg = document.querySelector(".invalid-feedback");
+    initialize();
+    expect(errorMsg.checkVisibility()).toBe(true);
   });
 });
