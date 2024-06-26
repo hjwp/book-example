@@ -3,6 +3,7 @@ import uuid
 
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
 from django.core.mail import send_mail
 from django.shortcuts import redirect, render
 
@@ -30,4 +31,9 @@ def login(request):
     user = authenticate(request, uid=uid)
     if user is not None:
         auth_login(request, user)
+    return redirect("/")
+
+
+def logout(request):
+    auth_logout(request)
     return redirect("/")
