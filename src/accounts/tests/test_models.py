@@ -1,7 +1,7 @@
 from django.contrib import auth
 from django.test import TestCase
 
-from accounts.models import User
+from accounts.models import Token, User
 
 
 class UserModelTest(TestCase):
@@ -15,3 +15,10 @@ class UserModelTest(TestCase):
     def test_email_is_primary_key(self):
         user = User(email="a@b.com")
         self.assertEqual(user.pk, "a@b.com")
+
+
+class TokenModelTest(TestCase):
+    def test_links_user_with_auto_generated_uid(self):
+        token1 = Token.objects.create(email="a@b.com")
+        token2 = Token.objects.create(email="a@b.com")
+        self.assertNotEqual(token1.uid, token2.uid)
