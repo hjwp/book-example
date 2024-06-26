@@ -40,6 +40,11 @@ INSTALLED_APPS = [
     "accounts",
 ]
 
+AUTH_USER_MODEL = "accounts.ListUser"
+AUTHENTICATION_BACKENDS = [
+    "accounts.authentication.PasswordlessAuthenticationBackend",
+]
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
