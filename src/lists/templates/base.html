@@ -11,6 +11,26 @@
   <body>
     <div class="container">
 
+      <nav class="navbar">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">Superlists</a>
+          <form method="POST" action="/accounts/send_login_email">
+            <div class="input-group">
+              <label class="navbar-text me-2" for="id_email_input">
+                Enter your email to log in
+              </label>
+              <input
+                id="id_email_input"
+                name="email"
+                class="form-control"
+                placeholder="your@email.com"
+              />
+            </div>
+          </form>
+        </div>
+      </nav>
+
+
       <div class="row justify-content-center p-5 bg-body-tertiary rounded-3">
         <div class="col-lg-6 text-center">
           <h1 class="display-1 mb-4">{% block header_text %}{% endblock %}</h1>
