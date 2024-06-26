@@ -51,6 +51,13 @@ class ListAndItemModelsTest(TestCase):
             item = Item(list=mylist, text="bla")
             item.full_clean()
 
+    def test_CAN_save_same_item_to_different_lists(self):
+        list1 = List.objects.create()
+        list2 = List.objects.create()
+        Item.objects.create(list=list1, text="bla")
+        item = Item(list=list2, text="bla")
+        item.full_clean()  # should not raise
+
     def test_get_absolute_url(self):
         mylist = List.objects.create()
         self.assertEqual(mylist.get_absolute_url(), f"/lists/{mylist.id}/")
