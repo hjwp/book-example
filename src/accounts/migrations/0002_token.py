@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("accounts", "0001_initial"),
     ]
@@ -23,6 +22,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("email", models.EmailField(max_length=254)),
+                ("uid", models.CharField(max_length=40)),
             ],
         ),
     ]
