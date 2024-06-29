@@ -3,7 +3,7 @@ from django.test import TestCase
 from lists.models import Item, List
 
 
-class ListAndItemModelsTest(TestCase):
+class ItemModelTest(TestCase):
     def test_default_text(self):
         item = Item()
         self.assertEqual(item.text, "")
@@ -36,6 +36,8 @@ class ListAndItemModelsTest(TestCase):
         item = Item(list=list2, text="bla")
         item.full_clean()  # should not raise
 
+
+class ListModelTest(TestCase):
     def test_get_absolute_url(self):
         mylist = List.objects.create()
         self.assertEqual(mylist.get_absolute_url(), f"/lists/{mylist.id}/")
