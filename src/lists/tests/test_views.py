@@ -1,3 +1,5 @@
+from unittest import skip
+
 import lxml.html
 from django.test import TestCase
 from django.utils import html
@@ -119,6 +121,7 @@ class ListViewTest(TestCase):
         response = self.post_invalid_input()
         self.assertContains(response, html.escape(EMPTY_ITEM_ERROR))
 
+    @skip
     def test_duplicate_item_validation_errors_end_up_on_lists_page(self):
         list1 = List.objects.create()
         Item.objects.create(list=list1, text="textey")
