@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 
 from lists.models import Item
 
@@ -28,3 +29,10 @@ class ItemForm(forms.models.ModelForm):
 class ExistingListItemForm(ItemForm):
     def __init__(self, for_list, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.instance.list = for_list
+
+    def clean_text(self):
+        text = self.cleaned_data["text"]
+        if self.instance.list.item_set.filter(text=text).exists():
+            raise forms.ValidationError(DUPLICATE_ITEM_ERROR)
+        return text
