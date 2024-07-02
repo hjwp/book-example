@@ -36,3 +36,6 @@ class ExistingListItemForm(ItemForm):
         if self.instance.list.item_set.filter(text=text).exists():
             raise forms.ValidationError(DUPLICATE_ITEM_ERROR)
         return text
+
+    def save(self):
+        return forms.models.ModelForm.save(self)
