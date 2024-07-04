@@ -11,9 +11,8 @@ def send_login_email(request):
         "noreply@superlists",
         [email],
     )
-    messages.add_message(
+    messages.success(
         request,
-        messages.SUCCESS,
         "Check your email, we've sent you a link you can use to log in.",
     )
     return redirect("/")
