@@ -32,6 +32,19 @@
         </div>
       </nav>
 
+      {% if messages %}
+        <div class="row">
+          <div class="col-md-8">
+            {% for message in messages %}
+              {% if message.level_tag == 'success' %}
+                <div class="alert alert-success">{{ message }}</div>
+              {% else %}
+                <div class="alert alert-warning">{{ message }}</div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
 
       <div class="row justify-content-center p-5 bg-body-tertiary rounded-3">
         <div class="col-lg-6 text-center">
