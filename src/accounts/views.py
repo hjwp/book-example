@@ -16,3 +16,7 @@ def send_login_email(request):
         "Check your email, we've sent you a link you can use to log in.",
     )
     return redirect("/")
+
+
+def login(request):
+    pass
