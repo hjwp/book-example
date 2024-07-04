@@ -3,5 +3,8 @@ from accounts.models import Token, User
 
 class PasswordlessAuthenticationBackend:
     def authenticate(self, request, uid):
-        token = Token.objects.get(uid=uid)
-        return User.objects.get(email=token.email)
+        try:
+            token = Token.objects.get(uid=uid)
+            return User.objects.get(email=token.email)
+        except Token.DoesNotExist:
+            return None
