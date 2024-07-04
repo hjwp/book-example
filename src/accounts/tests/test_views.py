@@ -35,3 +35,9 @@ class SendLoginEmailViewTest(TestCase):
         self.assertEqual(subject, "Your login link for Superlists")
         self.assertEqual(from_email, "noreply@superlists")
         self.assertEqual(to_list, ["edith@example.com"])
+
+
+class LoginViewTest(TestCase):
+    def test_redirects_to_home_page(self):
+        response = self.client.get("/accounts/login?token=abcd123")
+        self.assertRedirects(response, "/")
