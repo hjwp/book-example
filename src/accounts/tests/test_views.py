@@ -24,6 +24,18 @@ class SendLoginEmailViewTest(TestCase):
         )
         self.assertEqual(message.tags, "success")
 
+    @mock.patch("accounts.views.messages")
+    def test_adds_success_message_with_mocks(self, mock_messages):
+        response = self.client.post(
+            "/accounts/send_login_email", data={"email": "edith@example.com"}
+        )
+
+        expected = "Check your email, we've sent you a link you can use to log in."
+        self.assertEqual(
+            mock_messages.success.call_args,
+            mock.call(response.wsgi_request, expected),
+        )
+
     @mock.patch("accounts.views.send_mail")
     def test_sends_mail_to_address_from_post(self, mock_send_mail):
         self.client.post(
