@@ -3,5 +3,5 @@ from django.shortcuts import redirect
 
 
 def send_login_email(request):
-    send_mail()
+    send_mail("subject", "body", "from_email", ["to email"])
     return redirect("/")
