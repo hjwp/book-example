@@ -3,5 +3,11 @@ from django.shortcuts import redirect
 
 
 def send_login_email(request):
-    send_mail("subject", "body", "from_email", ["to email"])
+    email = request.POST["email"]
+    send_mail(
+        "Your login link for Superlists",
+        "body text tbc",
+        "noreply@superlists",
+        [email],
+    )
     return redirect("/")
