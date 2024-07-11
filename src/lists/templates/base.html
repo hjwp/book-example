@@ -16,7 +16,7 @@
           <a class="navbar-brand" href="/">Superlists</a>
           {% if user.email %}
             <span class="navbar-text">Logged in as {{ user.email }}</span>
-            <form method="POST" action="TODO">
+            <form method="POST" action="{% url 'logout' %}">
               {% csrf_token %}
               <button id="id_logout" class="btn btn-outline-secondary" type="submit">Log out</button>
             </form>
