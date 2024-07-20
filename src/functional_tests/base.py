@@ -1,9 +1,10 @@
 import os
 import time
+
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.by import By
 
 MAX_WAIT = 5
 
@@ -31,15 +32,9 @@ class FunctionalTest(StaticLiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
+    @wait
     def wait_for(self, fn):
-        start_time = time.time()
-        while True:
-            try:
-                return fn()
-            except (AssertionError, WebDriverException):
-                if time.time() - start_time > MAX_WAIT:
-                    raise
-                time.sleep(0.5)
+        return fn()
 
     def get_item_input_box(self):
         return self.browser.find_element(By.ID, "id_text")
