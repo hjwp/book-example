@@ -5,6 +5,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 from .server_tools import reset_database
 
@@ -46,6 +47,13 @@ class FunctionalTest(StaticLiveServerTestCase):
     def wait_for_row_in_list_table(self, row_text):
         rows = self.browser.find_elements(By.CSS_SELECTOR, "#id_list_table tr")
         self.assertIn(row_text, [row.text for row in rows])
+
+    def add_list_item(self, item_text):
+        num_rows = len(self.browser.find_elements(By.CSS_SELECTOR, "#id_list_table tr"))
+        self.get_item_input_box().send_keys(item_text)
+        self.get_item_input_box().send_keys(Keys.ENTER)
+        item_number = num_rows + 1
+        self.wait_for_row_in_list_table(f"{item_number}: {item_text}")
 
     @wait
     def wait_to_be_logged_in(self, email):
