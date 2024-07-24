@@ -53,6 +53,13 @@ class NewListTest(TestCase):
         response = self.post_invalid_input()
         self.assertContains(response, html.escape(EMPTY_ITEM_ERROR))
 
+    def test_list_owner_is_saved_if_user_is_authenticated(self):
+        user = User.objects.create(email="a@b.com")
+        self.client.force_login(user)
+        self.client.post("/lists/new", data={"text": "new item"})
+        new_list = List.objects.get()
+        self.assertEqual(new_list.owner, user)
+
 
 class ListViewTest(TestCase):
     def test_uses_list_template(self):
