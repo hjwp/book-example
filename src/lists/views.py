@@ -13,6 +13,8 @@ def new_list(request):
     form = ItemForm(data=request.POST)
     if form.is_valid():
         nulist = List.objects.create()
+        nulist.owner = request.user
+        nulist.save()
         form.save(for_list=nulist)
         return redirect(nulist)
     else:
