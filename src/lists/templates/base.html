@@ -14,8 +14,8 @@
       <nav class="navbar">
         <div class="container-fluid">
           <a class="navbar-brand" href="/">Superlists</a>
-          <a href="#">My lists</a>
           {% if user.email %}
+            <a href="{% url 'my_lists' user.email %}">My lists</a>
             <ul>
               <span class="navbar-text">Logged in as {{ user.email }}</span>
               <a href="{% url 'logout' %}">Log out</a>
