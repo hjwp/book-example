@@ -9,7 +9,6 @@ from selenium.webdriver.common.keys import Keys
 
 from .base import FunctionalTest
 
-
 SUBJECT = "Your login link for Superlists"
 
 
@@ -48,14 +47,14 @@ class LoginTest(FunctionalTest):
         # Edith goes to the awesome superlists site
         # and notices a "Log in" section in the navbar for the first time
         # It's telling her to enter her email address, so she does
-        if self.staging_server:
+        if self.test_server:
             test_email = "edith.testuser@yahoo.com"
         else:
             test_email = "edith@example.com"
 
         self.browser.get(self.live_server_url)
         self.browser.find_element(By.CSS_SELECTOR, "input[name=email]").send_keys(
-            TEST_EMAIL
+            test_email
         )
         self.browser.find_element(By.CSS_SELECTOR, "input[name=email]").send_keys(
             Keys.ENTER
