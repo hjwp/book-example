@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 
+from accounts.models import User
 from lists.forms import ExistingListItemForm, ItemForm
 from lists.models import List
 
@@ -31,4 +32,5 @@ def view_list(request, list_id):
 
 
 def my_lists(request, email):
-    return render(request, "my_lists.html")
+    owner = User.objects.get(email=email)
+    return render(request, "my_lists.html", {"owner": owner})
