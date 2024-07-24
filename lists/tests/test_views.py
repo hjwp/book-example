@@ -2,8 +2,6 @@ from django.test import TestCase
 from django.utils.html import escape
 from django.contrib.auth import get_user_model
 
-User = get_user_model()
-
 from lists.forms import (
     DUPLICATE_ITEM_ERROR,
     EMPTY_ITEM_ERROR,
@@ -11,6 +9,8 @@ from lists.forms import (
     ItemForm,
 )
 from lists.models import Item, List
+
+User = get_user_model()
 
 
 class HomePageTest(TestCase):
@@ -52,6 +52,13 @@ class NewListTest(TestCase):
         self.client.post("/lists/new", data={"text": ""})
         self.assertEqual(List.objects.count(), 0)
         self.assertEqual(Item.objects.count(), 0)
+
+    def test_list_owner_is_saved_if_user_is_authenticated(self):
+        user = User.objects.create(email="a@b.com")
+        self.client.force_login(user)
+        self.client.post("/lists/new", data={"text": "new item"})
+        list_ = List.objects.first()
+        self.assertEqual(list_.owner, user)
 
 
 class ListViewTest(TestCase):
