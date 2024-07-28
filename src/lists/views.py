@@ -29,3 +29,7 @@ def view_list(request, list_id):
     else:
         form = ExistingListItemForm(for_list=our_list)
     return render(request, "list.html", {"list": our_list, "form": form})
+
+
+def my_lists(request, email):
+    return render(request, "my_lists.html")
