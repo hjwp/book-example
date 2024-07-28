@@ -2,7 +2,9 @@ from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from django.test import TestCase
 
+from accounts.models import User
 from lists.models import Item, List
+
 
 
 class ItemModelTest(TestCase):
@@ -62,3 +64,8 @@ class ListModelTest(TestCase):
             list(list1.item_set.all()),
             [item1, item2, item3],
         )
+
+    def test_lists_can_have_owners(self):
+        user = User.objects.create(email="a@b.com")
+        mylist = List.objects.create(owner=user)
+        self.assertIn(mylist, user.lists.all())
