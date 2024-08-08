@@ -49,7 +49,7 @@ class ItemModelTest(TestCase):
         item2 = Item.objects.create(list=list1, text="item 2")
         item3 = Item.objects.create(list=list1, text="3")
         self.assertEqual(
-            Item.objects.all(),
+            list(Item.objects.all()),
             [item1, item2, item3],
         )
 
