@@ -1,3 +1,5 @@
+from unittest import mock
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.utils.html import escape
@@ -47,12 +49,20 @@ class NewListTest(TestCase):
         self.assertEqual(List.objects.count(), 0)
         self.assertEqual(Item.objects.count(), 0)
 
-    def test_list_owner_is_saved_if_user_is_authenticated(self):
+    @mock.patch("lists.views.List", autospec=True)
+    @mock.patch("lists.views.ItemForm")
+    def test_list_owner_is_saved_if_user_is_authenticated(
+        self, mockItemFormClass, mockListClass
+    ):
+        mock_list = mockListClass.objects.create.return_value
+        mock_list.get_absolute_url.return_value = "/fake-url"
+
         user = User.objects.create(email="a@b.com")
         self.client.force_login(user)
+
         self.client.post("/lists/new", data={"text": "new item"})
-        new_list = List.objects.get()
-        self.assertEqual(new_list.owner, user)
+
+        self.assertEqual(mock_list.owner, user)
 
 
 class ListViewTest(TestCase):
