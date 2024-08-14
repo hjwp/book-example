@@ -55,6 +55,14 @@ class NewListFormTest(unittest.TestCase):
             first_item_text="new item text", owner=user
         )
 
+    @patch("lists.forms.List.create_new")
+    def test_save_returns_new_list_object(self, mock_List_create_new):
+        user = Mock(is_authenticated=True)
+        form = NewListForm(data={"text": "new item text"})
+        form.is_valid()
+        response = form.save(owner=user)
+        self.assertEqual(response, mock_List_create_new.return_value)
+
 
 class ExistingListItemFormTest(TestCase):
     def test_form_renders_item_text_input(self):
