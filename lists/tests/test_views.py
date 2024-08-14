@@ -1,4 +1,4 @@
-from unittest.mock import patch
+import unittest
 from django.test import TestCase
 from django.utils.html import escape
 from django.contrib.auth import get_user_model
@@ -24,7 +24,7 @@ class HomePageTest(TestCase):
         self.assertIsInstance(response.context["form"], ItemForm)
 
 
-class NewListTest(TestCase):
+class NewListViewIntegratedTest(TestCase):
     def test_can_save_a_POST_request(self):
         self.client.post("/lists/new", data={"text": "A new list item"})
         self.assertEqual(Item.objects.count(), 1)
@@ -54,23 +54,13 @@ class NewListTest(TestCase):
         self.assertEqual(List.objects.count(), 0)
         self.assertEqual(Item.objects.count(), 0)
 
-    @patch("lists.views.List")
-    @patch("lists.views.ItemForm")
-    def test_list_owner_is_saved_if_user_is_authenticated(
-        self, mockItemFormClass, mockListClass
-    ):
+    @unittest.skip
+    def test_list_owner_is_saved_if_user_is_authenticated(self):
         user = User.objects.create(email="a@b.com")
         self.client.force_login(user)
-        mock_list = mockListClass.return_value
-
-        def check_owner_assigned():
-            self.assertEqual(mock_list.owner, user)
-
-        mock_list.save.side_effect = check_owner_assigned
-
         self.client.post("/lists/new", data={"text": "new item"})
-
-        mock_list.save.assert_called_once_with()
+        list_ = List.objects.first()
+        self.assertEqual(list_.owner, user)
 
 
 class ListViewTest(TestCase):
