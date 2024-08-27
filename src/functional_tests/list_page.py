@@ -26,3 +26,24 @@ class ListPage:
         self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table(item_text, new_item_no)
         return self
+
+    def get_share_box(self):
+        return self.test.browser.find_element(
+            By.CSS_SELECTOR,
+            'input[name="sharee"]',
+        )
+
+    def get_shared_with_list(self):
+        return self.test.browser.find_elements(
+            By.CSS_SELECTOR,
+            ".list-sharee",
+        )
+
+    def share_list_with(self, email):
+        self.get_share_box().send_keys(email)
+        self.get_share_box().send_keys(Keys.ENTER)
+        self.test.wait_for(
+            lambda: self.test.assertIn(
+                email, [item.text for item in self.get_shared_with_list()]
+            )
+        )
