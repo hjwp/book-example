@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 
 from .base import FunctionalTest
 from .list_page import ListPage
+from .my_lists_page import MyListsPage
 
 
 def quit_if_possible(browser):
@@ -39,3 +40,10 @@ class SharingTest(FunctionalTest):
         # She shares her list.
         # The page updates to say that it's shared with Onesiphorus:
         list_page.share_list_with("onesiphorus@example.com")
+
+        # Onesiphorus now goes to the lists page with his browser
+        self.browser = oni_browser
+        MyListsPage(self).go_to_my_lists_page()
+
+        # He sees Edith's list in there!
+        self.browser.find_element_by_link_text("Get help").click()
