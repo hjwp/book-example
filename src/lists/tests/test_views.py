@@ -176,7 +176,7 @@ class ShareListTest(TestCase):
         sharee = User.objects.create(email="share.with@me.com")
         mylist = List.objects.create()
         response = self.client.post(
-            f"/lists/{mylist}/share",
+            f"/lists/{mylist.id}/share",
             {"sharee": "share.with@me.com"},
         )
-        self.assertRedirects(response, list_.get_absolute_url())
+        self.assertRedirects(response, mylist.get_absolute_url())
