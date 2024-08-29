@@ -15,7 +15,7 @@ SUBJECT = "Your login link for Superlists"
 class LoginTest(FunctionalTest):
     def wait_for_email(self, test_email, subject):
         if not self.test_server:
-            email = mail.outbox[0]
+            email = mail.outbox.pop()
             self.assertIn(test_email, email.to)
             self.assertEqual(email.subject, subject)
             return email.body
