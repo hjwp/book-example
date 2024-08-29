@@ -66,15 +66,13 @@ class LoginTest(FunctionalTest):
         )
 
         # She checks her email and finds a message
-        email = mail.outbox.pop()
-        self.assertIn(TEST_EMAIL, email.to)
-        self.assertEqual(email.subject, SUBJECT)
+        body = self.wait_for_email(test_email, SUBJECT)
 
-        # It has a URL link in it
-        self.assertIn("Use this link to log in", email.body)
-        url_search = re.search(r"http://.+/.+$", email.body)
+        # It has a url link in it
+        self.assertIn("Use this link to log in", body)
+        url_search = re.search(r"http://.+/.+$", body)
         if not url_search:
-            self.fail(f"Could not find url in email body:\n{email.body}")
+            self.fail(f"Could not find url in email body:\n{body}")
         url = url_search.group(0)
         self.assertIn(self.live_server_url, url)
 
@@ -82,10 +80,10 @@ class LoginTest(FunctionalTest):
         self.browser.get(url)
 
         # she is logged in!
-        self.wait_to_be_logged_in(email=TEST_EMAIL)
+        self.wait_to_be_logged_in(email=test_email)
 
         # Now she logs out
         self.browser.find_element(By.CSS_SELECTOR, "#id_logout").click()
 
         # She is logged out
-        self.wait_to_be_logged_out(email=TEST_EMAIL)
+        self.wait_to_be_logged_out(email=test_email)
