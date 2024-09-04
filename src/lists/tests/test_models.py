@@ -1,4 +1,6 @@
+from django.db.utils import IntegrityError
 from django.test import TestCase
+
 from lists.models import Item, List
 
 
@@ -28,3 +30,9 @@ class ListAndItemModelsTest(TestCase):
         self.assertEqual(first_saved_item.list, mylist)
         self.assertEqual(second_saved_item.text, "Item the second")
         self.assertEqual(second_saved_item.list, mylist)
+
+    def test_cannot_save_empty_list_items(self):
+        mylist = List.objects.create()
+        item = Item(list=mylist, text="")
+        with self.assertRaises(IntegrityError):
+            item.save()
