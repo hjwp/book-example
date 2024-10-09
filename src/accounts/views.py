@@ -30,6 +30,7 @@ def send_login_email(request):
 
 def login(request):
     # TODO: call authenticate(),
+    auth.authenticate("bang!")
     # then auth.login() with the user if we get one,
     # or messages.error() if we get None.
     return redirect("/")
