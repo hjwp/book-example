@@ -86,33 +86,9 @@ class LoginViewTest(TestCase):
         self.assertEqual(message.tags, "error")
 
     @mock.patch("accounts.views.auth")
-    def test_calls_authenticate_with_uid_from_get_request(self, mock_auth):
+    def test_calls_django_auth_authenticate(self, mock_auth):
         self.client.get("/accounts/login?token=abcd123")
         self.assertEqual(
             mock_auth.authenticate.call_args,
             mock.call(uid="abcd123"),
         )
-
-    @mock.patch("accounts.views.auth")
-    def test_calls_auth_login_with_user_if_there_is_one(self, mock_auth):
-        response = self.client.get("/accounts/login?token=abcd123")
-        self.assertEqual(
-            mock_auth.login.call_args,
-            mock.call(
-                response.wsgi_request,
-                mock_auth.authenticate.return_value,
-            ),
-        )
-
-    @mock.patch("accounts.views.auth")
-    def test_adds_error_message_if_auth_user_is_None(self, mock_auth):
-        mock_auth.authenticate.return_value = None
-
-        response = self.client.get("/accounts/login?token=abcd123", follow=True)
-
-        message = list(response.context["messages"])[0]
-        self.assertEqual(
-            message.message,
-            "Invalid login link, please request a new one",
-        )
-        self.assertEqual(message.tags, "error")
