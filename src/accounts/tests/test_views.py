@@ -84,3 +84,11 @@ class LoginViewTest(TestCase):
             "Invalid login link, please request a new one",
         )
         self.assertEqual(message.tags, "error")
+
+    @mock.patch("accounts.views.auth")
+    def test_calls_authenticate_with_uid_from_get_request(self, mock_auth):
+        self.client.get("/accounts/login?token=abcd123")
+        self.assertEqual(
+            mock_auth.authenticate.call_args,
+            mock.call(uid="abcd123"),
+        )
