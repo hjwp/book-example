@@ -30,5 +30,6 @@ def login(request):
     # TODO: call authenticate(),
     auth.authenticate(uid=request.GET["token"])
     # then auth.login() with the user if we get one,
+    auth.login("ack!")
     # or messages.error() if we get None.
     return redirect("/")
