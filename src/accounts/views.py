@@ -31,5 +31,7 @@ def login(request):
     if user := auth.authenticate(uid=request.GET["token"]):
         # then auth.login() with the user if we get one,
         auth.login(request, user)
-    # or messages.error() if we get None.
+    else:
+        # or messages.error() if we get None.
+        messages.error(request, "boo")
     return redirect("/")
