@@ -103,3 +103,16 @@ class LoginViewTest(TestCase):
                 mock_auth.authenticate.return_value,
             ),
         )
+
+    @mock.patch("accounts.views.auth")
+    def test_adds_error_message_if_auth_user_is_None(self, mock_auth):
+        mock_auth.authenticate.return_value = None
+
+        response = self.client.get("/accounts/login?token=abcd123", follow=True)
+
+        message = list(response.context["messages"])[0]
+        self.assertEqual(
+            message.message,
+            "Invalid login link, please request a new one",
+        )
+        self.assertEqual(message.tags, "error")
