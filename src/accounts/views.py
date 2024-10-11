@@ -1,5 +1,4 @@
-# from django.contrib import auth, messages
-from django.contrib import messages
+from django.contrib import auth, messages
 from django.core.mail import send_mail
 from django.shortcuts import redirect
 from django.urls import reverse
