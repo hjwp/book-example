@@ -1,0 +1,4 @@
+- hosts: all
+  tasks:
+    - name: Ping to make sure we can talk to our server
+      ansible.builtin.ping:
