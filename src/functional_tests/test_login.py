@@ -1,4 +1,7 @@
+import os
+import poplib
 import re
+import time
 
 from django.core import mail
 from selenium.webdriver.common.by import By
@@ -8,6 +11,35 @@ from .base import FunctionalTest
 
 TEST_EMAIL = "edith@example.com"
 SUBJECT = "Your login link for Superlists"
+POP3_SERVER = "pop.mail.yahoo.com"
+POP3_TIMEOUT = 60
+
+
+def retrieve_pop3_email(receiver_email, subject, pop3_server, pop3_password):
+    email_id = None
+    start = time.time()
+    inbox = poplib.POP3_SSL(pop3_server)
+    try:
+        breakpoint()
+        inbox.user(receiver_email)
+        inbox.pass_(pop3_password)
+        while time.time() - start < POP3_TIMEOUT:
+            # get 10 newest messages
+            count, _ = inbox.stat()
+            for i in reversed(range(max(1, count - 10), count + 1)):
+                print("getting msg", i)
+                _, lines, __ = inbox.retr(i)
+                lines = [l.decode("utf8") for l in lines]
+                print(lines)
+                if f"Subject: {subject}" in lines:
+                    email_id = i
+                    body = "\n".join(lines)
+                    return body
+            time.sleep(5)
+    finally:
+        if email_id:
+            inbox.dele(email_id)
+        inbox.quit()
 
 
 class LoginTest(FunctionalTest):
