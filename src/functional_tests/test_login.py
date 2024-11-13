@@ -59,15 +59,12 @@ class LoginTest(FunctionalTest):
         )
 
         # She checks her email and finds a message
-        email = mail.outbox.pop()
-        self.assertIn(TEST_EMAIL, email.to)
-        self.assertEqual(email.subject, SUBJECT)
+        email_body = self.wait_for_email(TEST_EMAIL, SUBJECT)
 
         # It has a URL link in it
-        self.assertIn("Use this link to log in", email.body)
-        url_search = re.search(r"http://.+/.+$", email.body)
-        if not url_search:
-            self.fail(f"Could not find url in email body:\n{email.body}")
+        self.assertIn("Use this link to log in", email_body)
+        if not (url_search := re.search(r"http://.+/.+$", email_body, re.MULTILINE)):
+            self.fail(f"Could not find url in email body:\n{email_body}")
         url = url_search.group(0)
         self.assertIn(self.live_server_url, url)
 
