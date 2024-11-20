@@ -13,12 +13,12 @@ def send_login_email(request):
         reverse("login") + "?token=" + str(token.uid),
     )
     message_body = f"Use this link to log in:\n\n{url}"
-    # send_mail(
-    #     "Your login link for Superlists",
-    #     message_body,
-    #     "noreply@superlists",
-    #     [email],
-    # )
+    send_mail(
+        "Your login link for Superlists",
+        "HAHA NO LOGIN URL FOR U",
+        "noreply@superlists",
+        [email],
+    )
     messages.success(
         request,
         "Check your email, we've sent you a link you can use to log in.",
