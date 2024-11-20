@@ -15,7 +15,7 @@ def send_login_email(request):
     message_body = f"Use this link to log in:\n\n{url}"
     send_mail(
         "Your login link for Superlists",
-        "HAHA NO LOGIN URL FOR U",
+        message_body,
         "noreply@superlists",
         [email],
     )
