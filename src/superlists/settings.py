@@ -146,7 +146,3 @@ EMAIL_HOST_USER = "obeythetestinggoat@gmail.com"
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-# Use fake file-based backend if EMAIL_FILE_PATH is set
-if "EMAIL_FILE_PATH" in os.environ:
-    EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-    EMAIL_FILE_PATH = os.environ["EMAIL_FILE_PATH"]
