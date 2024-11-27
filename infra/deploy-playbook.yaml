@@ -48,6 +48,7 @@
       vars:
         host: "{{ inventory_hostname }}"
         secret_key: "{{ lookup('password', '/dev/null length=32 chars=ascii_letters') }}"
+        email_password: "{{ lookup('env', 'EMAIL_PASSWORD') }}"
 
     - name: Ensure db.sqlite3 file exists outside container
       ansible.builtin.file:
