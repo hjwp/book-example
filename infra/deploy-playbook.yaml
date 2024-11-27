@@ -54,7 +54,7 @@
       ansible.builtin.template:
         src: env.j2
         dest: ~/superlists.env
-        force: false  # do not recreate file if it already exists.
+        force: true  # update file if contents changed
       vars:
         host: "{{ inventory_hostname }}"
         secret_key: "{{ lookup('password', '/dev/null length=32 chars=ascii_letters') }}"
