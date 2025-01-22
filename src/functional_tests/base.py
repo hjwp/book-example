@@ -27,10 +27,10 @@ class FunctionalTest(StaticLiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
         if test_server := os.environ.get("TEST_SERVER"):
-            self.against_server = True
+            self.test_server = test_server
             self.live_server_url = "http://" + test_server
         else:
-            self.against_server = False
+            self.test_server = None
 
     def tearDown(self):
         self.browser.quit()

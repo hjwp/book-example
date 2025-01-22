@@ -28,7 +28,7 @@ class LoginTest(FunctionalTest):
             )
         )
 
-        if self.against_server:
+        if self.test_server:
             # Testing real email sending from the server is not worth it.
             return
 
