@@ -6,6 +6,8 @@ from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.by import By
 
+from .container_commands import reset_database
+
 MAX_WAIT = 5
 
 
@@ -26,11 +28,10 @@ def wait(fn):
 class FunctionalTest(StaticLiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
-        if test_server := os.environ.get("TEST_SERVER"):
-            self.test_server = test_server
-            self.live_server_url = "http://" + test_server
-        else:
-            self.test_server = None
+        self.test_server = os.environ.get("TEST_SERVER")
+        if self.test_server:
+            self.live_server_url = "http://" + self.test_server
+            reset_database(self.test_server)
 
     def tearDown(self):
         self.browser.quit()
