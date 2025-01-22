@@ -3,6 +3,12 @@ import subprocess
 USER = "elspeth"
 
 
+def reset_database(host):
+    return _exec_in_container(
+        host, ["/venv/bin/python", "/src/manage.py", "flush", "--noinput"]
+    )
+
+
 def create_session_on_server(host, email):
     return _exec_in_container(
         host, ["/venv/bin/python", "/src/manage.py", "create_session", email]
