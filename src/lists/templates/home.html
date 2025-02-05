@@ -2,4 +2,11 @@
 
 {% block header_text %}Start a new To-Do list{% endblock %}
 
-{% block form_action %}{% url 'new_list' %}{% endblock %}
+{% block extra_header %}
+  {% url 'new_list' as form_action %}
+  {% include "form.html" with form=form form_action=form_action %}
+{% endblock %}
+
+{% block scripts %}
+  {% include "scripts.html" %}
+{% endblock %}
