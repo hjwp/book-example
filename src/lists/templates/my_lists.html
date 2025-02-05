@@ -2,3 +2,11 @@
 
 {% block header_text %}{{user.email}}'s Lists{% endblock %}
 
+{% block content %}
+  <h2>{{ owner.email }}'s lists</h2>
+  <ul>
+    {% for list in owner.lists.all %}
+      <li><a href="{{ list.get_absolute_url }}">{{ list.name }}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}
