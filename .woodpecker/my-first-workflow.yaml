@@ -14,10 +14,9 @@ steps:
       - python --version ; pip --version  # For debugging
       - pip install virtualenv
       - virtualenv .venv
-      - source .venv/bin/activate
-      - pip install -r requirements.txt
-      - pip install selenium
+      - .venv/bin/pip install -r requirements.txt
+      - .venv/bin/pip install selenium
       # unit tests
-      - python src/manage.py test lists accounts
+      - .venv/bin/python src/manage.py test lists accounts
       # (if those pass) all tests, incl. functional. yes we need that cd.
-      - cd src && python manage.py test
+      - cd src && ../.venv/bin/python manage.py test
