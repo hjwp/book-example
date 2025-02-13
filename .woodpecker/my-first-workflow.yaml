@@ -4,6 +4,20 @@ when:
 
 steps:
   - name: test
-    image: debian
+    image: python:slim
+    environment:
+      # make firefox run without a display
+      MOZ_HEADLESS: "1"
     commands:
-      - echo "hello world"
+      # install firefox
+      - apt-get update -y && apt-get install -y firefox-esr
+      - python --version ; pip --version  # For debugging
+      - pip install virtualenv
+      - virtualenv .venv
+      - source .venv/bin/activate
+      - pip install -r requirements.txt
+      - pip install selenium
+      # unit tests
+      - python src/manage.py test lists accounts
+      # (if those pass) all tests, incl. functional. yes we need that cd.
+      - cd src && python manage.py test
