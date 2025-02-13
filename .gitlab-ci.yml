@@ -1,0 +1,30 @@
+image: python:slim
+
+variables:
+  # Change pip's cache directory to be inside the project directory since we can
+  # only cache local items.
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  # make firefox run without a display
+  MOZ_HEADLESS: "1"
+
+# https://pip.pypa.io/en/stable/topics/caching/
+cache:
+  paths:
+    - .cache/pip
+
+before_script:
+  # install firefox
+  - apt-get update -y && apt-get install -y firefox-esr
+  - python --version ; pip --version  # For debugging
+  - pip install virtualenv
+  - virtualenv .venv
+  - source .venv/bin/activate
+
+test:
+  script:
+    - pip install -r requirements.txt
+    - pip install selenium
+    # unit tests
+    - python src/manage.py test lists accounts
+    # (if those pass) all tests, incl. functional. yes we need that cd.
+    - cd src && python manage.py test
