@@ -1,0 +1,9 @@
+when:
+  - event: push
+    branch: chapter_25_CI
+
+steps:
+  - name: test
+    image: debian
+    commands:
+      - echo "hello world"
