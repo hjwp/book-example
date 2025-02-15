@@ -103,5 +103,5 @@ deploy:
       --private-key=.secure_files/keypair-for-gitlab
       --user=elspeth
       -i staging.ottg.co.uk,
-      -vv
+      -vvv
       ${PWD}/infra/deploy-playbook.yaml
