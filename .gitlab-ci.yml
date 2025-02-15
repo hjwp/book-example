@@ -93,7 +93,12 @@ deploy:
   script:
     - pip install -r requirements.txt
     - pip install ansible
+    # download secure files to get private key
+    - curl -s https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer | bash
+    - ls .secure-files
+
     - ansible-playbook
+      --private-key=.secure-files/keypair-for-gitlab
       --user=elspeth
       -i staging.ottg.co.uk,
       -vv
