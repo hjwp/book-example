@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 USER = "elspeth"
@@ -29,8 +30,13 @@ def _exec_in_container_locally(commands):
 
 def _exec_in_container_on_server(host, commands):
     print(f"Running {commands!r} on {host} inside docker container")
+    keyfile = os.environ.get("SSH_PRIVATE_KEY_PATH")
+    keyfile_arg = ["-i", keyfile] if keyfile else []
     return _run_commands(
-        ["ssh", f"{USER}@{host}", "docker", "exec", "superlists"] + commands
+        ["ssh"]
+        + keyfile_arg
+        + [f"{USER}@{host}", "docker", "exec", "superlists"]
+        + commands
     )
 
 

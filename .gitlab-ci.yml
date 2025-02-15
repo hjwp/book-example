@@ -124,4 +124,9 @@ test-staging:
   script:
     - pip install -r requirements.txt
     - pip install selenium
-    - TEST_SERVER=staging.ottg.co.uk python src/manage.py test functional_tests
+    - curl -s https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer | bash
+    - chmod 600 .secure_files/*
+    - env
+      TEST_SERVER=staging.ottg.co.uk
+      SSH_PRIVATE_KEY_PATH=.secure_files/keypair-for-gitlab
+      python src/manage.py test functional_tests
