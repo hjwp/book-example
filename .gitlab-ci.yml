@@ -111,7 +111,7 @@ deploy:
 
 test-staging:
   image: python:slim
-  stage: build-and-test
+  stage: staging-test
 
   before_script:
     # install firefox
