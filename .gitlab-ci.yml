@@ -22,7 +22,7 @@ test:
   before_script:
     # install firefox
     # TODO temporarily uncommented
-    # - apt update -y && apt install -y firefox-esr openssh-client
+    # - apt update -y && apt install -y curl firefox-esr openssh-client
     - python --version ; pip --version  # For debugging
     - pip install virtualenv
     - virtualenv .venv
@@ -115,7 +115,7 @@ test-staging:
 
   before_script:
     # install firefox
-    - apt update -y && apt install -y firefox-esr openssh-client
+    - apt update -y && apt install -y curl firefox-esr openssh-client
     - python --version ; pip --version  # For debugging
     - pip install virtualenv
     - virtualenv .venv
