@@ -36,14 +36,14 @@
 
     - name: Login to gitlab container registry
       community.docker.docker_login:
-        registry_url: $CI_REGISTRY
-        username: $CI_REGISTRY_USER
-        password: $CI_REGISTRY_PASSWORD
+        registry_url: "{{ lookup('env', 'CI_REGISTRY') }}"
+        username: "{{ lookup('env', 'CI_REGISTRY_USER') }}"
+        password: "{{ lookup('env', 'CI_REGISTRY_PASSWORD') }}"
 
     - name: Run container
       community.docker.docker_container:
         name: superlists
-        image: registry.gitlab.com/hjwp/book-example:${CI_COMMIT_SHA}
+        image: registry.gitlab.com/hjwp/book-example:{{ lookup('env', 'CI_COMMIT_SHA') }}
         state: started
         recreate: true
         env_file: ~/superlists.env
