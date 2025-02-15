@@ -24,14 +24,27 @@ test:
   script:
     - pip install -r requirements.txt
     - pip install selenium
+
     # unit tests
     - python src/manage.py test lists accounts
     # (if those pass) all tests, incl. functional. yes we need that cd.
     - cd src && python manage.py test
+
+    # build and test against docker image
+    # - docker build -t superlists .
+    # - docker run
+    #   -p 8888:8888
+    #   --mount type=bind,source=./src/db.sqlite3,target=/src/db.sqlite3
+    #   -e DJANGO_SECRET_KEY=sekrit
+    #   -e DJANGO_ALLOWED_HOST=localhost
+    #   -e EMAIL_PASSWORD
+    #   -t superlists
+    # - TEST_SERVER=localhost:8888 python src/manage.py test functional_tests
+
     # deploy to staging
     - pip install ansible docker
-    - ansible-playbook \
-      --user=elspeth \
-      -i staging.ottg.co.uk, \
-      -vv \
+    - ansible-playbook
+      --user=elspeth
+      -i staging.ottg.co.uk,
+      -vv
       infra/deploy-playbook.yaml
