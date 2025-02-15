@@ -33,9 +33,13 @@ test:
     # TODO temporarily uncommented fix
     # - cd src && python manage.py test
 
+
+# build and test against docker image
 build:
   image: docker:git
-  # build and test against docker image
+  services:
+  - docker:dind
+
   script:
     - docker build -t superlists .
     - docker run
