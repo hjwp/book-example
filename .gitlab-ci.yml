@@ -28,3 +28,11 @@ test:
     - python src/manage.py test lists accounts
     # (if those pass) all tests, incl. functional. yes we need that cd.
     - cd src && python manage.py test
+
+staging-deploy:
+  script:
+    - ansible-playbook \
+      --user=elspeth \
+      -i staging.ottg.co.uk, \
+      -vv \
+      infra/deploy-playbook.yaml
