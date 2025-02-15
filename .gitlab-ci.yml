@@ -1,5 +1,3 @@
-image: python:slim
-
 variables:
   # Change pip's cache directory to be inside the project directory since we can
   # only cache local items.
@@ -7,13 +5,19 @@ variables:
   # make firefox run without a display
   MOZ_HEADLESS: "1"
 
-# https://pip.pypa.io/en/stable/topics/caching/
 cache:
   paths:
     - .cache/pip
 
+stages:
+  - ci
+  - cd
+  
 
 test:
+  image: python:slim
+  stage: ci
+
   before_script:
     # install firefox
     # TODO temporarily uncommented
@@ -38,7 +42,8 @@ test:
 build:
   image: docker:git
   services:
-  - docker:dind
+    - docker:dind
+  stage: ci
 
   script:
     - docker build
@@ -54,6 +59,8 @@ build:
     - docker push
       registry.gitlab.com/hjwp/book-example:$CI_COMMIT_SHA
 
+    # TODO: $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME:$CI_COMMIT_SHA
+
     # TODO:
     # --mount type=bind,source=./src/db.sqlite3,target=/src/db.sqlite3
     # -e EMAIL_PASSWORD
@@ -68,3 +75,25 @@ build:
     #   -i staging.ottg.co.uk,
     #   -vv
     #   ${PWD}/infra/deploy-playbook.yaml
+    #
+deploy:
+  stage: cd
+  image: python:slim
+
+  before_script:
+    # install firefox
+    # TODO temporarily uncommented
+    # - apt-get update -y && apt-get install -y firefox-esr
+    - python --version ; pip --version  # For debugging
+    - pip install virtualenv
+    - virtualenv .venv
+    - source .venv/bin/activate
+
+  script:
+    - pip install -r requirements.txt
+    - pi install ansible
+    - ansible-playbook
+      --user=elspeth
+      -i staging.ottg.co.uk,
+      -vv
+      ${PWD}/infra/deploy-playbook.yaml
