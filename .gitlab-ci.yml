@@ -91,7 +91,7 @@ deploy:
 
   script:
     - pip install -r requirements.txt
-    - pi install ansible
+    - pip install ansible
     - ansible-playbook
       --user=elspeth
       -i staging.ottg.co.uk,
