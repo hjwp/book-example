@@ -14,7 +14,7 @@ cache:
 
 before_script:
   # install firefox
-  # TOD temporarily uncommented
+  # TODO temporarily uncommented
   # - apt-get update -y && apt-get install -y firefox-esr
   - python --version ; pip --version  # For debugging
   - pip install virtualenv
@@ -32,22 +32,25 @@ test:
     # TODO temporarily uncommented fix
     # - cd src && python manage.py test
 
-    # build and test against docker image
-    # - docker build -t superlists .
-    # - docker run
-    #   -p 8888:8888
-    #   --mount type=bind,source=./src/db.sqlite3,target=/src/db.sqlite3
-    #   -e DJANGO_SECRET_KEY=sekrit
-    #   -e DJANGO_ALLOWED_HOST=localhost
-    #   -e EMAIL_PASSWORD
-    #   -t superlists
+build:
+  image: docker:git
+  # build and test against docker image
+  script:
+    - docker build -t superlists .
+    - docker run
+      -p 8888:8888
+      --mount type=bind,source=./src/db.sqlite3,target=/src/db.sqlite3
+      -e DJANGO_SECRET_KEY=sekrit
+      -e DJANGO_ALLOWED_HOST=localhost
+      -e EMAIL_PASSWORD
+      -t superlists
     # - TEST_SERVER=localhost:8888 python src/manage.py test functional_tests
 
-    # deploy to staging
-    - pip install ansible docker
-    - cat infra/deploy-playbook.yaml
-    - ansible-playbook
-      --user=elspeth
-      -i staging.ottg.co.uk,
-      -vv
-      ${PWD}/infra/deploy-playbook.yaml
+    # # deploy to staging
+    # - pip install ansible docker
+    # - cat infra/deploy-playbook.yaml
+    # - ansible-playbook
+    #   --user=elspeth
+    #   -i staging.ottg.co.uk,
+    #   -vv
+    #   ${PWD}/infra/deploy-playbook.yaml
