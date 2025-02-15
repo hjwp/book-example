@@ -42,7 +42,7 @@ build:
 
   script:
     - docker build
-      -t registry.gitlab.com/hjwp/book-example:${CI_COMMIT_SHA}
+      -t registry.gitlab.com/hjwp/book-example:$CI_COMMIT_SHA
       .
     # - docker run
     #   -d
@@ -50,8 +50,9 @@ build:
     #   -e DJANGO_SECRET_KEY=sekrit
     #   -e DJANGO_ALLOWED_HOST=localhost
     #   -t superlists
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
     - docker push
-      registry.gitlab.com/hjwp/book-example:${CI_COMMIT_SHA}
+      registry.gitlab.com/hjwp/book-example:$CI_COMMIT_SHA
 
     # TODO:
     # --mount type=bind,source=./src/db.sqlite3,target=/src/db.sqlite3
