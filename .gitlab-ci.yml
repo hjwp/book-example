@@ -79,6 +79,8 @@ build:
 deploy:
   stage: cd
   image: python:slim
+  variables:
+    ANSIBLE_HOST_KEY_CHECKING: "False"
 
   before_script:
     # install firefox
