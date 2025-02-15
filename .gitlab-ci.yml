@@ -12,7 +12,7 @@ cache:
 stages:
   - ci
   - cd
-  
+
 
 test:
   image: python:slim
@@ -84,7 +84,9 @@ deploy:
     # install firefox
     # TODO temporarily uncommented
     # - apt update -y && apt install -y firefox-esr
-    - apt update -y && apt install -y openssh-client
+    - apt update -y && apt install -y
+      curl
+      openssh-client
     - python --version ; pip --version  # For debugging
     - pip install virtualenv
     - virtualenv .venv
