@@ -41,14 +41,17 @@ build:
   - docker:dind
 
   script:
-    - docker build -t superlists .
+    - docker build
+      -t registry.gitlab.com/hjwp/book-example:${CI_COMMIT_SHA}
+      .
     # - docker run
     #   -d
     #   -p 8888:8888
     #   -e DJANGO_SECRET_KEY=sekrit
     #   -e DJANGO_ALLOWED_HOST=localhost
     #   -t superlists
-    - docker push registry.gitlab.com/hjwp/book-example:${CI_COMMIT_SHA}
+    - docker push
+      registry.gitlab.com/hjwp/book-example:${CI_COMMIT_SHA}
 
     # TODO:
     # --mount type=bind,source=./src/db.sqlite3,target=/src/db.sqlite3
