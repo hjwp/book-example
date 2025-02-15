@@ -97,7 +97,7 @@ deploy:
     - pip install ansible
     # download secure files to get private key
     - curl -s https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer | bash
-    - ls .secure_files
+    - tail -3 .secure_files/keypair-for-gitlab
 
     - ansible-playbook
       --private-key=.secure_files/keypair-for-gitlab
