@@ -10,13 +10,14 @@ cache:
     - .cache/pip
 
 stages:
-  - ci
-  - cd
+  - build-and-test
+  - staging-deploy
+  - staging-test
 
 
 test:
   image: python:slim
-  stage: ci
+  stage: build-and-test
 
   before_script:
     # install firefox
@@ -43,7 +44,7 @@ build:
   image: docker:git
   services:
     - docker:dind
-  stage: ci
+  stage: build-and-test
 
   script:
     - docker build
@@ -77,7 +78,7 @@ build:
     #   ${PWD}/infra/deploy-playbook.yaml
     #
 deploy:
-  stage: cd
+  stage: staging-deploy
   image: python:slim
   variables:
     ANSIBLE_HOST_KEY_CHECKING: "False"
@@ -107,3 +108,20 @@ deploy:
       -i staging.ottg.co.uk,
       -vvv
       ${PWD}/infra/deploy-playbook.yaml
+
+test-staging:
+  image: python:slim
+  stage: build-and-test
+
+  before_script:
+    # install firefox
+    - apt update -y && apt install -y firefox-esr
+    - python --version ; pip --version  # For debugging
+    - pip install virtualenv
+    - virtualenv .venv
+    - source .venv/bin/activate
+
+  script:
+    - pip install -r requirements.txt
+    - pip install selenium
+    - TEST_SERVER=staging.ottg.co.uk python src/manage.py test functional_tests
