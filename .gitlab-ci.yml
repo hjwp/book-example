@@ -21,7 +21,7 @@ test:
   before_script:
     # install firefox
     # TODO temporarily uncommented
-    # - apt-get update -y && apt-get install -y firefox-esr
+    # - apt update -y && apt install -y firefox-esr
     - python --version ; pip --version  # For debugging
     - pip install virtualenv
     - virtualenv .venv
@@ -83,7 +83,8 @@ deploy:
   before_script:
     # install firefox
     # TODO temporarily uncommented
-    # - apt-get update -y && apt-get install -y firefox-esr
+    # - apt update -y && apt install -y firefox-esr
+    - apt update -y && apt install -y openssh-client
     - python --version ; pip --version  # For debugging
     - pip install virtualenv
     - virtualenv .venv
