@@ -43,8 +43,9 @@ test:
 
     # deploy to staging
     - pip install ansible docker
+    - cat infra/deploy-playbook.yaml
     - ansible-playbook
       --user=elspeth
       -i staging.ottg.co.uk,
       -vv
-      infra/deploy-playbook.yaml
+      ${PWD}/infra/deploy-playbook.yaml
