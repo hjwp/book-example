@@ -21,8 +21,7 @@ test:
 
   before_script:
     # install firefox
-    # TODO temporarily uncommented
-    # - apt update -y && apt install -y curl firefox-esr openssh-client
+    - apt update -y && apt install -y curl firefox-esr openssh-client
     - python --version ; pip --version  # For debugging
     - pip install virtualenv
     - virtualenv .venv
@@ -35,8 +34,7 @@ test:
     # unit tests
     - python src/manage.py test lists accounts
     # (if those pass) all tests, incl. functional. yes we need that cd.
-    # TODO temporarily uncommented fix
-    # - cd src && python manage.py test
+    - cd src && python manage.py test
 
 
 # build and test against docker image
@@ -50,33 +48,12 @@ build:
     - docker build
       -t registry.gitlab.com/hjwp/book-example:$CI_COMMIT_SHA
       .
-    # - docker run
-    #   -d
-    #   -p 8888:8888
-    #   -e DJANGO_SECRET_KEY=sekrit
-    #   -e DJANGO_ALLOWED_HOST=localhost
-    #   -t superlists
     - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
     - docker push
       registry.gitlab.com/hjwp/book-example:$CI_COMMIT_SHA
 
     # TODO: $CI_REGISTRY/$GITLAB_USER_LOGIN/$CI_PROJECT_NAME:$CI_COMMIT_SHA
 
-    # TODO:
-    # --mount type=bind,source=./src/db.sqlite3,target=/src/db.sqlite3
-    # -e EMAIL_PASSWORD
-
-    # - TEST_SERVER=localhost:8888 python src/manage.py test functional_tests
-
-    # # deploy to staging
-    # - pip install ansible docker
-    # - cat infra/deploy-playbook.yaml
-    # - ansible-playbook
-    #   --user=elspeth
-    #   -i staging.ottg.co.uk,
-    #   -vv
-    #   ${PWD}/infra/deploy-playbook.yaml
-    #
 deploy:
   stage: staging-deploy
   image: python:slim
@@ -130,3 +107,6 @@ test-staging:
       TEST_SERVER=staging.ottg.co.uk
       SSH_PRIVATE_KEY_PATH=.secure_files/keypair-for-gitlab
       python src/manage.py test functional_tests
+
+
+# could add prod deploy here
