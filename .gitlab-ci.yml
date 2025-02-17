@@ -41,7 +41,7 @@ test:
 
   artifacts:
     paths:
-      - src/functional_tests/screendumps
+      - src/functional_tests/screendumps/
 
 # build and test against docker image
 build:
