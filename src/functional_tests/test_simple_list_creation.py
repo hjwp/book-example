@@ -27,6 +27,8 @@ class NewVisitorTest(FunctionalTest):
         # "1: Buy peacock feathers" as an item in a to-do list table
         inputbox.send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table("1: Buy peacock feathers")
+        # deliberate failure
+        self.wait_for_row_in_list_table("2: Use peacock feathers to make a fly")
 
         # There is still a text box inviting her to add another item.
         # She enters "Use peacock feathers to make a fly"
