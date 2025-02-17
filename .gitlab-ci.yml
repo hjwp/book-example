@@ -21,11 +21,10 @@ test:
 
   before_script:
     # install firefox
-    # - apt update -y && apt install -y
-    #   curl
-    #   firefox-esr
-    #   openssh-client
-    - firefox --version
+    - apt update -y && apt install -y
+      curl
+      firefox-esr
+      openssh-client
     - python --version ; pip --version  # For debugging
     - pip install virtualenv
     - virtualenv .venv
