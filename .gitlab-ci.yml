@@ -39,6 +39,9 @@ test:
     # (if those pass) all tests, incl. functional. yes we need that cd.
     - cd src && python manage.py test
 
+  artifacts:
+    paths:
+      - src/functional_tests/screendumps
 
 # build and test against docker image
 build:
