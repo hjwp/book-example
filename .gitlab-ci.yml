@@ -25,6 +25,7 @@ test:
     #   curl
     #   firefox-esr
     #   openssh-client
+    - firefox --version
     - python --version ; pip --version  # For debugging
     - pip install virtualenv
     - virtualenv .venv
