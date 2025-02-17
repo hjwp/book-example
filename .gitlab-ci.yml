@@ -40,9 +40,9 @@ test:
     - cd src && python manage.py test
 
   artifacts:
-    untracked: true
+    when: always
     paths:
-      - src/functional_tests/screendumps/*
+      - src/functional_tests/screendumps/
 
 # build and test against docker image
 build:
