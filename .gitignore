@@ -7,3 +7,4 @@ src/db.sqlite3
 src/static
 container.db.sqlite3
 src/functional_tests/screendumps
+node_modules
