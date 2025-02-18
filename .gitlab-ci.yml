@@ -1,10 +1,12 @@
 # Use the same image as our Dockerfile
 image: python:slim
 
-# These two setting lets us cache pip-installed packages,
-# it came from the default template
 variables:
+  # Put pip-cache in home folder so we can use gitlab cache
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  # Make Firefox run headless.
+  MOZ_HEADLESS: "1"
+
 cache:
   paths:
     - .cache/pip
