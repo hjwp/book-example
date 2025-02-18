@@ -1,0 +1,27 @@
+# Use the same image as our Dockerfile
+image: python:slim
+
+# These two setting lets us cache pip-installed packages,
+# it came from the default template
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+cache:
+  paths:
+    - .cache/pip
+
+# "setUp" phase, before the main build
+before_script:
+  - python --version ; pip --version  # For debugging
+  - pip install virtualenv
+  - virtualenv .venv
+  - source .venv/bin/activate
+
+# This is the main build
+test:
+  script:
+    - pip install -r requirements.txt
+    # unit tests
+    - python src/manage.py test lists accounts
+    # (if those pass) all tests, incl. functional.
+    - pip install selenium
+    - cd src && python manage.py test
