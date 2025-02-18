@@ -7,6 +7,9 @@ export default {
   specFiles: [
     "**/*[sS]pec.js"
   ],
+  cssFiles: [
+    "bootstrap/css/bootstrap.min.css"
+  ],
   helpers: [
     "helpers/**/*.js"
   ],
