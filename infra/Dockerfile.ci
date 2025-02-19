@@ -1,0 +1,16 @@
+FROM python:slim
+
+RUN pip install virtualenv
+RUN virtualenv .venv
+
+# this won't work
+# RUN source .venv/bin/activate
+# use full path to venv instead.
+
+COPY requirements.txt requirements.txt
+RUN .venv/bin/pip install -r requirements.txt
+RUN apt update -y && apt install -y firefox-esr
+RUN .venv/bin/pip install selenium
+
+COPY infra/debug-ci.py debug-ci.py
+CMD .venv/bin/python debug-ci.py
