@@ -63,6 +63,8 @@
       ansible.builtin.file:
         path: "{{ ansible_env.HOME }}/db.sqlite3"
         state: touch
+        owner: 1234  # so nonroot user can access it in container
+      become: true  # needed for ownership change
 
     - name: Run container
       community.docker.docker_container:
@@ -74,7 +76,7 @@
         mounts:
           - type: bind
             source: "{{ ansible_env.HOME }}/db.sqlite3"
-            target: /src/db.sqlite3
+            target: /home/nonroot/db.sqlite3
         ports: 80:8888
 
     - name: Run migration inside container
