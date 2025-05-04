@@ -11,7 +11,7 @@ def home_page(request):
 
 def new_list(request):
     nulist = List.objects.create()
-    item = Item(text=request.POST["item_text"], list=nulist)
+    item = Item(text=request.POST["text"], list=nulist)
     try:
         item.full_clean()
         item.save()
