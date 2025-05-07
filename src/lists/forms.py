@@ -6,6 +6,7 @@ class ItemForm(forms.Form):
         widget=forms.widgets.TextInput(
             attrs={
                 "placeholder": "Enter a to-do item",
+                "class": "form-control form-control-lg",
             }
         ),
     )
