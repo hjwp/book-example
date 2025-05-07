@@ -2,4 +2,10 @@ from django import forms
 
 
 class ItemForm(forms.Form):
-    item_text = forms.CharField()
+    item_text = forms.CharField(
+        widget=forms.widgets.TextInput(
+            attrs={
+                "placeholder": "Enter a to-do item",
+            }
+        ),
+    )
