@@ -21,6 +21,12 @@ class ItemForm(forms.models.ModelForm):
         }
         error_messages = {"text": {"required": EMPTY_ITEM_ERROR}}
 
+    def is_valid(self):
+        result = super().is_valid()
+        if not result:
+            self.fields["text"].widget.attrs["class"] += " is-invalid"
+        return result
+
     def save(self, for_list):
         self.instance.list = for_list
         return super().save()
