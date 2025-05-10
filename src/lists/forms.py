@@ -11,21 +11,7 @@ class ItemForm(forms.models.ModelForm):
     class Meta:
         model = Item
         fields = ("text",)
-        widgets = {
-            "text": forms.widgets.TextInput(
-                attrs={
-                    "placeholder": "Enter a to-do item",
-                    "class": "form-control form-control-lg",
-                }
-            ),
-        }
         error_messages = {"text": {"required": EMPTY_ITEM_ERROR}}
-
-    def is_valid(self):
-        result = super().is_valid()
-        if not result:
-            self.fields["text"].widget.attrs["class"] += " is-invalid"
-        return result
 
     def save(self, for_list):
         self.instance.list = for_list
