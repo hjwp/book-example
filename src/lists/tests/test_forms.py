@@ -18,6 +18,7 @@ class ItemFormTest(TestCase):
     def test_form_save_handles_saving_to_a_list(self):
         mylist = List.objects.create()
         form = ItemForm(data={"text": "do me"})
+        self.assertTrue(form.is_valid())
         new_item = form.save(for_list=mylist)
         self.assertEqual(new_item, Item.objects.get())
         self.assertEqual(new_item.text, "do me")
