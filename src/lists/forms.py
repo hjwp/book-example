@@ -1,26 +1,29 @@
 from django import forms
-from django.core.exceptions import ValidationError
 
-from lists.models import Item
+from lists.models import Item, List
 
 EMPTY_ITEM_ERROR = "You can't have an empty list item"
 DUPLICATE_ITEM_ERROR = "You've already got this in your list"
 
 
-class ItemForm(forms.Form):
+class _ItemForm(forms.Form):
     text = forms.CharField(
         error_messages={"required": EMPTY_ITEM_ERROR},
         required=True,
     )
 
-    def save(self, for_list):
-        return Item.objects.create(
-            list=for_list,
+
+class ItemForm(_ItemForm):
+    def save_new_list(self):
+        new_list = List.objects.create()
+        Item.objects.create(
+            list=new_list,
             text=self.cleaned_data["text"],
         )
+        return new_list
 
 
-class ExistingListItemForm(ItemForm):
+class ExistingListItemForm(_ItemForm):
     def __init__(self, for_list, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._for_list = for_list
@@ -31,5 +34,8 @@ class ExistingListItemForm(ItemForm):
             raise forms.ValidationError(DUPLICATE_ITEM_ERROR)
         return text or ""
 
-    def save(self):
-        return super().save(for_list=self._for_list)
+    def save_item(self):
+        Item.objects.create(
+            list=self._for_list,
+            text=self.cleaned_data["text"],
+        )

@@ -11,8 +11,7 @@ def home_page(request):
 def new_list(request):
     form = ItemForm(data=request.POST)
     if form.is_valid():
-        nulist = List.objects.create()
-        form.save(for_list=nulist)
+        nulist = form.save_new_list()
         return redirect(nulist)
     else:
         return render(request, "home.html", {"form": form})
@@ -23,7 +22,7 @@ def view_list(request, list_id):
     if request.method == "POST":
         form = ExistingListItemForm(for_list=our_list, data=request.POST)
         if form.is_valid():
-            form.save()
+            form.save_item()
             return redirect(our_list)
     else:
         form = ExistingListItemForm(for_list=our_list)
