@@ -29,6 +29,10 @@ class HomePageTest(TestCase):
 
 
 class ListViewTest(TestCase):
+    def test_uses_list_template(self):
+        response = self.client.get("/lists/the-only-list-in-the-world/")
+        self.assertTemplateUsed(response, "list.html")
+
     def test_renders_input_form(self):
         response = self.client.get("/lists/the-only-list-in-the-world/")
         self.assertContains(response, '<form method="POST" action="/">')
