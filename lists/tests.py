@@ -36,7 +36,10 @@ class ListViewTest(TestCase):
     def test_renders_input_form(self):
         mylist = List.objects.create()
         response = self.client.get(f"/lists/{mylist.id}/")
-        self.assertContains(response, '<form method="POST" action="/lists/new">')
+        self.assertContains(
+            response,
+            f'<form method="POST" action="/lists/{mylist.id}/add_item">',
+        )
         self.assertContains(response, '<input name="item_text"')
 
     def test_displays_only_items_for_that_list(self):
