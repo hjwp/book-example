@@ -9,3 +9,4 @@ class HomePageTest(TestCase):
     def test_renders_input_form(self):
         response = self.client.get("/")
         self.assertContains(response, '<form method="POST">')
+        self.assertContains(response, '<input name="item_text"')
