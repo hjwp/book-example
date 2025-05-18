@@ -10,7 +10,7 @@ class HomePageTest(TestCase):
 
     def test_renders_input_form(self):
         response = self.client.get("/")
-        self.assertContains(response, '<form method="POST">')
+        self.assertContains(response, '<form method="POST" action="/">')
         self.assertContains(response, '<input name="item_text"')
 
     def test_can_save_a_POST_request(self):
@@ -31,7 +31,7 @@ class HomePageTest(TestCase):
 class ListViewTest(TestCase):
     def test_renders_input_form(self):
         response = self.client.get("/lists/the-only-list-in-the-world/")
-        self.assertContains(response, '<form method="POST">')
+        self.assertContains(response, '<form method="POST" action="/">')
         self.assertContains(response, '<input name="item_text"')
 
     def test_displays_all_list_items(self):
