@@ -14,7 +14,8 @@ class HomePageTest(TestCase):
         parsed = lxml.html.fromstring(response.content)
         [form] = parsed.cssselect("form[method=POST]")
         self.assertEqual(form.get("action"), "/lists/new")
-        [input] = form.cssselect("input[name=item_text]")
+        inputs = form.cssselect("input")
+        self.assertIn("item_text", [input.get("name") for input in inputs])
 
 
 class NewListTest(TestCase):
@@ -42,7 +43,8 @@ class ListViewTest(TestCase):
         parsed = lxml.html.fromstring(response.content)
         [form] = parsed.cssselect("form[method=POST]")
         self.assertEqual(form.get("action"), f"/lists/{mylist.id}/add_item")
-        [input] = form.cssselect("input[name=item_text]")
+        inputs = form.cssselect("input")
+        self.assertIn("item_text", [input.get("name") for input in inputs])
 
     def test_displays_only_items_for_that_list(self):
         correct_list = List.objects.create()
