@@ -2,6 +2,7 @@ import lxml.html
 from django.test import TestCase
 from django.utils import html
 
+from lists.forms import EMPTY_ITEM_ERROR
 from lists.models import Item, List
 
 
@@ -31,17 +32,21 @@ class NewListTest(TestCase):
         new_list = List.objects.get()
         self.assertRedirects(response, f"/lists/{new_list.id}/")
 
-    def test_validation_errors_are_sent_back_to_home_page_template(self):
-        response = self.client.post("/lists/new", data={"text": ""})
+    def post_invalid_input(self):
+        return self.client.post("/lists/new", data={"text": ""})
+
+    def test_for_invalid_input_nothing_saved_to_db(self):
+        self.post_invalid_input()
+        self.assertEqual(Item.objects.count(), 0)
+
+    def test_for_invalid_input_renders_list_template(self):
+        response = self.post_invalid_input()
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "home.html")
-        expected_error = html.escape("You can't have an empty list item")
-        self.assertContains(response, expected_error)
 
-    def test_invalid_list_items_arent_saved(self):
-        self.client.post("/lists/new", data={"text": ""})
-        self.assertEqual(List.objects.count(), 0)
-        self.assertEqual(Item.objects.count(), 0)
+    def test_for_invalid_input_shows_error_on_page(self):
+        response = self.post_invalid_input()
+        self.assertContains(response, html.escape(EMPTY_ITEM_ERROR))
 
 
 class ListViewTest(TestCase):
