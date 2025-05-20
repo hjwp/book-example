@@ -21,7 +21,6 @@ def new_list(request):
 
 def view_list(request, list_id):
     our_list = List.objects.get(id=list_id)
-    error = None
     form = ItemForm()
 
     if request.method == "POST":
@@ -30,6 +29,4 @@ def view_list(request, list_id):
             Item.objects.create(text=request.POST["text"], list=our_list)
             return redirect(our_list)
 
-    return render(
-        request, "list.html", {"list": our_list, "form": form, "error": error}
-    )
+    return render(request, "list.html", {"list": our_list, "form": form})
