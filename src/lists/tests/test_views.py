@@ -16,12 +16,12 @@ class HomePageTest(TestCase):
         [form] = parsed.cssselect("form[method=POST]")
         self.assertEqual(form.get("action"), "/lists/new")
         inputs = form.cssselect("input")
-        self.assertIn("item_text", [input.get("name") for input in inputs])
+        self.assertIn("text", [input.get("name") for input in inputs])
 
 
 class NewListTest(TestCase):
     def test_can_save_a_POST_request(self):
-        self.client.post("/lists/new", data={"item_text": "A new list item"})
+        self.client.post("/lists/new", data={"text": "A new list item"})
         self.assertEqual(Item.objects.count(), 1)
         new_item = Item.objects.get()
         self.assertEqual(new_item.text, "A new list item")
