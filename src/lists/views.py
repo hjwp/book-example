@@ -25,6 +25,7 @@ def view_list(request, list_id):
     form = ItemForm()
 
     if request.method == "POST":
+        form = ItemForm(data=request.POST)
         try:
             item = Item(text=request.POST["text"], list=our_list)
             item.full_clean()
