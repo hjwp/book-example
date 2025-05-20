@@ -26,13 +26,11 @@ def view_list(request, list_id):
 
     if request.method == "POST":
         form = ItemForm(data=request.POST)
-        try:
+        if form.is_valid():
             item = Item(text=request.POST["text"], list=our_list)
             item.full_clean()
             item.save()
             return redirect(our_list)
-        except ValidationError:
-            error = "You can't have an empty list item"
 
     return render(
         request, "list.html", {"list": our_list, "form": form, "error": error}
