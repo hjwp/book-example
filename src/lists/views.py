@@ -27,9 +27,7 @@ def view_list(request, list_id):
     if request.method == "POST":
         form = ItemForm(data=request.POST)
         if form.is_valid():
-            item = Item(text=request.POST["text"], list=our_list)
-            item.full_clean()
-            item.save()
+            Item.objects.create(text=request.POST["text"], list=our_list)
             return redirect(our_list)
 
     return render(
