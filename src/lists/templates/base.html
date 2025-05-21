@@ -22,7 +22,7 @@
               name="text"
               class="form-control
                      form-control-lg
-                     {% if form.errors %}is-invalid{% endif %}"
+                     {% if form.errors %}isnt-invalid{% endif %}"
               placeholder="Enter a to-do item"
               value="{{ form.text.value | default:'' }}"
               aria-describedby="id_text_feedback"
