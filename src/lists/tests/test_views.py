@@ -65,10 +65,12 @@ class ListViewTest(TestCase):
 
     def test_renders_input_form(self):
         mylist = List.objects.create()
-        response = self.client.get(f"/lists/{mylist.id}/")
+        url = f"/lists/{mylist.id}/"
+        response = self.client.get(url)
         parsed = lxml.html.fromstring(response.content)
-        [form] = parsed.cssselect("form[method=POST]")
-        self.assertEqual(form.get("action"), f"/lists/{mylist.id}/")
+        forms = parsed.cssselect("form[method=POST]")
+        self.assertIn(url, [form.get("action") for form in forms])
+        [form] = [form for form in forms if form.get("action") == url]
         inputs = form.cssselect("input")
         self.assertIn("text", [input.get("name") for input in inputs])
 
