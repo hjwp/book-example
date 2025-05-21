@@ -24,7 +24,7 @@ class ItemForm(forms.models.ModelForm):
     def is_valid(self):
         result = super().is_valid()
         if not result:
-            self.fields["text"].widget.attrs["class"] += " boo!"
+            self.fields["text"].widget.attrs["class"] += " is-invalid"
         return result
 
     def save(self, for_list):
