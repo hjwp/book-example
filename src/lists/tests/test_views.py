@@ -130,7 +130,7 @@ class ListViewTest(TestCase):
         response = self.post_invalid_input()
         parsed = lxml.html.fromstring(response.content)
         [input] = parsed.cssselect("input[name=text]")
-        self.assertIn("is-invalid", input.get("class"))
+        self.assertIn("is-invalid", set(input.classes))
 
     def test_duplicate_item_validation_errors_end_up_on_lists_page(self):
         list1 = List.objects.create()
