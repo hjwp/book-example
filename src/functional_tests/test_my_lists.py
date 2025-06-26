@@ -34,8 +34,6 @@ class MyListsTest(FunctionalTest):
         self.add_list_item("Immanentize eschaton")
         first_list_url = self.browser.current_url
 
-        self.fail('testey')
-
         # She notices a "My lists" link, for the first time.
         self.browser.find_element(By.LINK_TEXT, "My lists").click()
 
